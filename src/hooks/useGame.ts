@@ -3,6 +3,7 @@ import type { GameState, GuessResult } from '../data/types';
 import {
   getDailyAnswer,
   getRandomAnswer,
+  getPopulationHint,
   getTodayString,
   evaluateGuess,
   findMunicipality,
@@ -87,6 +88,13 @@ export function useGame() {
     [state]
   );
 
+  const [hintText, setHintText] = useState<string | null>(null);
+
+  const showHint = useCallback(() => {
+    if (state.status !== 'playing') return;
+    setHintText(getPopulationHint(state.answer.population));
+  }, [state]);
+
   const giveUp = useCallback(() => {
     if (state.status !== 'playing') return;
     setState({ ...state, status: 'lost' });
@@ -100,6 +108,7 @@ export function useGame() {
       answer: newAnswer,
       status: 'playing',
     });
+    setHintText(null);
   }, [dateStr]);
 
   return {
@@ -109,6 +118,8 @@ export function useGame() {
     attemptsLeft: MAX_GUESSES - state.guesses.length,
     dateStr,
     submitGuess,
+    showHint,
+    hintText,
     giveUp,
     newGame,
   };

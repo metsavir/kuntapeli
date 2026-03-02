@@ -79,6 +79,15 @@ export function generateShareText(
   return `Kuntale #${gameNumber} ${score}\n\n${rows}\n\nhttps://kuntale.fi`;
 }
 
+export function getPopulationHint(population: number): string {
+  if (population < 2000) return 'Pieni kylä — alle 2 000 asukasta';
+  if (population < 5000) return 'Pieni kunta — muutama tuhat asukasta';
+  if (population < 15000) return 'Pikkukaupunki — alle 15 000 asukasta';
+  if (population < 50000) return 'Keskikokoinen kaupunki — kymmeniätuhansia asukkaita';
+  if (population < 100000) return 'Iso kaupunki — alle 100 000 asukasta';
+  return 'Suuri kaupunki — yli 100 000 asukasta';
+}
+
 export function getRandomAnswer(): Municipality {
   const index = Math.floor(Math.random() * municipalities.length);
   return municipalities[index];

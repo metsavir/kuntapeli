@@ -6,11 +6,13 @@ import './GuessInput.css';
 interface GuessInputProps {
   onSubmit: (name: string) => { error?: string };
   onGiveUp: () => void;
+  onHint: () => void;
+  hintText: string | null;
   disabled: boolean;
   attemptsLeft: number;
 }
 
-export function GuessInput({ onSubmit, onGiveUp, disabled, attemptsLeft }: GuessInputProps) {
+export function GuessInput({ onSubmit, onGiveUp, onHint, hintText, disabled, attemptsLeft }: GuessInputProps) {
   const [value, setValue] = useState('');
   const [suggestions, setSuggestions] = useState<Municipality[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
@@ -118,9 +120,15 @@ export function GuessInput({ onSubmit, onGiveUp, disabled, attemptsLeft }: Guess
         </button>
       </div>
       {error && <p className="guess-error">{error}</p>}
-      <button className="give-up-button" onClick={onGiveUp}>
-        Luovuta
-      </button>
+      {hintText && <p className="hint-text">{hintText}</p>}
+      <div className="input-actions">
+        <button className="hint-button" onClick={onHint} disabled={!!hintText}>
+          Vihje
+        </button>
+        <button className="give-up-button" onClick={onGiveUp}>
+          Luovuta
+        </button>
+      </div>
     </div>
   );
 }
