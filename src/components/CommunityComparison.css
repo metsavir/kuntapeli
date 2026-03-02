@@ -1,0 +1,37 @@
+.community-comparison {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--color-surface);
+  border-radius: 0.375rem;
+  font-size: 0.8rem;
+}
+
+.community-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.community-label {
+  color: var(--color-text-muted);
+}
+
+.community-value {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.community-percentile {
+  text-align: center;
+  padding-top: 0.25rem;
+  margin-top: 0.125rem;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.community-percentile strong {
+  color: var(--color-correct);
+}

@@ -3,6 +3,7 @@ import type { CareerProgress, Municipality } from '../data/types';
 import { municipalities } from '../data/municipalities';
 import { getTodayString } from '../utils/game';
 
+
 const CAREER_KEY = 'kuntale-career';
 
 function loadCareer(): CareerProgress {
@@ -41,6 +42,13 @@ export function useCareer() {
     });
   }, []);
 
+  const markFailed = useCallback((name: string, guessCount: number) => {
+    setProgress((prev) => ({
+      ...prev,
+      failures: [...(prev.failures ?? []), { name, guesses: guessCount, date: getTodayString() }],
+    }));
+  }, []);
+
   const getRandomUnguessed = useCallback((): Municipality | null => {
     const remaining = municipalities.filter((m) => !completedSet.has(m.name));
     if (remaining.length === 0) return null;
@@ -67,6 +75,7 @@ export function useCareer() {
     completedCount: progress.completed.length,
     totalCount: municipalities.length,
     markCompleted,
+    markFailed,
     getRandomUnguessed,
     getRegionStats,
   };

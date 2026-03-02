@@ -1,0 +1,178 @@
+.career-history {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.career-history-empty {
+  text-align: center;
+  padding: 2rem;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+}
+
+/* Summary grid */
+.career-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.career-summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.375rem;
+}
+
+.career-summary-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem;
+  background: var(--color-surface);
+  border-radius: 0.375rem;
+}
+
+.career-summary-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.career-summary-label {
+  font-size: 0.65rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.career-summary-highlights {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.375rem;
+}
+
+.career-highlight {
+  flex: 1;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  background: var(--color-surface);
+  border-radius: 0.375rem;
+  padding: 0.375rem 0.5rem;
+  text-align: center;
+}
+
+.career-highlight strong {
+  color: var(--color-text);
+}
+
+/* Section titles */
+.career-section-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.25rem;
+}
+
+/* Region breakdown */
+.career-regions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.career-region-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+}
+
+.career-region-name {
+  width: 7rem;
+  flex-shrink: 0;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.career-region-bar {
+  flex: 1;
+  height: 0.375rem;
+  background: var(--color-surface);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.career-region-fill {
+  height: 100%;
+  background: var(--color-correct);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.career-region-count {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  font-weight: 600;
+  width: 2.5rem;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* History entries */
+.career-entries {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.career-history-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  background: var(--color-surface);
+  border-radius: 0.375rem;
+  gap: 0.5rem;
+}
+
+.career-history-name {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.career-history-municipality {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.career-history-region {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+}
+
+.career-history-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.career-history-attempts {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-correct);
+}
+
+.career-history-date {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+}

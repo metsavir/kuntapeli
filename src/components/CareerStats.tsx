@@ -5,9 +5,11 @@ interface CareerStatsProps {
   total: number;
   showMap: boolean;
   onToggleMap: () => void;
+  showStats: boolean;
+  onToggleStats: () => void;
 }
 
-export function CareerStats({ completed, total, showMap, onToggleMap }: CareerStatsProps) {
+export function CareerStats({ completed, total, showMap, onToggleMap, showStats, onToggleStats }: CareerStatsProps) {
   const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
 
   return (
@@ -20,7 +22,10 @@ export function CareerStats({ completed, total, showMap, onToggleMap }: CareerSt
           />
         </div>
         <button className="career-map-toggle" onClick={onToggleMap}>
-          {showMap ? 'Piilota kartta' : 'Näytä kartta'}
+          {showMap ? 'Piilota kartta' : 'Kartta'}
+        </button>
+        <button className="career-map-toggle" onClick={onToggleStats}>
+          {showStats ? 'Piilota tilastot' : 'Tilastot'}
         </button>
       </div>
       <span className="career-count">

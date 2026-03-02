@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { GuessResult, Municipality, GameMode } from '../data/types';
 import { generateShareText, getGameNumber } from '../utils/game';
+import { CommunityComparison } from './CommunityComparison';
 import './GameOver.css';
 
 interface GameOverProps {
@@ -46,6 +47,11 @@ export function GameOver({ status, guesses, answer, dateStr, mode, onNewGame }: 
           Oikea vastaus: <strong>{answer.name}</strong> ({answer.region})
         </p>
       )}
+      <CommunityComparison
+        municipality={answer.name}
+        attempts={guesses.length}
+        won={status === 'won'}
+      />
       <div className="game-over-actions">
         {mode === 'daily' && (
           <button className="share-button" onClick={handleShare}>

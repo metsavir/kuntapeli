@@ -10,6 +10,8 @@ import { HelpModal } from './components/HelpModal';
 import { MunicipalityShape } from './components/MunicipalityShape';
 import { FinlandMap } from './components/FinlandMap';
 import { CareerStats } from './components/CareerStats';
+import { CareerHistory } from './components/CareerHistory';
+import { CommunityComparison } from './components/CommunityComparison';
 import './App.css';
 
 // Career view phases after game ends:
@@ -28,11 +30,14 @@ function App() {
     useGame(mode, { initialAnswer: mode === 'career' ? careerAnswer : undefined });
   const [showHelp, setShowHelp] = useState(false);
   const [showMap, setShowMap] = useState(false);
+  const [showStats, setShowStats] = useState(false);
   const [careerPhase, setCareerPhase] = useState<CareerPhase>('shape');
   const timerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
-  // When switching to career, pick an unguessed municipality
+  // When switching modes, reset career overlays and pick an unguessed municipality
   useEffect(() => {
+    setShowMap(false);
+    setShowStats(false);
     if (mode === 'career' && !careerAnswer) {
       setCareerAnswer(career.getRandomUnguessed());
     }
@@ -48,6 +53,8 @@ function App() {
 
     if (status === 'won') {
       career.markCompleted(answer.name, guesses.length);
+    } else {
+      career.markFailed(answer.name, guesses.length);
     }
 
     timerRef.current = setTimeout(() => {
@@ -91,15 +98,19 @@ function App() {
             completed={career.completedCount}
             total={career.totalCount}
             showMap={showMap}
-            onToggleMap={() => setShowMap((v) => !v)}
+            onToggleMap={() => { setShowMap((v) => !v); setShowStats(false); }}
+            showStats={showStats}
+            onToggleStats={() => { setShowStats((v) => !v); setShowMap(false); }}
           />
         )}
-        {mapVisible ? (
+        {showStats ? (
+          <CareerHistory progress={career.progress} />
+        ) : mapVisible ? (
           <>
             <div className={isCareerMapPhase ? 'career-map-reveal' : undefined}>
               <FinlandMap
                 completed={career.completedSet}
-                currentMunicipality={status !== 'playing' ? answer.name : undefined}
+                currentMunicipality={status === 'won' ? answer.name : undefined}
               />
             </div>
             {status !== 'playing' && (
@@ -107,6 +118,11 @@ function App() {
                 <p className="game-over-message">
                   {status === 'won' ? 'Oikein' : 'Oikea vastaus'}: <strong>{answer.name}</strong> ({answer.region})
                 </p>
+                <CommunityComparison
+                  municipality={answer.name}
+                  attempts={guesses.length}
+                  won={status === 'won'}
+                />
                 <button className="new-game-button" onClick={handleNewGame}>
                   Seuraava
                 </button>
