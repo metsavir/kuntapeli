@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
-import type { GameState, GameMode, GuessResult } from '../data/types';
+import type { GameState, GameMode, GuessResult, Municipality } from '../data/types';
 import {
   getDailyAnswer,
   getRandomAnswer,
@@ -37,24 +37,33 @@ function createDailyState(dateStr: string): GameState {
   };
 }
 
-function createCasualState(dateStr: string): GameState {
+function createFreshState(dateStr: string, answer: Municipality): GameState {
   return {
     date: dateStr,
     guesses: [],
-    answer: getRandomAnswer(),
+    answer,
     status: 'playing',
   };
 }
 
-export function useGame(mode: GameMode) {
+interface UseGameOptions {
+  initialAnswer?: Municipality | null;
+}
+
+export function useGame(mode: GameMode, options?: UseGameOptions) {
   const dateStr = getTodayString();
   const prevMode = useRef(mode);
+  const prevAnswer = useRef(options?.initialAnswer);
+
+  function getAnswer(): Municipality {
+    return options?.initialAnswer ?? getRandomAnswer();
+  }
 
   const [state, setState] = useState<GameState>(() => {
     if (mode === 'daily') {
       return loadDailyState(dateStr) ?? createDailyState(dateStr);
     }
-    return createCasualState(dateStr);
+    return createFreshState(dateStr, getAnswer());
   });
 
   // Handle mode switches
@@ -65,10 +74,21 @@ export function useGame(mode: GameMode) {
     if (mode === 'daily') {
       setState(loadDailyState(dateStr) ?? createDailyState(dateStr));
     } else {
-      setState(createCasualState(dateStr));
+      setState(createFreshState(dateStr, getAnswer()));
     }
     setHintText(null);
   }, [mode, dateStr]);
+
+  // Handle career answer changes (when moving to next municipality)
+  useEffect(() => {
+    if (mode !== 'career') return;
+    const newAnswer = options?.initialAnswer;
+    if (newAnswer && newAnswer !== prevAnswer.current) {
+      prevAnswer.current = newAnswer;
+      setState(createFreshState(dateStr, newAnswer));
+      setHintText(null);
+    }
+  }, [mode, options?.initialAnswer, dateStr]);
 
   // Persist only daily mode
   useEffect(() => {
@@ -131,13 +151,7 @@ export function useGame(mode: GameMode) {
   }, [state]);
 
   const newGame = useCallback(() => {
-    const newAnswer = getRandomAnswer();
-    setState({
-      date: dateStr,
-      guesses: [],
-      answer: newAnswer,
-      status: 'playing',
-    });
+    setState(createFreshState(dateStr, getAnswer()));
     setHintText(null);
   }, [dateStr]);
 

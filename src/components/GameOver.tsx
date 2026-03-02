@@ -57,6 +57,11 @@ export function GameOver({ status, guesses, answer, dateStr, mode, onNewGame }: 
             Uusi peli
           </button>
         )}
+        {mode === 'career' && (
+          <button className="new-game-button" onClick={onNewGame}>
+            Seuraava
+          </button>
+        )}
       </div>
     </div>
   );

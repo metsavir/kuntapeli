@@ -1,43 +1,141 @@
-import { useState } from 'react';
-import type { GameMode } from './data/types';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import type { GameMode, Municipality } from './data/types';
 import { useGame } from './hooks/useGame';
+import { useCareer } from './hooks/useCareer';
 import { Header } from './components/Header';
 import { GuessInput } from './components/GuessInput';
 import { GuessList } from './components/GuessList';
 import { GameOver } from './components/GameOver';
 import { HelpModal } from './components/HelpModal';
 import { MunicipalityShape } from './components/MunicipalityShape';
+import { FinlandMap } from './components/FinlandMap';
+import { CareerStats } from './components/CareerStats';
 import './App.css';
+
+// Career view phases after game ends:
+// 'shape'  → still showing the isolated shape (initial win/loss view)
+// 'map'    → transitioned to Finland map with municipality highlighted
+type CareerPhase = 'shape' | 'map';
 
 function App() {
   const [mode, setMode] = useState<GameMode>('daily');
+  const career = useCareer();
+  const [careerAnswer, setCareerAnswer] = useState<Municipality | null>(
+    () => career.getRandomUnguessed()
+  );
+
   const { guesses, status, answer, attemptsLeft, dateStr, submitGuess, showHint, hintText, giveUp, newGame } =
-    useGame(mode);
+    useGame(mode, { initialAnswer: mode === 'career' ? careerAnswer : undefined });
   const [showHelp, setShowHelp] = useState(false);
+  const [showMap, setShowMap] = useState(false);
+  const [careerPhase, setCareerPhase] = useState<CareerPhase>('shape');
+  const timerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+  // When switching to career, pick an unguessed municipality
+  useEffect(() => {
+    if (mode === 'career' && !careerAnswer) {
+      setCareerAnswer(career.getRandomUnguessed());
+    }
+  }, [mode]);
+
+  // On career game end: mark completed, then transition to map after delay
+  const prevStatus = useRef(status);
+  useEffect(() => {
+    const wasPlaying = prevStatus.current === 'playing';
+    prevStatus.current = status;
+
+    if (mode !== 'career' || status === 'playing' || !wasPlaying) return;
+
+    if (status === 'won') {
+      career.markCompleted(answer.name, guesses.length);
+    }
+
+    timerRef.current = setTimeout(() => {
+      setCareerPhase('map');
+    }, 1500);
+
+    return () => clearTimeout(timerRef.current);
+  }, [mode, status]);
+
+  const handleCareerNext = useCallback(() => {
+    setShowMap(false);
+    setCareerPhase('shape');
+    clearTimeout(timerRef.current);
+    const next = career.getRandomUnguessed();
+    setCareerAnswer(next);
+  }, [career.getRandomUnguessed]);
+
+  const handleNewGame = mode === 'career' ? handleCareerNext : newGame;
+
+  // Show map if: auto-revealed after win, OR manually toggled
+  const isCareerMapPhase = mode === 'career' && status !== 'playing' && careerPhase === 'map';
+  const mapVisible = mode === 'career' && (isCareerMapPhase || showMap);
 
   return (
     <div className="app">
-      <Header dateStr={dateStr} mode={mode} onModeChange={setMode} onHelp={() => setShowHelp(true)} />
+      <Header
+        dateStr={dateStr}
+        mode={mode}
+        careerCount={`${career.completedCount}/${career.totalCount}`}
+        onModeChange={setMode}
+        onHelp={() => setShowHelp(true)}
+      />
+      {import.meta.env.DEV && (
+        <div style={{ background: '#ff000030', color: '#ff8888', textAlign: 'center', padding: '0.25rem', fontSize: '0.75rem', fontFamily: 'monospace' }}>
+          DEBUG: {answer.name} ({answer.region})
+        </div>
+      )}
       <main className="app-body">
-        <MunicipalityShape name={answer.name} />
-        <GuessInput
-          onSubmit={submitGuess}
-          onGiveUp={giveUp}
-          onHint={showHint}
-          hintText={hintText}
-          disabled={status !== 'playing'}
-          attemptsLeft={attemptsLeft}
-        />
-        <GuessList guesses={guesses} />
-        {status !== 'playing' && (
-          <GameOver
-            status={status}
-            guesses={guesses}
-            answer={answer}
-            dateStr={dateStr}
-            mode={mode}
-            onNewGame={newGame}
+        {mode === 'career' && (
+          <CareerStats
+            completed={career.completedCount}
+            total={career.totalCount}
+            showMap={showMap}
+            onToggleMap={() => setShowMap((v) => !v)}
           />
+        )}
+        {mapVisible ? (
+          <>
+            <div className={isCareerMapPhase ? 'career-map-reveal' : undefined}>
+              <FinlandMap
+                completed={career.completedSet}
+                currentMunicipality={status !== 'playing' ? answer.name : undefined}
+              />
+            </div>
+            {status !== 'playing' && (
+              <div className="game-over career-map-actions">
+                <p className="game-over-message">
+                  {status === 'won' ? 'Oikein' : 'Oikea vastaus'}: <strong>{answer.name}</strong> ({answer.region})
+                </p>
+                <button className="new-game-button" onClick={handleNewGame}>
+                  Seuraava
+                </button>
+              </div>
+            )}
+          </>
+        ) : (
+          <>
+            <MunicipalityShape name={answer.name} />
+            <GuessInput
+              onSubmit={submitGuess}
+              onGiveUp={giveUp}
+              onHint={showHint}
+              hintText={hintText}
+              disabled={status !== 'playing'}
+              attemptsLeft={attemptsLeft}
+            />
+            <GuessList guesses={guesses} />
+            {status !== 'playing' && (
+              <GameOver
+                status={status}
+                guesses={guesses}
+                answer={answer}
+                dateStr={dateStr}
+                mode={mode}
+                onNewGame={handleNewGame}
+              />
+            )}
+          </>
         )}
       </main>
       {showHelp && <HelpModal onClose={() => setShowHelp(false)} />}

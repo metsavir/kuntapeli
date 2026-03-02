@@ -128,6 +128,12 @@ async function main() {
 
   const totalKB = (totalBytes / 1024).toFixed(0);
   console.log(`\nWrote ${Object.keys(shapes).length} shape files to ${SHAPES_DIR} (${totalKB} KB total)`);
+
+  // Write combined file for the Finland overview map
+  const allJson = JSON.stringify(shapes);
+  writeFileSync(join(SHAPES_DIR, 'all.json'), allJson);
+  const allKB = (Buffer.byteLength(allJson) / 1024).toFixed(0);
+  console.log(`Wrote combined all.json (${allKB} KB)`);
 }
 
 main().catch((err) => {

@@ -15,7 +15,12 @@ export interface GuessResult {
   isCorrect: boolean;
 }
 
-export type GameMode = 'daily' | 'casual';
+export type GameMode = 'daily' | 'casual' | 'career';
+
+export interface CareerProgress {
+  completed: string[];
+  stats: Record<string, { attempts: number; date: string }>;
+}
 
 export interface MunicipalityShape {
   type: 'Polygon' | 'MultiPolygon';
