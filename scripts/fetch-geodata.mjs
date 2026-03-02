@@ -1,9 +1,10 @@
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync, writeFileSync, mkdirSync, rmSync, existsSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const SRC_DIR = join(__dirname, '..', 'src', 'data');
+const SHAPES_DIR = join(__dirname, '..', 'public', 'shapes');
 
 const WFS_URL =
   'https://geo.stat.fi/geoserver/tilastointialueet/wfs?service=WFS&version=2.0.0&request=GetFeature&typeName=tilastointialueet:kunta1000k_2026&outputFormat=json&srsName=EPSG:4326';
@@ -114,11 +115,19 @@ async function main() {
     console.log('\n✓ All app municipality names matched!');
   }
 
-  const outPath = join(SRC_DIR, 'municipality-shapes.json');
-  writeFileSync(outPath, JSON.stringify(shapes));
+  // Write individual JSON files to public/shapes/
+  if (existsSync(SHAPES_DIR)) rmSync(SHAPES_DIR, { recursive: true });
+  mkdirSync(SHAPES_DIR, { recursive: true });
 
-  const sizeKB = (Buffer.byteLength(JSON.stringify(shapes)) / 1024).toFixed(0);
-  console.log(`\nWrote ${Object.keys(shapes).length} shapes to ${outPath} (${sizeKB} KB)`);
+  let totalBytes = 0;
+  for (const [name, shape] of Object.entries(shapes)) {
+    const json = JSON.stringify(shape);
+    totalBytes += Buffer.byteLength(json);
+    writeFileSync(join(SHAPES_DIR, `${name}.json`), json);
+  }
+
+  const totalKB = (totalBytes / 1024).toFixed(0);
+  console.log(`\nWrote ${Object.keys(shapes).length} shape files to ${SHAPES_DIR} (${totalKB} KB total)`);
 }
 
 main().catch((err) => {
