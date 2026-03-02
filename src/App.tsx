@@ -26,7 +26,7 @@ function App() {
     () => career.getRandomUnguessed()
   );
 
-  const { guesses, status, answer, attemptsLeft, dateStr, submitGuess, showHint, hintText, giveUp, newGame } =
+  const { guesses, status, answer, attemptsLeft, dateStr, submitGuess, showHint, hints, maxHints, giveUp, newGame } =
     useGame(mode, { initialAnswer: mode === 'career' ? careerAnswer : undefined });
   const [showHelp, setShowHelp] = useState(false);
   const [showMap, setShowMap] = useState(false);
@@ -136,7 +136,8 @@ function App() {
               onSubmit={submitGuess}
               onGiveUp={giveUp}
               onHint={showHint}
-              hintText={hintText}
+              hints={hints}
+              maxHints={maxHints}
               disabled={status !== 'playing'}
               attemptsLeft={attemptsLeft}
             />

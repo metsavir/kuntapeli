@@ -88,6 +88,23 @@ export function getPopulationHint(population: number): string {
   return 'Suuri kaupunki — yli 100 000 asukasta';
 }
 
+export function getRegionHint(answer: Municipality): string {
+  return `Maakunta: ${answer.region}`;
+}
+
+export function getNeighbourHint(answer: Municipality): string {
+  const distances = municipalities
+    .filter((m) => m.name !== answer.name)
+    .map((m) => ({
+      name: m.name,
+      dist: haversineDistance(m.lat, m.lng, answer.lat, answer.lng),
+    }))
+    .sort((a, b) => a.dist - b.dist);
+
+  const neighbours = distances.slice(0, 3).map((d) => d.name);
+  return `Naapurit: ${neighbours.join(', ')}`;
+}
+
 export function getRandomAnswer(): Municipality {
   const index = Math.floor(Math.random() * municipalities.length);
   return municipalities[index];

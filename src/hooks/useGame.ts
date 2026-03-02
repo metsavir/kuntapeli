@@ -4,6 +4,8 @@ import {
   getDailyAnswer,
   getRandomAnswer,
   getPopulationHint,
+  getRegionHint,
+  getNeighbourHint,
   getTodayString,
   evaluateGuess,
   findMunicipality,
@@ -76,7 +78,7 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
     } else {
       setState(createFreshState(dateStr, getAnswer()));
     }
-    setHintText(null);
+    setHints([]);
   }, [mode, dateStr]);
 
   // Handle career answer changes (when moving to next municipality)
@@ -86,7 +88,7 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
     if (newAnswer && newAnswer !== prevAnswer.current) {
       prevAnswer.current = newAnswer;
       setState(createFreshState(dateStr, newAnswer));
-      setHintText(null);
+      setHints([]);
     }
   }, [mode, options?.initialAnswer, dateStr]);
 
@@ -138,11 +140,17 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
     [state]
   );
 
-  const [hintText, setHintText] = useState<string | null>(null);
+  const [hints, setHints] = useState<string[]>([]);
 
   const showHint = useCallback(() => {
     if (state.status !== 'playing') return;
-    setHintText(getPopulationHint(state.answer.population));
+    setHints((prev) => {
+      const level = prev.length;
+      if (level === 0) return [...prev, getRegionHint(state.answer)];
+      if (level === 1) return [...prev, getPopulationHint(state.answer.population)];
+      if (level === 2) return [...prev, getNeighbourHint(state.answer)];
+      return prev;
+    });
   }, [state]);
 
   const giveUp = useCallback(() => {
@@ -152,7 +160,7 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
 
   const newGame = useCallback(() => {
     setState(createFreshState(dateStr, getAnswer()));
-    setHintText(null);
+    setHints([]);
   }, [dateStr]);
 
   return {
@@ -163,7 +171,8 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
     dateStr,
     submitGuess,
     showHint,
-    hintText,
+    hints,
+    maxHints: 3,
     giveUp,
     newGame,
   };

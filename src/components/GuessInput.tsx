@@ -7,12 +7,13 @@ interface GuessInputProps {
   onSubmit: (name: string) => { error?: string };
   onGiveUp: () => void;
   onHint: () => void;
-  hintText: string | null;
+  hints: string[];
+  maxHints: number;
   disabled: boolean;
   attemptsLeft: number;
 }
 
-export function GuessInput({ onSubmit, onGiveUp, onHint, hintText, disabled, attemptsLeft }: GuessInputProps) {
+export function GuessInput({ onSubmit, onGiveUp, onHint, hints, maxHints, disabled, attemptsLeft }: GuessInputProps) {
   const [value, setValue] = useState('');
   const [suggestions, setSuggestions] = useState<Municipality[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
@@ -120,10 +121,16 @@ export function GuessInput({ onSubmit, onGiveUp, onHint, hintText, disabled, att
         </button>
       </div>
       {error && <p className="guess-error">{error}</p>}
-      {hintText && <p className="hint-text">{hintText}</p>}
+      {hints.length > 0 && (
+        <div className="hint-list">
+          {hints.map((hint, i) => (
+            <p key={i} className="hint-text">{hint}</p>
+          ))}
+        </div>
+      )}
       <div className="input-actions">
-        <button className="hint-button" onClick={onHint} disabled={!!hintText}>
-          Vihje
+        <button className="hint-button" onClick={onHint} disabled={hints.length >= maxHints}>
+          Vihje ({hints.length}/{maxHints})
         </button>
         <button className="give-up-button" onClick={onGiveUp}>
           Luovuta
