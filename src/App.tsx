@@ -8,7 +8,7 @@ import { HelpModal } from './components/HelpModal';
 import './App.css';
 
 function App() {
-  const { guesses, status, answer, attemptsLeft, dateStr, submitGuess, newGame } =
+  const { guesses, status, answer, attemptsLeft, dateStr, submitGuess, giveUp, newGame } =
     useGame();
   const [showHelp, setShowHelp] = useState(false);
 
@@ -18,6 +18,7 @@ function App() {
       <main className="app-body">
         <GuessInput
           onSubmit={submitGuess}
+          onGiveUp={giveUp}
           disabled={status !== 'playing'}
           attemptsLeft={attemptsLeft}
         />

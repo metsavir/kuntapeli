@@ -87,6 +87,11 @@ export function useGame() {
     [state]
   );
 
+  const giveUp = useCallback(() => {
+    if (state.status !== 'playing') return;
+    setState({ ...state, status: 'lost' });
+  }, [state]);
+
   const newGame = useCallback(() => {
     const newAnswer = getRandomAnswer();
     setState({
@@ -104,6 +109,7 @@ export function useGame() {
     attemptsLeft: MAX_GUESSES - state.guesses.length,
     dateStr,
     submitGuess,
+    giveUp,
     newGame,
   };
 }
