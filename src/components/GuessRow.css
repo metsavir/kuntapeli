@@ -11,6 +11,38 @@
 
 .guess-row--correct {
   background: var(--color-correct);
+  animation: correctBounce 0.5s ease-out, correctGlow 1.2s ease-in-out;
+}
+
+@keyframes correctBounce {
+  0% {
+    opacity: 0;
+    transform: translateY(-0.5rem) scale(0.95);
+  }
+  50% {
+    transform: translateY(0) scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes correctGlow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(83, 141, 78, 0);
+  }
+  30% {
+    box-shadow: 0 0 1rem 0.25rem rgba(83, 141, 78, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(83, 141, 78, 0);
+  }
+}
+
+.guess-correct-label {
+  font-weight: 700;
+  font-size: 1rem;
+  text-align: right;
 }
 
 .guess-name {

@@ -6,8 +6,17 @@ interface GuessRowProps {
 }
 
 export function GuessRow({ guess }: GuessRowProps) {
+  if (guess.isCorrect) {
+    return (
+      <div className="guess-row guess-row--correct">
+        <span className="guess-name">{guess.municipality.name}</span>
+        <span className="guess-correct-label">Oikein!</span>
+      </div>
+    );
+  }
+
   return (
-    <div className={`guess-row ${guess.isCorrect ? 'guess-row--correct' : ''}`}>
+    <div className="guess-row">
       <span className="guess-name">{guess.municipality.name}</span>
       <span className="guess-distance">{guess.distance} km</span>
       <span className="guess-direction">{guess.direction}</span>
