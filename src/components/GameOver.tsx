@@ -17,7 +17,7 @@ export function GameOver({ status, guesses, answer, dateStr, mode, onNewGame }: 
   const gameNumber = getGameNumber(dateStr);
 
   const handleShare = async () => {
-    const text = generateShareText(guesses, gameNumber, status === 'won');
+    const text = generateShareText(guesses, gameNumber, status === 'won', dateStr);
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);

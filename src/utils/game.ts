@@ -56,27 +56,27 @@ export function searchMunicipalities(query: string): Municipality[] {
   return municipalities.filter((m) => m.name.toLowerCase().startsWith(lower));
 }
 
-function proximityToSquare(prox: number): string {
-  if (prox === 100) return '🟩';
-  if (prox >= 75) return '🟨';
-  if (prox >= 50) return '🟧';
-  if (prox >= 25) return '🟥';
-  return '⬛';
+function formatDate(dateStr: string): string {
+  const d = new Date(dateStr);
+  return `${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}`;
 }
 
 export function generateShareText(
   guesses: GuessResult[],
   gameNumber: number,
-  won: boolean
+  won: boolean,
+  dateStr: string
 ): string {
-  const score = won ? `${guesses.length}/6` : 'X/6';
-  const rows = guesses
-    .map((g) => {
-      if (g.isCorrect) return '🟩🎯';
-      return `${proximityToSquare(g.proximity)}${g.direction}`;
-    })
-    .join('\n');
-  return `Kuntale #${gameNumber} ${score}\n\n${rows}\n\nhttps://kuntale.fi`;
+  const distances = guesses.map((g) => g.distance);
+  const chain = distances.join(' → ') + ' km';
+  const date = formatDate(dateStr);
+
+  if (won) {
+    return `Kuntale #${gameNumber} · ${date}\n✅ ${guesses.length}/6 arvausta\n\n📍 ${chain}\n\nhttps://kuntale.fi`;
+  }
+
+  const closest = Math.min(...distances);
+  return `Kuntale #${gameNumber} · ${date}\n❌ 6/6 · lähin ${closest} km\n\n📍 ${chain}\n\nhttps://kuntale.fi`;
 }
 
 export function getPopulationHint(population: number): string {
