@@ -6,6 +6,7 @@ import { GuessInput } from './components/GuessInput';
 import { GuessList } from './components/GuessList';
 import { GameOver } from './components/GameOver';
 import { HelpModal } from './components/HelpModal';
+import { MunicipalityShape } from './components/MunicipalityShape';
 import './App.css';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
     <div className="app">
       <Header dateStr={dateStr} mode={mode} onModeChange={setMode} onHelp={() => setShowHelp(true)} />
       <main className="app-body">
+        <MunicipalityShape name={answer.name} />
         <GuessInput
           onSubmit={submitGuess}
           onGiveUp={giveUp}
