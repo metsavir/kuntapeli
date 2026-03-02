@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { GameMode } from './data/types';
 import { useGame } from './hooks/useGame';
 import { Header } from './components/Header';
 import { GuessInput } from './components/GuessInput';
@@ -8,13 +9,14 @@ import { HelpModal } from './components/HelpModal';
 import './App.css';
 
 function App() {
+  const [mode, setMode] = useState<GameMode>('daily');
   const { guesses, status, answer, attemptsLeft, dateStr, submitGuess, showHint, hintText, giveUp, newGame } =
-    useGame();
+    useGame(mode);
   const [showHelp, setShowHelp] = useState(false);
 
   return (
     <div className="app">
-      <Header dateStr={dateStr} onHelp={() => setShowHelp(true)} />
+      <Header dateStr={dateStr} mode={mode} onModeChange={setMode} onHelp={() => setShowHelp(true)} />
       <main className="app-body">
         <GuessInput
           onSubmit={submitGuess}
@@ -31,6 +33,7 @@ function App() {
             guesses={guesses}
             answer={answer}
             dateStr={dateStr}
+            mode={mode}
             onNewGame={newGame}
           />
         )}

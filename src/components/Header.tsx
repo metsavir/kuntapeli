@@ -1,12 +1,15 @@
+import type { GameMode } from '../data/types';
 import { getGameNumber } from '../utils/game';
 import './Header.css';
 
 interface HeaderProps {
   dateStr: string;
+  mode: GameMode;
+  onModeChange: (mode: GameMode) => void;
   onHelp: () => void;
 }
 
-export function Header({ dateStr, onHelp }: HeaderProps) {
+export function Header({ dateStr, mode, onModeChange, onHelp }: HeaderProps) {
   const gameNumber = getGameNumber(dateStr);
 
   return (
@@ -14,7 +17,23 @@ export function Header({ dateStr, onHelp }: HeaderProps) {
       <div className="header-left" />
       <div className="header-center">
         <h1 className="header-title">Kuntale</h1>
-        <span className="header-game-number">#{gameNumber}</span>
+        <span className="header-game-number">
+          {mode === 'daily' ? `#${gameNumber}` : 'Harjoittelu'}
+        </span>
+        <div className="mode-toggle">
+          <button
+            className={`mode-pill${mode === 'daily' ? ' mode-pill--active' : ''}`}
+            onClick={() => onModeChange('daily')}
+          >
+            Päivittäinen
+          </button>
+          <button
+            className={`mode-pill${mode === 'casual' ? ' mode-pill--active' : ''}`}
+            onClick={() => onModeChange('casual')}
+          >
+            Harjoittelu
+          </button>
+        </div>
       </div>
       <button className="header-help" onClick={onHelp} aria-label="Ohje">
         ?

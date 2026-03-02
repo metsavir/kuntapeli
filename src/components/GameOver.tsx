@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { GuessResult, Municipality } from '../data/types';
+import type { GuessResult, Municipality, GameMode } from '../data/types';
 import { generateShareText, getGameNumber } from '../utils/game';
 import './GameOver.css';
 
@@ -8,10 +8,11 @@ interface GameOverProps {
   guesses: GuessResult[];
   answer: Municipality;
   dateStr: string;
+  mode: GameMode;
   onNewGame: () => void;
 }
 
-export function GameOver({ status, guesses, answer, dateStr, onNewGame }: GameOverProps) {
+export function GameOver({ status, guesses, answer, dateStr, mode, onNewGame }: GameOverProps) {
   const [copied, setCopied] = useState(false);
   const gameNumber = getGameNumber(dateStr);
 
@@ -46,12 +47,16 @@ export function GameOver({ status, guesses, answer, dateStr, onNewGame }: GameOv
         </p>
       )}
       <div className="game-over-actions">
-        <button className="share-button" onClick={handleShare}>
-          {copied ? 'Kopioitu!' : 'Jaa tulos'}
-        </button>
-        <button className="new-game-button" onClick={onNewGame}>
-          Uusi peli
-        </button>
+        {mode === 'daily' && (
+          <button className="share-button" onClick={handleShare}>
+            {copied ? 'Kopioitu!' : 'Jaa tulos'}
+          </button>
+        )}
+        {mode === 'casual' && (
+          <button className="new-game-button" onClick={onNewGame}>
+            Uusi peli
+          </button>
+        )}
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
-import { useState, useCallback, useEffect } from 'react';
-import type { GameState, GuessResult } from '../data/types';
+import { useState, useCallback, useEffect, useRef } from 'react';
+import type { GameState, GameMode, GuessResult } from '../data/types';
 import {
   getDailyAnswer,
   getRandomAnswer,
@@ -12,7 +12,7 @@ import {
 
 const STORAGE_KEY = 'kuntale-state';
 
-function loadState(dateStr: string): GameState | null {
+function loadDailyState(dateStr: string): GameState | null {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
@@ -24,28 +24,58 @@ function loadState(dateStr: string): GameState | null {
   }
 }
 
-function saveState(state: GameState): void {
+function saveDailyState(state: GameState): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
-export function useGame() {
+function createDailyState(dateStr: string): GameState {
+  return {
+    date: dateStr,
+    guesses: [],
+    answer: getDailyAnswer(dateStr),
+    status: 'playing',
+  };
+}
+
+function createCasualState(dateStr: string): GameState {
+  return {
+    date: dateStr,
+    guesses: [],
+    answer: getRandomAnswer(),
+    status: 'playing',
+  };
+}
+
+export function useGame(mode: GameMode) {
   const dateStr = getTodayString();
-  const answer = getDailyAnswer(dateStr);
+  const prevMode = useRef(mode);
 
   const [state, setState] = useState<GameState>(() => {
-    const saved = loadState(dateStr);
-    if (saved) return saved;
-    return {
-      date: dateStr,
-      guesses: [],
-      answer,
-      status: 'playing',
-    };
+    if (mode === 'daily') {
+      return loadDailyState(dateStr) ?? createDailyState(dateStr);
+    }
+    return createCasualState(dateStr);
   });
 
+  // Handle mode switches
   useEffect(() => {
-    saveState(state);
-  }, [state]);
+    if (prevMode.current === mode) return;
+    prevMode.current = mode;
+
+    if (mode === 'daily') {
+      setState(loadDailyState(dateStr) ?? createDailyState(dateStr));
+    } else {
+      setState(createCasualState(dateStr));
+    }
+    setHintText(null);
+  }, [mode, dateStr]);
+
+  // Persist only daily mode
+  useEffect(() => {
+    if (mode === 'daily') {
+      saveDailyState(state);
+    }
+  }, [state, mode]);
 
   const submitGuess = useCallback(
     (name: string): { error?: string; result?: GuessResult } => {

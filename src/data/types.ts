@@ -15,6 +15,8 @@ export interface GuessResult {
   isCorrect: boolean;
 }
 
+export type GameMode = 'daily' | 'casual';
+
 export interface GameState {
   date: string;
   guesses: GuessResult[];
