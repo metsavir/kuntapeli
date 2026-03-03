@@ -1,7 +1,24 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import type { Municipality } from '../data/types';
 import { searchMunicipalities } from '../utils/game';
+import { Modal } from './Modal';
 import './GuessInput.css';
+
+function GiveUpModal({ onConfirm, onCancel }: { onConfirm: () => void; onCancel: () => void }) {
+  return (
+    <Modal onClose={onCancel} className="give-up-modal" showClose={false}>
+      <p>Oletko varma, että haluat luovuttaa?</p>
+      <div className="give-up-modal-actions">
+        <button className="give-up-modal-cancel" onClick={onCancel}>
+          Peruuta
+        </button>
+        <button className="give-up-modal-confirm" onClick={onConfirm}>
+          Luovuta
+        </button>
+      </div>
+    </Modal>
+  );
+}
 
 interface GuessInputProps {
   onSubmit: (name: string) => { error?: string };
@@ -80,14 +97,6 @@ export function GuessInput({ onSubmit, onGiveUp, onHint, hints, maxHints, disabl
     }
   }, [selectedIndex]);
 
-  // Close give-up modal on Escape
-  useEffect(() => {
-    if (!showGiveUpModal) return;
-    const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setShowGiveUpModal(false); };
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
-  }, [showGiveUpModal]);
-
   if (disabled) return null;
 
   return (
@@ -146,19 +155,10 @@ export function GuessInput({ onSubmit, onGiveUp, onHint, hints, maxHints, disabl
         </button>
       </div>
       {showGiveUpModal && (
-        <div className="give-up-overlay" onClick={() => setShowGiveUpModal(false)}>
-          <div className="give-up-modal" onClick={(e) => e.stopPropagation()}>
-            <p>Oletko varma, että haluat luovuttaa?</p>
-            <div className="give-up-modal-actions">
-              <button className="give-up-modal-cancel" onClick={() => setShowGiveUpModal(false)}>
-                Peruuta
-              </button>
-              <button className="give-up-modal-confirm" onClick={() => { setShowGiveUpModal(false); onGiveUp(); }}>
-                Luovuta
-              </button>
-            </div>
-          </div>
-        </div>
+        <GiveUpModal
+          onConfirm={() => { setShowGiveUpModal(false); onGiveUp(); }}
+          onCancel={() => setShowGiveUpModal(false)}
+        />
       )}
     </div>
   );

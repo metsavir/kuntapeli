@@ -1,6 +1,7 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import type { PlayerStats, GameMode, ClueType, CareerProgress } from '../data/types';
 import { CareerHistory } from './CareerHistory';
+import { Modal } from './Modal';
 import { MAX_GUESSES } from '../utils/game';
 import './StatsModal.css';
 
@@ -81,12 +82,6 @@ const TABS: { key: Tab; label: string }[] = [
 export function StatsModal({ stats, careerProgress, clueType, initialTab = 'all', onClose }: StatsModalProps) {
   const [tab, setTab] = useState<Tab>(initialTab);
 
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
-  }, [onClose]);
-
   // Filter stats to current clue type
   const filtered = useMemo<PlayerStats>(() => ({
     ...stats,
@@ -103,10 +98,8 @@ export function StatsModal({ stats, careerProgress, clueType, initialTab = 'all'
   const casualDist = useMemo(() => computeDistribution(filtered, 'casual'), [filtered]);
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal stats-modal" onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close" onClick={onClose}>&times;</button>
-        <h2>Tilastot</h2>
+    <Modal onClose={onClose} className="stats-modal">
+      <h2>Tilastot</h2>
 
         <div className="stats-tabs">
           {TABS.map(({ key, label }) => (
@@ -221,7 +214,6 @@ export function StatsModal({ stats, careerProgress, clueType, initialTab = 'all'
             <CareerHistory progress={careerProgress} />
           )}
         </div>
-      </div>
-    </div>
+    </Modal>
   );
 }
