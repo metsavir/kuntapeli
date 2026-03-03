@@ -19,7 +19,7 @@ export function CoatOfArms({ name }: CoatOfArmsProps) {
   return (
     <div className="coat-of-arms-container">
       <img
-        src={`/coats/${name}.png`}
+        src={`${import.meta.env.BASE_URL}coats/${name}.png`}
         alt="Kunnan vaakuna"
         className="coat-of-arms-img"
         onError={() => setError(true)}

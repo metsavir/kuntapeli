@@ -21,7 +21,7 @@ export function LandingPage({ onSelect }: LandingPageProps) {
         </button>
         <button className="landing-card" onClick={() => onSelect('coatOfArms')}>
           <div className="landing-card-visual">
-            <img src="/coats/Helsinki.png" alt="" draggable={false} />
+            <img src={`${import.meta.env.BASE_URL}coats/Helsinki.png`} alt="" draggable={false} />
           </div>
           <span className="landing-card-label">Vaakunat</span>
         </button>
