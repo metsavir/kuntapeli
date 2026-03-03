@@ -25,9 +25,11 @@ function App() {
   const [mode, setMode] = useState<GameMode>('daily');
   const [clueType, setClueType] = useState<ClueType | null>(null);
   const career = useCareer(clueType ?? 'shape');
-  const [careerAnswer, setCareerAnswer] = useState<Municipality | null>(
-    () => career.getRandomUnguessed()
-  );
+  const [careerAnswers, setCareerAnswers] = useState<Record<string, Municipality | null>>({});
+  const careerAnswer = careerAnswers[clueType ?? 'shape'] ?? null;
+  const setCareerAnswer = useCallback((m: Municipality | null) => {
+    setCareerAnswers((prev) => ({ ...prev, [clueType ?? 'shape']: m }));
+  }, [clueType]);
 
   const { guesses, status, answer, attemptsLeft, dateStr, submitGuess, showHint, hints, maxHints, giveUp, newGame } =
     useGame(mode, { initialAnswer: mode === 'career' ? careerAnswer : undefined, clueType });
@@ -38,14 +40,15 @@ function App() {
   const [careerPhase, setCareerPhase] = useState<CareerPhase>('shape');
   const timerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
-  // When switching modes, reset career overlays and pick an unguessed municipality
+  // When switching modes or clue type, reset career overlays and pick an unguessed municipality if needed
   useEffect(() => {
     setShowMap(false);
     setShowStats(false);
-    if (mode === 'career' && !careerAnswer) {
+    const key = clueType ?? 'shape';
+    if (mode === 'career' && !careerAnswers[key]) {
       setCareerAnswer(career.getRandomUnguessed());
     }
-  }, [mode]);
+  }, [mode, clueType]);
 
   // On career game end: mark completed, then transition to map after delay
   const prevStatus = useRef(status);
