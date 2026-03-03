@@ -1,0 +1,20 @@
+.coat-of-arms-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+}
+
+.coat-of-arms-img {
+  max-width: 200px;
+  max-height: 250px;
+  height: auto;
+  width: auto;
+  user-select: none;
+}
+
+.coat-of-arms-missing {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  padding: 2rem;
+}

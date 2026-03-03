@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import type { GameMode, Municipality } from './data/types';
+import type { GameMode, ClueType, Municipality } from './data/types';
 import { useGame } from './hooks/useGame';
 import { useCareer } from './hooks/useCareer';
 import { Header } from './components/Header';
@@ -8,6 +8,8 @@ import { GuessList } from './components/GuessList';
 import { GameOver } from './components/GameOver';
 import { HelpModal } from './components/HelpModal';
 import { MunicipalityShape } from './components/MunicipalityShape';
+import { CoatOfArms } from './components/CoatOfArms';
+import { LandingPage } from './components/LandingPage';
 import { FinlandMap } from './components/FinlandMap';
 import { CareerStats } from './components/CareerStats';
 import { CareerHistory } from './components/CareerHistory';
@@ -21,7 +23,8 @@ type CareerPhase = 'shape' | 'map';
 
 function App() {
   const [mode, setMode] = useState<GameMode>('daily');
-  const career = useCareer();
+  const [clueType, setClueType] = useState<ClueType | null>(null);
+  const career = useCareer(clueType ?? 'shape');
   const [careerAnswer, setCareerAnswer] = useState<Municipality | null>(
     () => career.getRandomUnguessed()
   );
@@ -29,6 +32,7 @@ function App() {
   const { guesses, status, answer, attemptsLeft, dateStr, submitGuess, showHint, hints, maxHints, giveUp, newGame } =
     useGame(mode, { initialAnswer: mode === 'career' ? careerAnswer : undefined });
   const [showHelp, setShowHelp] = useState(false);
+  const [debug, setDebug] = useState(false);
   const [showMap, setShowMap] = useState(false);
   const [showStats, setShowStats] = useState(false);
   const [careerPhase, setCareerPhase] = useState<CareerPhase>('shape');
@@ -78,6 +82,10 @@ function App() {
   const isCareerMapPhase = mode === 'career' && status !== 'playing' && careerPhase === 'map';
   const mapVisible = mode === 'career' && (isCareerMapPhase || showMap);
 
+  if (!clueType) {
+    return <LandingPage onSelect={setClueType} />;
+  }
+
   return (
     <div className="app">
       <Header
@@ -85,9 +93,11 @@ function App() {
         mode={mode}
         careerCount={`${career.completedCount}/${career.totalCount}`}
         onModeChange={setMode}
+        onBack={() => setClueType(null)}
         onHelp={() => setShowHelp(true)}
+        onDebugToggle={import.meta.env.DEV ? () => setDebug((d) => !d) : undefined}
       />
-      {import.meta.env.DEV && (
+      {debug && (
         <div style={{ background: '#ff000030', color: '#ff8888', textAlign: 'center', padding: '0.25rem', fontSize: '0.75rem', fontFamily: 'monospace' }}>
           DEBUG: {answer.name} ({answer.region})
         </div>
@@ -131,7 +141,11 @@ function App() {
           </>
         ) : (
           <>
-            <MunicipalityShape name={answer.name} />
+            {clueType === 'shape' ? (
+              <MunicipalityShape name={answer.name} />
+            ) : (
+              <CoatOfArms name={answer.name} />
+            )}
             <GuessInput
               onSubmit={submitGuess}
               onGiveUp={giveUp}

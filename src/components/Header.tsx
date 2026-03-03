@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import type { GameMode } from '../data/types';
 import { getGameNumber } from '../utils/game';
 import './Header.css';
@@ -7,11 +8,25 @@ interface HeaderProps {
   mode: GameMode;
   careerCount?: string;
   onModeChange: (mode: GameMode) => void;
+  onBack: () => void;
   onHelp: () => void;
+  onDebugToggle?: () => void;
 }
 
-export function Header({ dateStr, mode, careerCount, onModeChange, onHelp }: HeaderProps) {
+export function Header({ dateStr, mode, careerCount, onModeChange, onBack, onHelp, onDebugToggle }: HeaderProps) {
   const gameNumber = getGameNumber(dateStr);
+  const tapRef = useRef<{ count: number; timer: ReturnType<typeof setTimeout> | undefined }>({ count: 0, timer: undefined });
+
+  const handleTitleClick = () => {
+    tapRef.current.count++;
+    clearTimeout(tapRef.current.timer);
+    if (tapRef.current.count >= 3) {
+      tapRef.current.count = 0;
+      onDebugToggle?.();
+    } else {
+      tapRef.current.timer = setTimeout(() => { tapRef.current.count = 0; }, 500);
+    }
+  };
 
   const subtitle =
     mode === 'daily'
@@ -22,9 +37,11 @@ export function Header({ dateStr, mode, careerCount, onModeChange, onHelp }: Hea
 
   return (
     <header className="header">
-      <div className="header-left" />
+      <button className="header-back" onClick={onBack} aria-label="Takaisin">
+        ←
+      </button>
       <div className="header-center">
-        <h1 className="header-title">Kuntapeli</h1>
+        <h1 className="header-title" onClick={handleTitleClick}>Kuntapeli</h1>
         <span className="header-game-number">{subtitle}</span>
         <div className="mode-toggle">
           <button

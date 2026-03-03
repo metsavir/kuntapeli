@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "fetch-geodata": "node scripts/fetch-geodata.mjs"
+    "fetch-geodata": "node scripts/fetch-geodata.mjs",
+    "fetch-coats": "node scripts/fetch-coats.mjs"
   },
   "dependencies": {
     "react": "^19.2.0",

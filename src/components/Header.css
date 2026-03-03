@@ -6,8 +6,21 @@
   border-bottom: 1px solid var(--color-border);
 }
 
-.header-left {
+.header-back {
   width: 2.5rem;
+  height: 2.5rem;
+  border: none;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 1.25rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-back:hover {
+  color: var(--color-text);
 }
 
 .header-center {

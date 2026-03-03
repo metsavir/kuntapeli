@@ -1,14 +1,18 @@
 import { useState, useCallback, useEffect } from 'react';
-import type { CareerProgress, Municipality } from '../data/types';
+import type { CareerProgress, ClueType, Municipality } from '../data/types';
 import { municipalities } from '../data/municipalities';
 import { getTodayString } from '../utils/game';
 
 
-const CAREER_KEY = 'kuntapeli-career';
+function careerKey(clueType: ClueType): string {
+  return `kuntapeli-career-${clueType}`;
+}
 
-function loadCareer(): CareerProgress {
+function loadCareer(clueType: ClueType): CareerProgress {
   try {
-    const raw = localStorage.getItem(CAREER_KEY);
+    // Try clue-type-specific key first, fall back to legacy key for migration
+    const raw = localStorage.getItem(careerKey(clueType))
+      ?? (clueType === 'shape' ? localStorage.getItem('kuntapeli-career') : null);
     if (!raw) return { completed: [], stats: {} };
     return JSON.parse(raw) as CareerProgress;
   } catch {
@@ -16,16 +20,21 @@ function loadCareer(): CareerProgress {
   }
 }
 
-function saveCareer(progress: CareerProgress): void {
-  localStorage.setItem(CAREER_KEY, JSON.stringify(progress));
+function saveCareer(clueType: ClueType, progress: CareerProgress): void {
+  localStorage.setItem(careerKey(clueType), JSON.stringify(progress));
 }
 
-export function useCareer() {
-  const [progress, setProgress] = useState<CareerProgress>(loadCareer);
+export function useCareer(clueType: ClueType) {
+  const [progress, setProgress] = useState<CareerProgress>(() => loadCareer(clueType));
+
+  // Reload progress when clue type changes
+  useEffect(() => {
+    setProgress(loadCareer(clueType));
+  }, [clueType]);
 
   useEffect(() => {
-    saveCareer(progress);
-  }, [progress]);
+    saveCareer(clueType, progress);
+  }, [clueType, progress]);
 
   const completedSet = new Set(progress.completed);
 
