@@ -4,7 +4,7 @@ import { municipalities } from '../data/municipalities';
 import { getTodayString } from '../utils/game';
 
 
-const CAREER_KEY = 'kuntale-career';
+const CAREER_KEY = 'kuntapeli-career';
 
 function loadCareer(): CareerProgress {
   try {

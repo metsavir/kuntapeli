@@ -24,7 +24,7 @@ export function Header({ dateStr, mode, careerCount, onModeChange, onHelp }: Hea
     <header className="header">
       <div className="header-left" />
       <div className="header-center">
-        <h1 className="header-title">Kuntale</h1>
+        <h1 className="header-title">Kuntapeli</h1>
         <span className="header-game-number">{subtitle}</span>
         <div className="mode-toggle">
           <button

@@ -72,11 +72,11 @@ export function generateShareText(
   const date = formatDate(dateStr);
 
   if (won) {
-    return `Kuntale #${gameNumber} · ${date}\n✅ ${guesses.length}/6 arvausta\n\n📍 ${chain}\n\nhttps://kuntale.fi`;
+    return `Kuntapeli #${gameNumber} · ${date}\n✅ ${guesses.length}/6 arvausta\n\n📍 ${chain}\n\nhttps://kuntapeli.fi`;
   }
 
   const closest = Math.min(...distances);
-  return `Kuntale #${gameNumber} · ${date}\n❌ 6/6 · lähin ${closest} km\n\n📍 ${chain}\n\nhttps://kuntale.fi`;
+  return `Kuntapeli #${gameNumber} · ${date}\n❌ 6/6 · lähin ${closest} km\n\n📍 ${chain}\n\nhttps://kuntapeli.fi`;
 }
 
 export function getPopulationHint(population: number): string {

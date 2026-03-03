@@ -12,7 +12,7 @@ import {
   MAX_GUESSES,
 } from '../utils/game';
 
-const STORAGE_KEY = 'kuntale-state';
+const STORAGE_KEY = 'kuntapeli-state';
 
 function loadDailyState(dateStr: string): GameState | null {
   try {
