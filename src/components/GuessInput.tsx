@@ -18,7 +18,7 @@ export function GuessInput({ onSubmit, onGiveUp, onHint, hints, maxHints, disabl
   const [suggestions, setSuggestions] = useState<Municipality[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [error, setError] = useState('');
-  const [confirmGiveUp, setConfirmGiveUp] = useState(false);
+  const [showGiveUpModal, setShowGiveUpModal] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
 
@@ -32,7 +32,6 @@ export function GuessInput({ onSubmit, onGiveUp, onHint, hints, maxHints, disabl
     const val = e.target.value;
     setValue(val);
     setError('');
-    setConfirmGiveUp(false);
     updateSuggestions(val);
   };
 
@@ -80,6 +79,14 @@ export function GuessInput({ onSubmit, onGiveUp, onHint, hints, maxHints, disabl
       item?.scrollIntoView({ block: 'nearest' });
     }
   }, [selectedIndex]);
+
+  // Close give-up modal on Escape
+  useEffect(() => {
+    if (!showGiveUpModal) return;
+    const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setShowGiveUpModal(false); };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [showGiveUpModal]);
 
   if (disabled) return null;
 
@@ -134,16 +141,25 @@ export function GuessInput({ onSubmit, onGiveUp, onHint, hints, maxHints, disabl
         <button className="hint-button" onClick={onHint} disabled={hints.length >= maxHints}>
           Vihje ({hints.length}/{maxHints})
         </button>
-        {confirmGiveUp ? (
-          <button className="give-up-button give-up-button--confirm" onClick={onGiveUp}>
-            Oletko varma?
-          </button>
-        ) : (
-          <button className="give-up-button" onClick={() => setConfirmGiveUp(true)}>
-            Luovuta
-          </button>
-        )}
+        <button className="give-up-button" onClick={() => setShowGiveUpModal(true)}>
+          Luovuta
+        </button>
       </div>
+      {showGiveUpModal && (
+        <div className="give-up-overlay" onClick={() => setShowGiveUpModal(false)}>
+          <div className="give-up-modal" onClick={(e) => e.stopPropagation()}>
+            <p>Oletko varma, että haluat luovuttaa?</p>
+            <div className="give-up-modal-actions">
+              <button className="give-up-modal-cancel" onClick={() => setShowGiveUpModal(false)}>
+                Peruuta
+              </button>
+              <button className="give-up-modal-confirm" onClick={() => { setShowGiveUpModal(false); onGiveUp(); }}>
+                Luovuta
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

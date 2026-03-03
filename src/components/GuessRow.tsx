@@ -22,7 +22,7 @@ export function GuessRow({ guess }: GuessRowProps) {
       <span className="guess-direction">{guess.direction}</span>
       <div className="guess-proximity">
         <div
-          className="guess-proximity-bar"
+          className={`guess-proximity-bar${guess.proximity >= 80 ? ' guess-proximity-bar--hot' : ''}`}
           style={{ width: `${guess.proximity}%` }}
         />
         <span className="guess-proximity-text">{guess.proximity}%</span>

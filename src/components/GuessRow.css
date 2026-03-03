@@ -75,7 +75,29 @@
   height: 100%;
   background: var(--color-proximity);
   border-radius: 0.25rem;
-  transition: width 0.5s ease-out;
+  animation: proximityFill 0.6s ease-out both;
+}
+
+.guess-proximity-bar--hot {
+  animation: proximityFill 0.6s ease-out both, proximityGlow 1s ease-in-out 0.4s both;
+}
+
+@keyframes proximityFill {
+  from {
+    width: 0% !important;
+  }
+}
+
+@keyframes proximityGlow {
+  0% {
+    box-shadow: none;
+  }
+  50% {
+    box-shadow: 0 0 0.5rem 0.125rem rgba(74, 108, 247, 0.6);
+  }
+  100% {
+    box-shadow: none;
+  }
 }
 
 .guess-proximity-text {
