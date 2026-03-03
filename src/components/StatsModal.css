@@ -1,0 +1,140 @@
+.stats-modal {
+  max-width: 26rem;
+}
+
+/* Tabs */
+.stats-tabs {
+  display: flex;
+  gap: 0.25rem;
+  background: var(--color-border);
+  border-radius: 999px;
+  padding: 0.125rem;
+  margin-bottom: 1rem;
+}
+
+.stats-tab {
+  flex: 1;
+  padding: 0.375rem 0.25rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.stats-tab:hover {
+  color: var(--color-text);
+}
+
+.stats-tab--active {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Content area */
+.stats-content {
+  max-height: 55vh;
+  overflow-y: auto;
+}
+
+/* Summary grid — mirrors career-summary-grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.375rem;
+}
+
+.stats-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem;
+  background: var(--color-bg);
+  border-radius: 0.375rem;
+}
+
+.stats-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.stats-label {
+  font-size: 0.65rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* Section title */
+.stats-section-title {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.75rem;
+  margin-bottom: 0.375rem;
+}
+
+/* Guess distribution */
+.stats-distribution {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.stats-dist-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stats-dist-label {
+  width: 1rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-text);
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.stats-dist-bar-bg {
+  flex: 1;
+  height: 1.25rem;
+  background: var(--color-bg);
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+
+.stats-dist-bar {
+  height: 100%;
+  min-width: 0.25rem;
+  background: var(--color-correct);
+  border-radius: 0.25rem;
+  transition: width 0.3s ease;
+}
+
+.stats-dist-bar--loss {
+  background: var(--color-error);
+}
+
+.stats-dist-count {
+  width: 1.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* Empty state */
+.stats-empty {
+  text-align: center;
+  padding: 2rem 0;
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+}

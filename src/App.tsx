@@ -12,8 +12,9 @@ import { CoatOfArms } from './components/CoatOfArms';
 import { LandingPage } from './components/LandingPage';
 import { FinlandMap } from './components/FinlandMap';
 import { CareerStats } from './components/CareerStats';
-import { CareerHistory } from './components/CareerHistory';
 import { CommunityComparison } from './components/CommunityComparison';
+import { StatsModal } from './components/StatsModal';
+import { useStats } from './hooks/useStats';
 import './App.css';
 
 // Career view phases after game ends:
@@ -33,40 +34,54 @@ function App() {
 
   const { guesses, status, answer, attemptsLeft, dateStr, submitGuess, showHint, hints, maxHints, giveUp, newGame } =
     useGame(mode, { initialAnswer: mode === 'career' ? careerAnswer : undefined, clueType });
+  const { stats, recordGame } = useStats();
   const [showHelp, setShowHelp] = useState(false);
+  const [showStatsModal, setShowStatsModal] = useState(false);
   const [debug, setDebug] = useState(false);
   const [showMap, setShowMap] = useState(false);
-  const [showStats, setShowStats] = useState(false);
   const [careerPhase, setCareerPhase] = useState<CareerPhase>('shape');
   const timerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   // When switching modes or clue type, reset career overlays and pick an unguessed municipality if needed
   useEffect(() => {
     setShowMap(false);
-    setShowStats(false);
     const key = clueType ?? 'shape';
     if (mode === 'career' && !careerAnswers[key]) {
       setCareerAnswer(career.getRandomUnguessed());
     }
   }, [mode, clueType]);
 
-  // On career game end: mark completed, then transition to map after delay
+  // On game end: record stats for all modes, handle career-specific logic
   const prevStatus = useRef(status);
   useEffect(() => {
     const wasPlaying = prevStatus.current === 'playing';
     prevStatus.current = status;
 
-    if (mode !== 'career' || status === 'playing' || !wasPlaying) return;
+    if (status === 'playing' || !wasPlaying) return;
 
-    if (status === 'won') {
-      career.markCompleted(answer.name, guesses.length);
-    } else {
-      career.markFailed(answer.name, guesses.length);
+    // Record game for stats (all modes)
+    recordGame({
+      mode,
+      clueType: clueType ?? 'shape',
+      date: dateStr,
+      municipality: answer.name,
+      guesses: guesses.length,
+      won: status === 'won',
+      hintsUsed: hints.length,
+    });
+
+    // Career-specific: mark progress and transition to map
+    if (mode === 'career') {
+      if (status === 'won') {
+        career.markCompleted(answer.name, guesses.length);
+      } else {
+        career.markFailed(answer.name, guesses.length);
+      }
+
+      timerRef.current = setTimeout(() => {
+        setCareerPhase('map');
+      }, 1500);
     }
-
-    timerRef.current = setTimeout(() => {
-      setCareerPhase('map');
-    }, 1500);
 
     return () => clearTimeout(timerRef.current);
   }, [mode, status]);
@@ -97,6 +112,7 @@ function App() {
         careerCount={`${career.completedCount}/${career.totalCount}`}
         onModeChange={setMode}
         onBack={() => { setClueType(null); setMode('daily'); }}
+        onStats={() => setShowStatsModal(true)}
         onHelp={() => setShowHelp(true)}
         onDebugToggle={import.meta.env.DEV ? () => setDebug((d) => !d) : undefined}
       />
@@ -111,14 +127,10 @@ function App() {
             completed={career.completedCount}
             total={career.totalCount}
             showMap={showMap}
-            onToggleMap={() => { setShowMap((v) => !v); setShowStats(false); }}
-            showStats={showStats}
-            onToggleStats={() => { setShowStats((v) => !v); setShowMap(false); }}
+            onToggleMap={() => setShowMap((v) => !v)}
           />
         )}
-        {showStats ? (
-          <CareerHistory progress={career.progress} />
-        ) : mapVisible ? (
+        {mapVisible ? (
           <>
             <div className={isCareerMapPhase ? 'career-map-reveal' : undefined}>
               <FinlandMap
@@ -173,6 +185,15 @@ function App() {
         )}
       </main>
       {showHelp && <HelpModal onClose={() => setShowHelp(false)} />}
+      {showStatsModal && (
+        <StatsModal
+          stats={stats}
+          careerProgress={career.progress}
+          clueType={clueType}
+          initialTab={mode}
+          onClose={() => setShowStatsModal(false)}
+        />
+      )}
     </div>
   );
 }

@@ -35,3 +35,30 @@ export interface GameState {
   answer: Municipality;
   status: 'playing' | 'won' | 'lost';
 }
+
+export interface GameRecord {
+  mode: GameMode;
+  clueType: ClueType;
+  date: string;
+  municipality: string;
+  guesses: number;
+  won: boolean;
+  hintsUsed: number;
+}
+
+export interface DailyStreakInfo {
+  streak: number;
+  maxStreak: number;
+  lastDate: string;
+}
+
+export interface PlayerStats {
+  games: GameRecord[];
+  /** @deprecated Use dailyStreaks instead */
+  dailyStreak?: number;
+  /** @deprecated Use dailyStreaks instead */
+  dailyMaxStreak?: number;
+  /** @deprecated Use dailyStreaks instead */
+  lastDailyDate?: string;
+  dailyStreaks?: Record<string, DailyStreakInfo>;
+}
