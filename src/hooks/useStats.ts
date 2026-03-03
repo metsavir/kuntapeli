@@ -54,6 +54,14 @@ export function useStats() {
 
   const recordGame = useCallback((record: GameRecord) => {
     setStats((prev) => {
+      // Prevent duplicate daily records for same date + clueType
+      if (record.mode === 'daily') {
+        const alreadyRecorded = prev.games.some(
+          (g) => g.mode === 'daily' && g.date === record.date && g.clueType === record.clueType
+        );
+        if (alreadyRecorded) return prev;
+      }
+
       const games = [...prev.games, record];
       const dailyStreaks = { ...prev.dailyStreaks };
 

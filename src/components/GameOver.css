@@ -45,3 +45,10 @@
 .new-game-button {
   background: var(--color-primary);
 }
+
+.career-complete-message {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-correct);
+}

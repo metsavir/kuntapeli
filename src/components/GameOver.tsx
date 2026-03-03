@@ -10,10 +10,11 @@ interface GameOverProps {
   answer: Municipality;
   dateStr: string;
   mode: GameMode;
+  careerComplete?: boolean;
   onNewGame: () => void;
 }
 
-export function GameOver({ status, guesses, answer, dateStr, mode, onNewGame }: GameOverProps) {
+export function GameOver({ status, guesses, answer, dateStr, mode, careerComplete, onNewGame }: GameOverProps) {
   const [copied, setCopied] = useState(false);
   const gameNumber = getGameNumber(dateStr);
 
@@ -63,10 +64,13 @@ export function GameOver({ status, guesses, answer, dateStr, mode, onNewGame }: 
             Uusi peli
           </button>
         )}
-        {mode === 'career' && (
+        {mode === 'career' && !careerComplete && (
           <button className="new-game-button" onClick={onNewGame}>
             Seuraava
           </button>
+        )}
+        {mode === 'career' && careerComplete && (
+          <p className="career-complete-message">Kaikki 308 kuntaa suoritettu!</p>
         )}
       </div>
     </div>

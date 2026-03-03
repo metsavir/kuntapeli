@@ -62,18 +62,35 @@ function computePathData(shape: Shape) {
 
 export function MunicipalityShape({ name }: MunicipalityShapeProps) {
   const [pathData, setPathData] = useState<{ d: string; viewBox: string } | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
     setPathData(null);
+    setLoading(true);
     getShape(name).then((shape) => {
-      if (cancelled || !shape) return;
-      setPathData(computePathData(shape));
+      if (cancelled) return;
+      if (shape) setPathData(computePathData(shape));
+      setLoading(false);
     });
     return () => { cancelled = true; };
   }, [name]);
 
-  if (!pathData) return null;
+  if (loading) {
+    return (
+      <div className="municipality-shape-container">
+        <div className="shape-loading">Ladataan...</div>
+      </div>
+    );
+  }
+
+  if (!pathData) {
+    return (
+      <div className="municipality-shape-container">
+        <div className="shape-error">Muotoa ei voitu ladata</div>
+      </div>
+    );
+  }
 
   return (
     <div className="municipality-shape-container">

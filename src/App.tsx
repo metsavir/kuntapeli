@@ -95,6 +95,7 @@ function App() {
   }, [career.getRandomUnguessed]);
 
   const handleNewGame = mode === 'career' ? handleCareerNext : newGame;
+  const careerComplete = mode === 'career' && career.completedCount === career.totalCount;
 
   // Show map if: auto-revealed after win, OR manually toggled
   const isCareerMapPhase = mode === 'career' && status !== 'playing' && careerPhase === 'map';
@@ -148,9 +149,13 @@ function App() {
                   attempts={guesses.length}
                   won={status === 'won'}
                 />
-                <button className="new-game-button" onClick={handleNewGame}>
-                  Seuraava
-                </button>
+                {careerComplete ? (
+                  <p className="career-complete-message">Kaikki 308 kuntaa suoritettu!</p>
+                ) : (
+                  <button className="new-game-button" onClick={handleNewGame}>
+                    Seuraava
+                  </button>
+                )}
               </div>
             )}
           </>
@@ -178,6 +183,7 @@ function App() {
                 answer={answer}
                 dateStr={dateStr}
                 mode={mode}
+                careerComplete={careerComplete}
                 onNewGame={handleNewGame}
               />
             )}
