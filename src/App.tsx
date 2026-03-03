@@ -12,7 +12,7 @@ import { CoatOfArms } from './components/CoatOfArms';
 import { LandingPage } from './components/LandingPage';
 import { FinlandMap } from './components/FinlandMap';
 import { CareerStats } from './components/CareerStats';
-import { CommunityComparison } from './components/CommunityComparison';
+import { PersonalComparison } from './components/PersonalComparison';
 import { StatsModal } from './components/StatsModal';
 import { useStats } from './hooks/useStats';
 import './App.css';
@@ -144,10 +144,13 @@ function App() {
                 <p className="game-over-message">
                   {status === 'won' ? 'Oikein' : 'Oikea vastaus'}: <strong>{answer.name}</strong> ({answer.region})
                 </p>
-                <CommunityComparison
+                <PersonalComparison
                   municipality={answer.name}
+                  population={answer.population}
                   attempts={guesses.length}
                   won={status === 'won'}
+                  stats={stats}
+                  clueType={clueType!}
                 />
                 {careerComplete ? (
                   <p className="career-complete-message">Kaikki 308 kuntaa suoritettu!</p>
@@ -183,6 +186,8 @@ function App() {
                 answer={answer}
                 dateStr={dateStr}
                 mode={mode}
+                stats={stats}
+                clueType={clueType!}
                 careerComplete={careerComplete}
                 onNewGame={handleNewGame}
               />

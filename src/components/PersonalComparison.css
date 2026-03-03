@@ -1,0 +1,18 @@
+.personal-comparison {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--color-surface);
+  border-radius: 0.375rem;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.personal-fact {
+  color: var(--color-text-muted);
+}
+
+.personal-history {
+  color: var(--color-text-muted);
+}

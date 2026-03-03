@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import type { GuessResult, Municipality, GameMode } from '../data/types';
+import type { GuessResult, Municipality, GameMode, PlayerStats, ClueType } from '../data/types';
 import { generateShareText, getGameNumber } from '../utils/game';
-import { CommunityComparison } from './CommunityComparison';
+import { PersonalComparison } from './PersonalComparison';
 import './GameOver.css';
 
 interface GameOverProps {
@@ -10,11 +10,13 @@ interface GameOverProps {
   answer: Municipality;
   dateStr: string;
   mode: GameMode;
+  stats: PlayerStats;
+  clueType: ClueType;
   careerComplete?: boolean;
   onNewGame: () => void;
 }
 
-export function GameOver({ status, guesses, answer, dateStr, mode, careerComplete, onNewGame }: GameOverProps) {
+export function GameOver({ status, guesses, answer, dateStr, mode, stats, clueType, careerComplete, onNewGame }: GameOverProps) {
   const [copied, setCopied] = useState(false);
   const gameNumber = getGameNumber(dateStr);
 
@@ -48,10 +50,13 @@ export function GameOver({ status, guesses, answer, dateStr, mode, careerComplet
           Oikea vastaus: <strong>{answer.name}</strong> ({answer.region})
         </p>
       )}
-      <CommunityComparison
+      <PersonalComparison
         municipality={answer.name}
+        population={answer.population}
         attempts={guesses.length}
         won={status === 'won'}
+        stats={stats}
+        clueType={clueType}
       />
       <div className="game-over-actions">
         {mode === 'daily' && (
