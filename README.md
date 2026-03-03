@@ -1,73 +1,42 @@
-# React + TypeScript + Vite
+# Kuntapeli
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Finnish municipality guessing game. Identify all 308 municipalities from visual clues — border shapes or coats of arms.
 
-Currently, two official plugins are available:
+## Game Modes
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Päivittäinen** (Daily) — Same municipality for everyone, one per day
+- **Harjoittelu** (Casual) — Unlimited practice with random municipalities
+- **Ura** (Career) — Complete all 308 municipalities, tracked separately for each clue type
 
-## React Compiler
+## How It Works
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Players see a visual clue (municipality border outline or coat of arms) and type their guess. Each guess shows distance, direction, and proximity feedback. Three progressive hints are available: region, population category, and nearest neighbors. Six attempts per round.
 
-## Expanding the ESLint configuration
+## Development
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```sh
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Data Scripts
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```sh
+npm run fetch-geodata   # Fetch municipality boundaries → public/shapes/
+npm run fetch-coats     # Fetch coat of arms PNGs → public/coats/
 ```
+
+### Build
+
+```sh
+npm run build   # TypeScript check + Vite production build
+```
+
+## Tech
+
+React 19 + TypeScript + Vite. No router or state library — React state with localStorage persistence.
+
+## Data Sources
+
+- Municipality boundaries: [Finnish Statistics Center WFS API](https://geo.stat.fi/)
+- Coats of arms: [Wikimedia Commons](https://commons.wikimedia.org/) via [Suomen kunnanvaakunat](https://fi.wikipedia.org/wiki/Suomen_kunnanvaakunat)
