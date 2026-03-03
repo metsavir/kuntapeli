@@ -32,17 +32,6 @@ function computeStats(progress: CareerProgress) {
   const avg = total > 0 ? totalAttempts / total : 0;
   const firstTry = attempts.filter((a) => a === 1).length;
   const winRate = Math.round((total / gamesPlayed) * 100);
-  const best = total > 0 ? entries.reduce((a, b) => (a.attempts <= b.attempts ? a : b)) : null;
-  const worst = total > 0 ? entries.reduce((a, b) => (a.attempts >= b.attempts ? a : b)) : null;
-
-  // Most failed municipality
-  const failCounts = new Map<string, number>();
-  for (const f of failures) {
-    failCounts.set(f.name, (failCounts.get(f.name) ?? 0) + 1);
-  }
-  const mostFailed = failCounts.size > 0
-    ? [...failCounts.entries()].reduce((a, b) => (a[1] >= b[1] ? a : b))
-    : null;
 
   // Region breakdown
   const regionMap = new Map<string, { total: number; completed: number }>();
@@ -59,7 +48,7 @@ function computeStats(progress: CareerProgress) {
     .map(([region, { total, completed }]) => ({ region, total, completed, pct: Math.round((completed / total) * 100) }))
     .sort((a, b) => b.pct - a.pct || b.completed - a.completed);
 
-  return { total, gamesPlayed, totalAttempts: totalAttempts + failAttempts, avg, firstTry, firstTryPct: total > 0 ? Math.round((firstTry / total) * 100) : 0, winRate, best, worst, mostFailed, failCount, regions };
+  return { total, gamesPlayed, totalAttempts: totalAttempts + failAttempts, avg, firstTry, firstTryPct: total > 0 ? Math.round((firstTry / total) * 100) : 0, winRate, failCount, regions };
 }
 
 export function CareerHistory({ progress }: CareerHistoryProps) {
@@ -109,23 +98,6 @@ export function CareerHistory({ progress }: CareerHistoryProps) {
             <span className="career-summary-value">{stats.failCount}</span>
             <span className="career-summary-label">epäonnistumisia</span>
           </div>
-        </div>
-        <div className="career-summary-highlights">
-          {stats.best && (
-            <span className="career-highlight">
-              Helpoin: <strong>{stats.best.name}</strong> ({stats.best.attempts})
-            </span>
-          )}
-          {stats.worst && (
-            <span className="career-highlight">
-              Vaikein: <strong>{stats.worst.name}</strong> ({stats.worst.attempts})
-            </span>
-          )}
-          {stats.mostFailed && (
-            <span className="career-highlight">
-              Hankalin: <strong>{stats.mostFailed[0]}</strong> ({stats.mostFailed[1]}x)
-            </span>
-          )}
         </div>
       </div>
 

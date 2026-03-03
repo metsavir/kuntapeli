@@ -48,26 +48,6 @@
   letter-spacing: 0.03em;
 }
 
-.career-summary-highlights {
-  display: flex;
-  justify-content: space-between;
-  gap: 0.375rem;
-}
-
-.career-highlight {
-  flex: 1;
-  font-size: 0.75rem;
-  color: var(--color-text-muted);
-  background: var(--color-surface);
-  border-radius: 0.375rem;
-  padding: 0.375rem 0.5rem;
-  text-align: center;
-}
-
-.career-highlight strong {
-  color: var(--color-text);
-}
-
 /* Section titles */
 .career-section-title {
   font-size: 0.7rem;
