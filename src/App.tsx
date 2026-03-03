@@ -30,7 +30,7 @@ function App() {
   );
 
   const { guesses, status, answer, attemptsLeft, dateStr, submitGuess, showHint, hints, maxHints, giveUp, newGame } =
-    useGame(mode, { initialAnswer: mode === 'career' ? careerAnswer : undefined });
+    useGame(mode, { initialAnswer: mode === 'career' ? careerAnswer : undefined, clueType });
   const [showHelp, setShowHelp] = useState(false);
   const [debug, setDebug] = useState(false);
   const [showMap, setShowMap] = useState(false);
@@ -93,7 +93,7 @@ function App() {
         mode={mode}
         careerCount={`${career.completedCount}/${career.totalCount}`}
         onModeChange={setMode}
-        onBack={() => setClueType(null)}
+        onBack={() => { setClueType(null); setMode('daily'); }}
         onHelp={() => setShowHelp(true)}
         onDebugToggle={import.meta.env.DEV ? () => setDebug((d) => !d) : undefined}
       />

@@ -50,11 +50,13 @@ function createFreshState(dateStr: string, answer: Municipality): GameState {
 
 interface UseGameOptions {
   initialAnswer?: Municipality | null;
+  clueType?: string | null;
 }
 
 export function useGame(mode: GameMode, options?: UseGameOptions) {
   const dateStr = getTodayString();
   const prevMode = useRef(mode);
+  const prevClueType = useRef(options?.clueType);
   const prevAnswer = useRef(options?.initialAnswer);
 
   function getAnswer(): Municipality {
@@ -68,18 +70,26 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
     return createFreshState(dateStr, getAnswer());
   });
 
-  // Handle mode switches
+  // Handle mode or clue type switches
   useEffect(() => {
-    if (prevMode.current === mode) return;
+    const modeChanged = prevMode.current !== mode;
+    const clueTypeChanged = prevClueType.current !== options?.clueType;
     prevMode.current = mode;
+    prevClueType.current = options?.clueType;
+
+    if (!modeChanged && !clueTypeChanged) return;
 
     if (mode === 'daily') {
       setState(loadDailyState(dateStr) ?? createDailyState(dateStr));
-    } else {
+    } else if (mode === 'career') {
+      // Career state is managed via initialAnswer prop
       setState(createFreshState(dateStr, getAnswer()));
+    } else {
+      // Casual: always start fresh
+      setState(createFreshState(dateStr, getRandomAnswer()));
     }
     setHints([]);
-  }, [mode, dateStr]);
+  }, [mode, options?.clueType, dateStr]);
 
   // Handle career answer changes (when moving to next municipality)
   useEffect(() => {
