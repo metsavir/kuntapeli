@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import type { PlayerStats, GameMode, ClueType, CareerProgress } from '../data/types';
 import { CareerHistory } from './CareerHistory';
 import { MAX_GUESSES } from '../utils/game';
@@ -80,6 +80,12 @@ const TABS: { key: Tab; label: string }[] = [
 
 export function StatsModal({ stats, careerProgress, clueType, initialTab = 'all', onClose }: StatsModalProps) {
   const [tab, setTab] = useState<Tab>(initialTab);
+
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [onClose]);
 
   // Filter stats to current clue type
   const filtered = useMemo<PlayerStats>(() => ({

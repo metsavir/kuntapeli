@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import './HelpModal.css';
 
 interface HelpModalProps {
@@ -5,6 +6,12 @@ interface HelpModalProps {
 }
 
 export function HelpModal({ onClose }: HelpModalProps) {
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [onClose]);
+
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>

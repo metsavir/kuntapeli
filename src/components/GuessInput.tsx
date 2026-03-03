@@ -18,6 +18,7 @@ export function GuessInput({ onSubmit, onGiveUp, onHint, hints, maxHints, disabl
   const [suggestions, setSuggestions] = useState<Municipality[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [error, setError] = useState('');
+  const [confirmGiveUp, setConfirmGiveUp] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
 
@@ -31,6 +32,7 @@ export function GuessInput({ onSubmit, onGiveUp, onHint, hints, maxHints, disabl
     const val = e.target.value;
     setValue(val);
     setError('');
+    setConfirmGiveUp(false);
     updateSuggestions(val);
   };
 
@@ -92,7 +94,7 @@ export function GuessInput({ onSubmit, onGiveUp, onHint, hints, maxHints, disabl
             value={value}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
-            placeholder={`Arvaa kunta... (${attemptsLeft} jäljellä)`}
+            placeholder={`Arvaa kunta... (${attemptsLeft} ${attemptsLeft === 1 ? 'yritys' : 'yritystä'} jäljellä)`}
             autoComplete="off"
             autoCapitalize="off"
             spellCheck={false}
@@ -132,9 +134,15 @@ export function GuessInput({ onSubmit, onGiveUp, onHint, hints, maxHints, disabl
         <button className="hint-button" onClick={onHint} disabled={hints.length >= maxHints}>
           Vihje ({hints.length}/{maxHints})
         </button>
-        <button className="give-up-button" onClick={onGiveUp}>
-          Luovuta
-        </button>
+        {confirmGiveUp ? (
+          <button className="give-up-button give-up-button--confirm" onClick={onGiveUp}>
+            Oletko varma?
+          </button>
+        ) : (
+          <button className="give-up-button" onClick={() => setConfirmGiveUp(true)}>
+            Luovuta
+          </button>
+        )}
       </div>
     </div>
   );
