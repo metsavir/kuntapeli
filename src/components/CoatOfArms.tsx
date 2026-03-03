@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import './CoatOfArms.css';
 
 interface CoatOfArmsProps {
@@ -14,6 +14,13 @@ export function CoatOfArms({ name }: CoatOfArmsProps) {
     setLoaded(false);
   }, [name]);
 
+  // Handle cached images that may already be complete on mount
+  const imgRef = useCallback((img: HTMLImageElement | null) => {
+    if (img?.complete && img.naturalWidth > 0) {
+      setLoaded(true);
+    }
+  }, [name]);
+
   if (error) {
     return (
       <div className="coat-of-arms-container">
@@ -26,6 +33,7 @@ export function CoatOfArms({ name }: CoatOfArmsProps) {
     <div className="coat-of-arms-container">
       <img
         key={name}
+        ref={imgRef}
         src={`${import.meta.env.BASE_URL}coats/${name}.png`}
         alt="Kunnan vaakuna"
         className="coat-of-arms-img"

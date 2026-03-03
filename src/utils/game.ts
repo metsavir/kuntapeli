@@ -2,11 +2,12 @@ import type { Municipality, GuessResult } from '../data/types';
 import { municipalities } from '../data/municipalities';
 import { haversineDistance, bearing, bearingToDirection, proximity } from './geo';
 
-// Deterministic daily answer from date string
-export function getDailyAnswer(dateStr: string): Municipality {
+// Deterministic daily answer from date string + clue type
+export function getDailyAnswer(dateStr: string, clueType: string = 'shape'): Municipality {
+  const seed = dateStr + ':' + clueType;
   let hash = 0;
-  for (let i = 0; i < dateStr.length; i++) {
-    hash = (hash * 31 + dateStr.charCodeAt(i)) | 0;
+  for (let i = 0; i < seed.length; i++) {
+    hash = (hash * 31 + seed.charCodeAt(i)) | 0;
   }
   const index = Math.abs(hash) % municipalities.length;
   return municipalities[index];

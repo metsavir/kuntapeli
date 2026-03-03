@@ -12,11 +12,13 @@ import {
   MAX_GUESSES,
 } from '../utils/game';
 
-const STORAGE_KEY = 'kuntapeli-state';
+function dailyStorageKey(clueType: string): string {
+  return `kuntapeli-state-${clueType}`;
+}
 
-function loadDailyState(dateStr: string): GameState | null {
+function loadDailyState(dateStr: string, clueType: string): GameState | null {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(dailyStorageKey(clueType));
     if (!raw) return null;
     const parsed = JSON.parse(raw) as GameState;
     if (parsed.date !== dateStr) return null;
@@ -26,15 +28,15 @@ function loadDailyState(dateStr: string): GameState | null {
   }
 }
 
-function saveDailyState(state: GameState): void {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+function saveDailyState(state: GameState, clueType: string): void {
+  localStorage.setItem(dailyStorageKey(clueType), JSON.stringify(state));
 }
 
-function createDailyState(dateStr: string): GameState {
+function createDailyState(dateStr: string, clueType: string): GameState {
   return {
     date: dateStr,
     guesses: [],
-    answer: getDailyAnswer(dateStr),
+    answer: getDailyAnswer(dateStr, clueType),
     status: 'playing',
   };
 }
@@ -55,8 +57,9 @@ interface UseGameOptions {
 
 export function useGame(mode: GameMode, options?: UseGameOptions) {
   const dateStr = getTodayString();
+  const clueType = options?.clueType ?? 'shape';
   const prevMode = useRef(mode);
-  const prevClueType = useRef(options?.clueType);
+  const prevClueType = useRef(clueType);
   const prevAnswer = useRef(options?.initialAnswer);
 
   function getAnswer(): Municipality {
@@ -65,7 +68,7 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
 
   const [state, setState] = useState<GameState>(() => {
     if (mode === 'daily') {
-      return loadDailyState(dateStr) ?? createDailyState(dateStr);
+      return loadDailyState(dateStr, clueType) ?? createDailyState(dateStr, clueType);
     }
     return createFreshState(dateStr, getAnswer());
   });
@@ -73,14 +76,14 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
   // Handle mode or clue type switches
   useEffect(() => {
     const modeChanged = prevMode.current !== mode;
-    const clueTypeChanged = prevClueType.current !== options?.clueType;
+    const clueTypeChanged = prevClueType.current !== clueType;
     prevMode.current = mode;
-    prevClueType.current = options?.clueType;
+    prevClueType.current = clueType;
 
     if (!modeChanged && !clueTypeChanged) return;
 
     if (mode === 'daily') {
-      setState(loadDailyState(dateStr) ?? createDailyState(dateStr));
+      setState(loadDailyState(dateStr, clueType) ?? createDailyState(dateStr, clueType));
     } else if (mode === 'career') {
       // Career state is managed via initialAnswer prop
       setState(createFreshState(dateStr, getAnswer()));
@@ -89,7 +92,7 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
       setState(createFreshState(dateStr, getRandomAnswer()));
     }
     setHints([]);
-  }, [mode, options?.clueType, dateStr]);
+  }, [mode, clueType, dateStr]);
 
   // Handle career answer changes (when moving to next municipality)
   useEffect(() => {
@@ -105,9 +108,9 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
   // Persist only daily mode
   useEffect(() => {
     if (mode === 'daily') {
-      saveDailyState(state);
+      saveDailyState(state, clueType);
     }
-  }, [state, mode]);
+  }, [state, mode, clueType]);
 
   const submitGuess = useCallback(
     (name: string): { error?: string; result?: GuessResult } => {
