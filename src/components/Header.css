@@ -19,8 +19,10 @@
   justify-content: center;
 }
 
-.header-back:hover {
-  color: var(--color-text);
+@media (hover: hover) {
+  .header-back:hover {
+    color: var(--color-text);
+  }
 }
 
 .header-center {
@@ -64,8 +66,10 @@
   transition: background 0.15s, color 0.15s;
 }
 
-.mode-pill:hover {
-  color: var(--color-text);
+@media (hover: hover) {
+  .mode-pill:hover {
+    color: var(--color-text);
+  }
 }
 
 .mode-pill--active {
@@ -93,9 +97,11 @@
   justify-content: center;
 }
 
-.header-stats:hover {
-  border-color: var(--color-text);
-  color: var(--color-text);
+@media (hover: hover) {
+  .header-stats:hover {
+    border-color: var(--color-text);
+    color: var(--color-text);
+  }
 }
 
 .header-help {
@@ -113,6 +119,8 @@
   justify-content: center;
 }
 
-.header-help:hover {
-  border-color: var(--color-text);
+@media (hover: hover) {
+  .header-help:hover {
+    border-color: var(--color-text);
+  }
 }

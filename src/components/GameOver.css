@@ -32,9 +32,11 @@
   transition: transform 0.1s;
 }
 
-.share-button:hover,
-.new-game-button:hover {
-  transform: scale(1.05);
+@media (hover: hover) {
+  .share-button:hover,
+  .new-game-button:hover {
+    transform: scale(1.05);
+  }
 }
 
 .share-button:active,

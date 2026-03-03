@@ -40,9 +40,11 @@
   white-space: nowrap;
 }
 
-.career-map-toggle:hover {
-  color: var(--color-text);
-  border-color: var(--color-text-muted);
+@media (hover: hover) {
+  .career-map-toggle:hover {
+    color: var(--color-text);
+    border-color: var(--color-text-muted);
+  }
 }
 
 .career-count {

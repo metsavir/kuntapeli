@@ -18,9 +18,11 @@
   margin-bottom: 0.25rem;
 }
 
-.finland-map-back:hover {
-  color: var(--color-text);
-  border-color: var(--color-text-muted);
+@media (hover: hover) {
+  .finland-map-back:hover {
+    color: var(--color-text);
+    border-color: var(--color-text-muted);
+  }
 }
 
 .finland-map {
