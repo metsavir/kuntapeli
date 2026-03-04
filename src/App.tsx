@@ -45,7 +45,9 @@ function App() {
   const games = { daily, casual, career: careerGame };
 
   const { stats, recordGame } = useStats();
-  const { badgeState, checkBadges, newlyUnlocked, dismissToast } = useBadges();
+  const { badgeState, checkBadges, newlyUnlocked, dismissToast } = useBadges(
+    clueType ?? 'shape',
+  );
 
   // Check badges whenever stats or career progress changes
   useEffect(() => {
@@ -117,12 +119,6 @@ function App() {
     return (
       <>
         <LandingPage onSelect={setClueType} />
-        {newlyUnlocked && (
-          <BadgeToast
-            badgeId={newlyUnlocked.badgeId}
-            onDismiss={dismissToast}
-          />
-        )}
         <UpdateBanner />
       </>
     );
