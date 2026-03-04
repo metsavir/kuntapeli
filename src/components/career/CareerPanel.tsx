@@ -114,6 +114,19 @@ export function CareerPanel({
             }
             visible={careerView === 'map'}
           />
+          {careerGame.status !== 'playing' && (
+            <GameOver
+              status={careerGame.status}
+              guesses={careerGame.guesses}
+              answer={careerGame.answer}
+              dateStr={careerGame.dateStr}
+              mode="career"
+              stats={stats}
+              clueType={clueType}
+              careerComplete={careerComplete}
+              onNewGame={onNext}
+            />
+          )}
         </div>
         <div className="career-flip-face career-flip-collection">
           <CoatCollection
