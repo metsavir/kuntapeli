@@ -1,5 +1,10 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
-import type { GameState, GameMode, GuessResult, Municipality } from '../data/types';
+import type {
+  GameState,
+  GameMode,
+  GuessResult,
+  Municipality,
+} from '../data/types';
 import {
   getDailyAnswer,
   getRandomAnswer,
@@ -68,7 +73,9 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
 
   const [state, setState] = useState<GameState>(() => {
     if (mode === 'daily') {
-      return loadDailyState(dateStr, clueType) ?? createDailyState(dateStr, clueType);
+      return (
+        loadDailyState(dateStr, clueType) ?? createDailyState(dateStr, clueType)
+      );
     }
     return createFreshState(dateStr, getAnswer());
   });
@@ -83,7 +90,10 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
     if (!modeChanged && !clueTypeChanged) return;
 
     if (mode === 'daily') {
-      setState(loadDailyState(dateStr, clueType) ?? createDailyState(dateStr, clueType));
+      setState(
+        loadDailyState(dateStr, clueType) ??
+          createDailyState(dateStr, clueType),
+      );
     } else if (mode === 'career') {
       // Career state is managed via initialAnswer prop
       setState(createFreshState(dateStr, getAnswer()));
@@ -125,7 +135,7 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
 
       if (
         state.guesses.some(
-          (g) => g.municipality.name.toLowerCase() === name.toLowerCase()
+          (g) => g.municipality.name.toLowerCase() === name.toLowerCase(),
         )
       ) {
         return { error: 'Olet jo arvannut tämän kunnan' };
@@ -150,7 +160,7 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
       setState(newState);
       return { result };
     },
-    [state]
+    [state],
   );
 
   const [hints, setHints] = useState<string[]>([]);
@@ -160,7 +170,8 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
     setHints((prev) => {
       const level = prev.length;
       if (level === 0) return [...prev, getRegionHint(state.answer)];
-      if (level === 1) return [...prev, getPopulationHint(state.answer.population)];
+      if (level === 1)
+        return [...prev, getPopulationHint(state.answer.population)];
       if (level === 2) return [...prev, getNeighbourHint(state.answer)];
       return prev;
     });

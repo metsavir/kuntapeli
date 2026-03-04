@@ -44,7 +44,10 @@ export function useStats() {
       // Prevent duplicate daily records for same date + clueType
       if (record.mode === 'daily') {
         const alreadyRecorded = prev.games.some(
-          (g) => g.mode === 'daily' && g.date === record.date && g.clueType === record.clueType
+          (g) =>
+            g.mode === 'daily' &&
+            g.date === record.date &&
+            g.clueType === record.clueType,
         );
         if (alreadyRecorded) return prev;
       }

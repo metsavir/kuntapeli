@@ -13,7 +13,13 @@ export function LandingPage({ onSelect }: LandingPageProps) {
       <div className="landing-cards">
         <button className="landing-card" onClick={() => onSelect('shape')}>
           <div className="landing-card-visual">
-            <svg viewBox="0 0 80 80" fill="none" stroke="var(--color-primary)" strokeWidth="2" strokeLinejoin="round">
+            <svg
+              viewBox="0 0 80 80"
+              fill="none"
+              stroke="var(--color-primary)"
+              strokeWidth="2"
+              strokeLinejoin="round"
+            >
               <path d="M20 15 L55 10 L65 30 L60 55 L40 70 L15 60 L10 35 Z" />
             </svg>
           </div>
@@ -21,7 +27,11 @@ export function LandingPage({ onSelect }: LandingPageProps) {
         </button>
         <button className="landing-card" onClick={() => onSelect('coatOfArms')}>
           <div className="landing-card-visual">
-            <img src={`${import.meta.env.BASE_URL}coats/Helsinki.png`} alt="" draggable={false} />
+            <img
+              src={`${import.meta.env.BASE_URL}coats/Helsinki.png`}
+              alt=""
+              draggable={false}
+            />
           </div>
           <span className="landing-card-label">Vaakunat</span>
         </button>

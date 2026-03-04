@@ -45,10 +45,25 @@ function computeStats(progress: CareerProgress) {
     if (entry) entry.completed++;
   }
   const regions = [...regionMap.entries()]
-    .map(([region, { total, completed }]) => ({ region, total, completed, pct: Math.round((completed / total) * 100) }))
+    .map(([region, { total, completed }]) => ({
+      region,
+      total,
+      completed,
+      pct: Math.round((completed / total) * 100),
+    }))
     .sort((a, b) => b.pct - a.pct || b.completed - a.completed);
 
-  return { total, gamesPlayed, totalAttempts: totalAttempts + failAttempts, avg, firstTry, firstTryPct: total > 0 ? Math.round((firstTry / total) * 100) : 0, winRate, failCount, regions };
+  return {
+    total,
+    gamesPlayed,
+    totalAttempts: totalAttempts + failAttempts,
+    avg,
+    firstTry,
+    firstTryPct: total > 0 ? Math.round((firstTry / total) * 100) : 0,
+    winRate,
+    failCount,
+    regions,
+  };
 }
 
 export function CareerHistory({ progress }: CareerHistoryProps) {
@@ -64,9 +79,7 @@ export function CareerHistory({ progress }: CareerHistoryProps) {
 
   if (!stats) {
     return (
-      <div className="career-history-empty">
-        Ei vielä pelattuja pelejä.
-      </div>
+      <div className="career-history-empty">Ei vielä pelattuja pelejä.</div>
     );
   }
 
@@ -75,7 +88,9 @@ export function CareerHistory({ progress }: CareerHistoryProps) {
       <div className="career-summary">
         <div className="career-summary-grid">
           <div className="career-summary-item">
-            <span className="career-summary-value">{stats.total}/{municipalities.length}</span>
+            <span className="career-summary-value">
+              {stats.total}/{municipalities.length}
+            </span>
             <span className="career-summary-label">kuntaa</span>
           </div>
           <div className="career-summary-item">
@@ -107,9 +122,14 @@ export function CareerHistory({ progress }: CareerHistoryProps) {
           <div key={region} className="career-region-row">
             <span className="career-region-name">{region}</span>
             <div className="career-region-bar">
-              <div className="career-region-fill" style={{ width: `${pct}%` }} />
+              <div
+                className="career-region-fill"
+                style={{ width: `${pct}%` }}
+              />
             </div>
-            <span className="career-region-count">{completed}/{total}</span>
+            <span className="career-region-count">
+              {completed}/{total}
+            </span>
           </div>
         ))}
       </div>

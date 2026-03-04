@@ -4,7 +4,13 @@ import { searchMunicipalities } from '../../utils/game';
 import { Modal } from '../Modal';
 import './GuessInput.css';
 
-function GiveUpModal({ onConfirm, onCancel }: { onConfirm: () => void; onCancel: () => void }) {
+function GiveUpModal({
+  onConfirm,
+  onCancel,
+}: {
+  onConfirm: () => void;
+  onCancel: () => void;
+}) {
   return (
     <Modal onClose={onCancel} className="give-up-modal" showClose={false}>
       <p>Oletko varma, että haluat luovuttaa?</p>
@@ -30,7 +36,15 @@ interface GuessInputProps {
   attemptsLeft: number;
 }
 
-export function GuessInput({ onSubmit, onGiveUp, onHint, hints, maxHints, disabled, attemptsLeft }: GuessInputProps) {
+export function GuessInput({
+  onSubmit,
+  onGiveUp,
+  onHint,
+  hints,
+  maxHints,
+  disabled,
+  attemptsLeft,
+}: GuessInputProps) {
   const [value, setValue] = useState('');
   const [suggestions, setSuggestions] = useState<Municipality[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
@@ -67,7 +81,7 @@ export function GuessInput({ onSubmit, onGiveUp, onHint, hints, maxHints, disabl
     if (e.key === 'ArrowDown') {
       e.preventDefault();
       setSelectedIndex((prev) =>
-        prev < suggestions.length - 1 ? prev + 1 : prev
+        prev < suggestions.length - 1 ? prev + 1 : prev,
       );
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
@@ -142,21 +156,33 @@ export function GuessInput({ onSubmit, onGiveUp, onHint, hints, maxHints, disabl
       {hints.length > 0 && (
         <div className="hint-list">
           {hints.map((hint, i) => (
-            <p key={i} className="hint-text">{hint}</p>
+            <p key={i} className="hint-text">
+              {hint}
+            </p>
           ))}
         </div>
       )}
       <div className="input-actions">
-        <button className="hint-button" onClick={onHint} disabled={hints.length >= maxHints}>
+        <button
+          className="hint-button"
+          onClick={onHint}
+          disabled={hints.length >= maxHints}
+        >
           Vihje ({hints.length}/{maxHints})
         </button>
-        <button className="give-up-button" onClick={() => setShowGiveUpModal(true)}>
+        <button
+          className="give-up-button"
+          onClick={() => setShowGiveUpModal(true)}
+        >
           Luovuta
         </button>
       </div>
       {showGiveUpModal && (
         <GiveUpModal
-          onConfirm={() => { setShowGiveUpModal(false); onGiveUp(); }}
+          onConfirm={() => {
+            setShowGiveUpModal(false);
+            onGiveUp();
+          }}
           onCancel={() => setShowGiveUpModal(false)}
         />
       )}

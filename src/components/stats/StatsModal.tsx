@@ -1,5 +1,10 @@
 import { useState, useMemo } from 'react';
-import type { PlayerStats, GameMode, ClueType, CareerProgress } from '../../data/types';
+import type {
+  PlayerStats,
+  GameMode,
+  ClueType,
+  CareerProgress,
+} from '../../data/types';
 import { CareerHistory } from '../career/CareerHistory';
 import { Modal } from '../Modal';
 import { MAX_GUESSES } from '../../utils/game';
@@ -22,14 +27,24 @@ function computeModeStats(stats: PlayerStats, mode?: GameMode) {
 
   const wins = games.filter((g) => g.won);
   const winRate = Math.round((wins.length / total) * 100);
-  const avgGuesses = wins.length > 0
-    ? wins.reduce((sum, g) => sum + g.guesses, 0) / wins.length
-    : 0;
+  const avgGuesses =
+    wins.length > 0
+      ? wins.reduce((sum, g) => sum + g.guesses, 0) / wins.length
+      : 0;
   const firstTry = wins.filter((g) => g.guesses === 1).length;
-  const firstTryPct = wins.length > 0 ? Math.round((firstTry / wins.length) * 100) : 0;
+  const firstTryPct =
+    wins.length > 0 ? Math.round((firstTry / wins.length) * 100) : 0;
   const avgHints = games.reduce((sum, g) => sum + g.hintsUsed, 0) / total;
 
-  return { total, wins: wins.length, winRate, avgGuesses, firstTry, firstTryPct, avgHints };
+  return {
+    total,
+    wins: wins.length,
+    winRate,
+    avgGuesses,
+    firstTry,
+    firstTryPct,
+    avgHints,
+  };
 }
 
 function computeDistribution(stats: PlayerStats, mode?: GameMode) {
@@ -63,7 +78,13 @@ function StatsGrid({ items }: { items: { value: string; label: string }[] }) {
   );
 }
 
-function Distribution({ dist, max }: { dist: Record<string, number>; max: number }) {
+function Distribution({
+  dist,
+  max,
+}: {
+  dist: Record<string, number>;
+  max: number;
+}) {
   return (
     <>
       <div className="stats-section-title">Arvausjakauma</div>
@@ -92,96 +113,151 @@ const TABS: { key: Tab; label: string }[] = [
   { key: 'career', label: 'Ura' },
 ];
 
-export function StatsModal({ stats, careerProgress, clueType, initialTab = 'all', onClose }: StatsModalProps) {
+export function StatsModal({
+  stats,
+  careerProgress,
+  clueType,
+  initialTab = 'all',
+  onClose,
+}: StatsModalProps) {
   const [tab, setTab] = useState<Tab>(initialTab);
 
   // Filter stats to current clue type
-  const filtered = useMemo<PlayerStats>(() => ({
-    ...stats,
-    games: stats.games.filter((g) => g.clueType === clueType),
-  }), [stats, clueType]);
+  const filtered = useMemo<PlayerStats>(
+    () => ({
+      ...stats,
+      games: stats.games.filter((g) => g.clueType === clueType),
+    }),
+    [stats, clueType],
+  );
 
-  const streakInfo = stats.dailyStreaks?.[clueType] ?? { streak: 0, maxStreak: 0, lastDate: '' };
+  const streakInfo = stats.dailyStreaks?.[clueType] ?? {
+    streak: 0,
+    maxStreak: 0,
+    lastDate: '',
+  };
 
   const allStats = useMemo(() => computeModeStats(filtered), [filtered]);
-  const dailyStats = useMemo(() => computeModeStats(filtered, 'daily'), [filtered]);
-  const casualStats = useMemo(() => computeModeStats(filtered, 'casual'), [filtered]);
+  const dailyStats = useMemo(
+    () => computeModeStats(filtered, 'daily'),
+    [filtered],
+  );
+  const casualStats = useMemo(
+    () => computeModeStats(filtered, 'casual'),
+    [filtered],
+  );
   const allDist = useMemo(() => computeDistribution(filtered), [filtered]);
-  const dailyDist = useMemo(() => computeDistribution(filtered, 'daily'), [filtered]);
-  const casualDist = useMemo(() => computeDistribution(filtered, 'casual'), [filtered]);
+  const dailyDist = useMemo(
+    () => computeDistribution(filtered, 'daily'),
+    [filtered],
+  );
+  const casualDist = useMemo(
+    () => computeDistribution(filtered, 'casual'),
+    [filtered],
+  );
 
   return (
     <Modal onClose={onClose} className="stats-modal">
       <h2>Tilastot</h2>
 
-        <div className="stats-tabs">
-          {TABS.map(({ key, label }) => (
-            <button
-              key={key}
-              className={`stats-tab${tab === key ? ' stats-tab--active' : ''}`}
-              onClick={() => setTab(key)}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
+      <div className="stats-tabs">
+        {TABS.map(({ key, label }) => (
+          <button
+            key={key}
+            className={`stats-tab${tab === key ? ' stats-tab--active' : ''}`}
+            onClick={() => setTab(key)}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
 
-        <div className="stats-content">
-          {tab === 'all' && (
-            allStats ? (
-              <>
-                <StatsGrid items={[
+      <div className="stats-content">
+        {tab === 'all' &&
+          (allStats ? (
+            <>
+              <StatsGrid
+                items={[
                   { value: String(allStats.total), label: 'pelejä' },
                   { value: `${allStats.winRate} %`, label: 'voittoprosentti' },
-                  { value: allStats.avgGuesses.toFixed(1), label: 'keskim. arvaukset' },
-                  { value: `${allStats.firstTryPct} %`, label: 'ekalla arvauksella' },
-                  { value: allStats.avgHints.toFixed(1), label: 'keskim. vihjeet' },
-                ]} />
-                <Distribution dist={allDist.dist} max={allDist.max} />
-              </>
-            ) : (
-              <p className="stats-empty">Ei vielä pelattuja pelejä.</p>
-            )
-          )}
+                  {
+                    value: allStats.avgGuesses.toFixed(1),
+                    label: 'keskim. arvaukset',
+                  },
+                  {
+                    value: `${allStats.firstTryPct} %`,
+                    label: 'ekalla arvauksella',
+                  },
+                  {
+                    value: allStats.avgHints.toFixed(1),
+                    label: 'keskim. vihjeet',
+                  },
+                ]}
+              />
+              <Distribution dist={allDist.dist} max={allDist.max} />
+            </>
+          ) : (
+            <p className="stats-empty">Ei vielä pelattuja pelejä.</p>
+          ))}
 
-          {tab === 'daily' && (
-            dailyStats ? (
-              <>
-                <StatsGrid items={[
+        {tab === 'daily' &&
+          (dailyStats ? (
+            <>
+              <StatsGrid
+                items={[
                   { value: String(dailyStats.total), label: 'pelejä' },
-                  { value: `${dailyStats.winRate} %`, label: 'voittoprosentti' },
+                  {
+                    value: `${dailyStats.winRate} %`,
+                    label: 'voittoprosentti',
+                  },
                   { value: String(streakInfo.streak), label: 'putki' },
                   { value: String(streakInfo.maxStreak), label: 'paras putki' },
-                  { value: dailyStats.avgHints.toFixed(1), label: 'keskim. vihjeet' },
-                ]} />
-                <Distribution dist={dailyDist.dist} max={dailyDist.max} />
-              </>
-            ) : (
-              <p className="stats-empty">Ei vielä pelattuja päivittäisiä pelejä.</p>
-            )
-          )}
+                  {
+                    value: dailyStats.avgHints.toFixed(1),
+                    label: 'keskim. vihjeet',
+                  },
+                ]}
+              />
+              <Distribution dist={dailyDist.dist} max={dailyDist.max} />
+            </>
+          ) : (
+            <p className="stats-empty">
+              Ei vielä pelattuja päivittäisiä pelejä.
+            </p>
+          ))}
 
-          {tab === 'casual' && (
-            casualStats ? (
-              <>
-                <StatsGrid items={[
+        {tab === 'casual' &&
+          (casualStats ? (
+            <>
+              <StatsGrid
+                items={[
                   { value: String(casualStats.total), label: 'pelejä' },
-                  { value: `${casualStats.winRate} %`, label: 'voittoprosentti' },
-                  { value: casualStats.avgGuesses.toFixed(1), label: 'keskim. arvaukset' },
-                  { value: `${casualStats.firstTryPct} %`, label: 'ekalla arvauksella' },
-                  { value: casualStats.avgHints.toFixed(1), label: 'keskim. vihjeet' },
-                ]} />
-                <Distribution dist={casualDist.dist} max={casualDist.max} />
-              </>
-            ) : (
-              <p className="stats-empty">Ei vielä pelattuja harjoittelupelejä.</p>
-            )
-          )}
+                  {
+                    value: `${casualStats.winRate} %`,
+                    label: 'voittoprosentti',
+                  },
+                  {
+                    value: casualStats.avgGuesses.toFixed(1),
+                    label: 'keskim. arvaukset',
+                  },
+                  {
+                    value: `${casualStats.firstTryPct} %`,
+                    label: 'ekalla arvauksella',
+                  },
+                  {
+                    value: casualStats.avgHints.toFixed(1),
+                    label: 'keskim. vihjeet',
+                  },
+                ]}
+              />
+              <Distribution dist={casualDist.dist} max={casualDist.max} />
+            </>
+          ) : (
+            <p className="stats-empty">Ei vielä pelattuja harjoittelupelejä.</p>
+          ))}
 
-          {tab === 'career' && (
-            <CareerHistory progress={careerProgress} />
-          )}
-        </div>
+        {tab === 'career' && <CareerHistory progress={careerProgress} />}
+      </div>
     </Modal>
   );
 }

@@ -20,16 +20,24 @@ function App() {
   const [mode, setMode] = useState<GameMode>('daily');
   const [clueType, setClueType] = useState<ClueType | null>(null);
   const career = useCareer(clueType ?? 'shape');
-  const [careerAnswers, setCareerAnswers] = useState<Record<string, Municipality | null>>({});
+  const [careerAnswers, setCareerAnswers] = useState<
+    Record<string, Municipality | null>
+  >({});
   const careerAnswer = careerAnswers[clueType ?? 'shape'] ?? null;
-  const setCareerAnswer = useCallback((m: Municipality | null) => {
-    setCareerAnswers((prev) => ({ ...prev, [clueType ?? 'shape']: m }));
-  }, [clueType]);
+  const setCareerAnswer = useCallback(
+    (m: Municipality | null) => {
+      setCareerAnswers((prev) => ({ ...prev, [clueType ?? 'shape']: m }));
+    },
+    [clueType],
+  );
 
   // Three independent game instances — one per mode
   const daily = useGame('daily', { clueType });
   const casual = useGame('casual', { clueType });
-  const careerGame = useGame('career', { initialAnswer: careerAnswer, clueType });
+  const careerGame = useGame('career', {
+    initialAnswer: careerAnswer,
+    clueType,
+  });
 
   const games = { daily, casual, career: careerGame };
 
@@ -37,7 +45,9 @@ function App() {
   const [showHelp, setShowHelp] = useState(false);
   const [showStatsModal, setShowStatsModal] = useState(false);
   const [debug, setDebug] = useState(false);
-  const [careerView, setCareerView] = useState<'game' | 'map' | 'collection'>('game');
+  const [careerView, setCareerView] = useState<'game' | 'map' | 'collection'>(
+    'game',
+  );
 
   // Initialize career answer
   useEffect(() => {
@@ -48,7 +58,11 @@ function App() {
   }, [clueType]);
 
   // On game end for any mode: record stats, handle career logic
-  const prevStatuses = useRef({ daily: daily.status, casual: casual.status, career: careerGame.status });
+  const prevStatuses = useRef({
+    daily: daily.status,
+    casual: casual.status,
+    career: careerGame.status,
+  });
   useEffect(() => {
     for (const m of MODES) {
       const g = games[m];
@@ -93,7 +107,11 @@ function App() {
   }
 
   const renderClue = (name: string) =>
-    clueType === 'shape' ? <MunicipalityShape name={name} /> : <CoatOfArms name={name} />;
+    clueType === 'shape' ? (
+      <MunicipalityShape name={name} />
+    ) : (
+      <CoatOfArms name={name} />
+    );
 
   return (
     <div className="app">
@@ -101,26 +119,57 @@ function App() {
         dateStr={games[mode].dateStr}
         mode={mode}
         careerCount={`${career.completedCount}/${career.totalCount}`}
-        onModeChange={(m) => { setMode(m); scrollToMode(m); }}
-        onBack={() => { setClueType(null); setMode('daily'); }}
+        onModeChange={(m) => {
+          setMode(m);
+          scrollToMode(m);
+        }}
+        onBack={() => {
+          setClueType(null);
+          setMode('daily');
+        }}
         onStats={() => setShowStatsModal(true)}
         onHelp={() => setShowHelp(true)}
-        onDebugToggle={import.meta.env.DEV ? () => setDebug((d) => !d) : undefined}
+        onDebugToggle={
+          import.meta.env.DEV ? () => setDebug((d) => !d) : undefined
+        }
       />
       {debug && (
-        <div style={{ background: '#ff000030', color: '#ff8888', textAlign: 'center', padding: '0.25rem', fontSize: '0.75rem', fontFamily: 'monospace' }}>
+        <div
+          style={{
+            background: '#ff000030',
+            color: '#ff8888',
+            textAlign: 'center',
+            padding: '0.25rem',
+            fontSize: '0.75rem',
+            fontFamily: 'monospace',
+          }}
+        >
           DEBUG: {games[mode].answer.name} ({games[mode].answer.region})
         </div>
       )}
       <div className="mode-scroller" ref={initRef}>
         {/* Daily panel */}
         <main className="app-body">
-          <GamePanel game={daily} clue={renderClue(daily.answer.name)} mode="daily" stats={stats} clueType={clueType} onNewGame={daily.newGame} />
+          <GamePanel
+            game={daily}
+            clue={renderClue(daily.answer.name)}
+            mode="daily"
+            stats={stats}
+            clueType={clueType}
+            onNewGame={daily.newGame}
+          />
         </main>
 
         {/* Casual panel */}
         <main className="app-body">
-          <GamePanel game={casual} clue={renderClue(casual.answer.name)} mode="casual" stats={stats} clueType={clueType} onNewGame={casual.newGame} />
+          <GamePanel
+            game={casual}
+            clue={renderClue(casual.answer.name)}
+            mode="casual"
+            stats={stats}
+            clueType={clueType}
+            onNewGame={casual.newGame}
+          />
         </main>
 
         {/* Career panel */}

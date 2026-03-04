@@ -12,7 +12,7 @@ export function haversineDistance(
   lat1: number,
   lng1: number,
   lat2: number,
-  lng2: number
+  lng2: number,
 ): number {
   const dLat = toRad(lat2 - lat1);
   const dLng = toRad(lng2 - lng1);
@@ -27,7 +27,7 @@ export function bearing(
   lat1: number,
   lng1: number,
   lat2: number,
-  lng2: number
+  lng2: number,
 ): number {
   const dLng = toRad(lng2 - lng1);
   const y = Math.sin(dLng) * Math.cos(toRad(lat2));

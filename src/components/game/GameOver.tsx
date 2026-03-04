@@ -1,5 +1,11 @@
 import { useState } from 'react';
-import type { GuessResult, Municipality, GameMode, PlayerStats, ClueType } from '../../data/types';
+import type {
+  GuessResult,
+  Municipality,
+  GameMode,
+  PlayerStats,
+  ClueType,
+} from '../../data/types';
 import { generateShareText, getGameNumber } from '../../utils/game';
 import { PersonalComparison } from './PersonalComparison';
 import './GameOver.css';
@@ -16,12 +22,27 @@ interface GameOverProps {
   onNewGame: () => void;
 }
 
-export function GameOver({ status, guesses, answer, dateStr, mode, stats, clueType, careerComplete, onNewGame }: GameOverProps) {
+export function GameOver({
+  status,
+  guesses,
+  answer,
+  dateStr,
+  mode,
+  stats,
+  clueType,
+  careerComplete,
+  onNewGame,
+}: GameOverProps) {
   const [copied, setCopied] = useState(false);
   const gameNumber = getGameNumber(dateStr);
 
   const handleShare = async () => {
-    const text = generateShareText(guesses, gameNumber, status === 'won', dateStr);
+    const text = generateShareText(
+      guesses,
+      gameNumber,
+      status === 'won',
+      dateStr,
+    );
     await navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -61,7 +82,9 @@ export function GameOver({ status, guesses, answer, dateStr, mode, stats, clueTy
           </button>
         )}
         {mode === 'career' && careerComplete && (
-          <p className="career-complete-message">Kaikki 308 kuntaa suoritettu!</p>
+          <p className="career-complete-message">
+            Kaikki 308 kuntaa suoritettu!
+          </p>
         )}
       </div>
     </div>

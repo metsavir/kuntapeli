@@ -15,7 +15,15 @@ interface GamePanelProps {
   onNewGame: () => void;
 }
 
-export function GamePanel({ game, clue, mode, stats, clueType, careerComplete = false, onNewGame }: GamePanelProps) {
+export function GamePanel({
+  game,
+  clue,
+  mode,
+  stats,
+  clueType,
+  careerComplete = false,
+  onNewGame,
+}: GamePanelProps) {
   return (
     <>
       {clue}

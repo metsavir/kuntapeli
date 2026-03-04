@@ -20,11 +20,13 @@ export function buildPath(
   rings: number[][][],
   originLng: number,
   originLat: number,
-  cosLat: number
+  cosLat: number,
 ): string {
   return rings
     .map((ring) => {
-      const points = ring.map(([lng, lat]) => `${(lng - originLng) * cosLat},${originLat - lat}`);
+      const points = ring.map(
+        ([lng, lat]) => `${(lng - originLng) * cosLat},${originLat - lat}`,
+      );
       return `M${points.join('L')}Z`;
     })
     .join('');
@@ -32,7 +34,10 @@ export function buildPath(
 
 /** Compute bounding box from an array of coordinate rings. */
 export function bboxFromRings(rings: number[][][]): BBox {
-  let minLng = Infinity, maxLng = -Infinity, minLat = Infinity, maxLat = -Infinity;
+  let minLng = Infinity,
+    maxLng = -Infinity,
+    minLat = Infinity,
+    maxLat = -Infinity;
   for (const ring of rings) {
     for (const [lng, lat] of ring) {
       if (lng < minLng) minLng = lng;
@@ -47,9 +52,12 @@ export function bboxFromRings(rings: number[][][]): BBox {
 /** Compute bounding box from municipality names using their shapes. */
 export function bboxFromNames(
   names: string[],
-  allShapes: Record<string, MunicipalityShape>
+  allShapes: Record<string, MunicipalityShape>,
 ): BBox {
-  let minLng = Infinity, maxLng = -Infinity, minLat = Infinity, maxLat = -Infinity;
+  let minLng = Infinity,
+    maxLng = -Infinity,
+    minLat = Infinity,
+    maxLat = -Infinity;
   for (const name of names) {
     const shape = allShapes[name];
     if (!shape) continue;
@@ -66,7 +74,10 @@ export function bboxFromNames(
 }
 
 /** Compute SVG viewBox and projection parameters from a bounding box. */
-export function computeViewBox(bbox: BBox, pad: number): {
+export function computeViewBox(
+  bbox: BBox,
+  pad: number,
+): {
   viewBox: string;
   originLng: number;
   originLat: number;
@@ -84,7 +95,10 @@ export function computeViewBox(bbox: BBox, pad: number): {
 }
 
 /** Compute SVG path data and viewBox for a single municipality shape. */
-export function computeShapePathData(shape: MunicipalityShape): { d: string; viewBox: string } {
+export function computeShapePathData(shape: MunicipalityShape): {
+  d: string;
+  viewBox: string;
+} {
   const rings = getRings(shape);
   const bbox = bboxFromRings(rings);
   const { viewBox, originLng, originLat, cosLat } = computeViewBox(bbox, 0.1);

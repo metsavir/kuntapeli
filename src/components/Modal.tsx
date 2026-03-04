@@ -10,20 +10,32 @@ interface ModalProps {
   children: ReactNode;
 }
 
-export function Modal({ onClose, className, showClose = true, children }: ModalProps) {
+export function Modal({
+  onClose,
+  className,
+  showClose = true,
+  children,
+}: ModalProps) {
   useLockScroll();
 
   useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
   }, [onClose]);
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className={`modal${className ? ` ${className}` : ''}`} onClick={(e) => e.stopPropagation()}>
+      <div
+        className={`modal${className ? ` ${className}` : ''}`}
+        onClick={(e) => e.stopPropagation()}
+      >
         {showClose && (
-          <button className="modal-close" onClick={onClose}>&times;</button>
+          <button className="modal-close" onClick={onClose}>
+            &times;
+          </button>
         )}
         {children}
       </div>

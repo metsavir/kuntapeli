@@ -40,7 +40,10 @@
   border-radius: 1rem;
   background: var(--color-surface);
   cursor: pointer;
-  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+  transition:
+    border-color 0.15s,
+    transform 0.15s,
+    box-shadow 0.15s;
 }
 
 @media (hover: hover) {

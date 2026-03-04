@@ -11,7 +11,9 @@
 
 .guess-row--correct {
   background: var(--color-correct);
-  animation: correctBounce 0.5s ease-out, correctGlow 1.2s ease-in-out;
+  animation:
+    correctBounce 0.5s ease-out,
+    correctGlow 1.2s ease-in-out;
 }
 
 @keyframes correctBounce {
@@ -79,7 +81,9 @@
 }
 
 .guess-proximity-bar--hot {
-  animation: proximityFill 0.6s ease-out both, proximityGlow 1s ease-in-out 0.4s both;
+  animation:
+    proximityFill 0.6s ease-out both,
+    proximityGlow 1s ease-in-out 0.4s both;
 }
 
 @keyframes proximityFill {

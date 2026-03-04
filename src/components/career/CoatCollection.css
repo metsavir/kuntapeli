@@ -78,7 +78,9 @@
   object-fit: contain;
   opacity: 0.1;
   filter: grayscale(1);
-  transition: opacity 0.3s, filter 0.3s;
+  transition:
+    opacity 0.3s,
+    filter 0.3s;
 }
 
 .coat-collection-cell--done {

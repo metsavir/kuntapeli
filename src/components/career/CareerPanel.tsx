@@ -22,19 +22,34 @@ interface CareerPanelProps {
   careerView: 'game' | 'map' | 'collection';
 }
 
-export function CareerPanel({ mode, career, careerGame, stats, clueType, careerComplete, onNext, clue, onViewChange, careerView }: CareerPanelProps) {
+export function CareerPanel({
+  mode,
+  career,
+  careerGame,
+  stats,
+  clueType,
+  careerComplete,
+  onNext,
+  clue,
+  onViewChange,
+  careerView,
+}: CareerPanelProps) {
   const flipRef = useRef<HTMLDivElement>(null);
 
   // Reset flip animation instantly when switching modes
   useEffect(() => {
     if (flipRef.current) {
       flipRef.current.style.transition = 'none';
-      flipRef.current.querySelectorAll<HTMLElement>('.career-flip-face').forEach(el => el.style.transition = 'none');
+      flipRef.current
+        .querySelectorAll<HTMLElement>('.career-flip-face')
+        .forEach((el) => (el.style.transition = 'none'));
       flipRef.current.offsetHeight;
       requestAnimationFrame(() => {
         if (flipRef.current) {
           flipRef.current.style.transition = '';
-          flipRef.current.querySelectorAll<HTMLElement>('.career-flip-face').forEach(el => el.style.transition = '');
+          flipRef.current
+            .querySelectorAll<HTMLElement>('.career-flip-face')
+            .forEach((el) => (el.style.transition = ''));
         }
       });
     }
@@ -48,9 +63,14 @@ export function CareerPanel({ mode, career, careerGame, stats, clueType, careerC
         total={career.totalCount}
         view={careerView}
         onToggleMap={() => onViewChange(careerView === 'map' ? 'game' : 'map')}
-        onToggleCollection={() => onViewChange(careerView === 'collection' ? 'game' : 'collection')}
+        onToggleCollection={() =>
+          onViewChange(careerView === 'collection' ? 'game' : 'collection')
+        }
       />
-      <div ref={flipRef} className={`career-flip${careerView !== 'game' ? ` career-flip--${careerView}` : ''}`}>
+      <div
+        ref={flipRef}
+        className={`career-flip${careerView !== 'game' ? ` career-flip--${careerView}` : ''}`}
+      >
         <div className="career-flip-face career-flip-front">
           {clue}
           <GuessInput
@@ -69,27 +89,37 @@ export function CareerPanel({ mode, career, careerGame, stats, clueType, careerC
             completed={career.completedSet}
             failed={career.failedSet}
             careerStats={career.progress.stats}
-            currentMunicipality={careerGame.status !== 'playing' && careerGame.status === 'won' ? careerGame.answer.name : undefined}
+            currentMunicipality={
+              careerGame.status !== 'playing' && careerGame.status === 'won'
+                ? careerGame.answer.name
+                : undefined
+            }
             visible={careerView === 'map'}
           />
         </div>
         <div className="career-flip-face career-flip-collection">
-          <CoatCollection completedSet={career.completedSet} careerStats={career.progress.stats} visible={careerView === 'collection'} />
+          <CoatCollection
+            completedSet={career.completedSet}
+            careerStats={career.progress.stats}
+            visible={careerView === 'collection'}
+          />
         </div>
       </div>
-      {careerGame.status !== 'playing' && careerView !== 'collection' && careerView !== 'map' && (
-        <GameOver
-          status={careerGame.status}
-          guesses={careerGame.guesses}
-          answer={careerGame.answer}
-          dateStr={careerGame.dateStr}
-          mode="career"
-          stats={stats}
-          clueType={clueType}
-          careerComplete={careerComplete}
-          onNewGame={onNext}
-        />
-      )}
+      {careerGame.status !== 'playing' &&
+        careerView !== 'collection' &&
+        careerView !== 'map' && (
+          <GameOver
+            status={careerGame.status}
+            guesses={careerGame.guesses}
+            answer={careerGame.answer}
+            dateStr={careerGame.dateStr}
+            mode="career"
+            stats={stats}
+            clueType={clueType}
+            careerComplete={careerComplete}
+            onNewGame={onNext}
+          />
+        )}
     </main>
   );
 }

@@ -3,7 +3,6 @@ import type { CareerProgress, ClueType, Municipality } from '../data/types';
 import { municipalities } from '../data/municipalities';
 import { getTodayString } from '../utils/game';
 
-
 function careerKey(clueType: ClueType): string {
   return `kuntapeli-career-${clueType}`;
 }
@@ -24,7 +23,9 @@ function saveCareer(clueType: ClueType, progress: CareerProgress): void {
 }
 
 export function useCareer(clueType: ClueType) {
-  const [progress, setProgress] = useState<CareerProgress>(() => loadCareer(clueType));
+  const [progress, setProgress] = useState<CareerProgress>(() =>
+    loadCareer(clueType),
+  );
 
   // Reload progress when clue type changes
   useEffect(() => {
@@ -37,7 +38,7 @@ export function useCareer(clueType: ClueType) {
 
   const completedSet = new Set(progress.completed);
   const failedSet = new Set(
-    progress.failures.map((f) => f.name).filter((n) => !completedSet.has(n))
+    progress.failures.map((f) => f.name).filter((n) => !completedSet.has(n)),
   );
 
   const markCompleted = useCallback((name: string, attempts: number) => {
@@ -57,7 +58,10 @@ export function useCareer(clueType: ClueType) {
   const markFailed = useCallback((name: string, guessCount: number) => {
     setProgress((prev) => ({
       ...prev,
-      failures: [...prev.failures, { name, guesses: guessCount, date: getTodayString() }],
+      failures: [
+        ...prev.failures,
+        { name, guesses: guessCount, date: getTodayString() },
+      ],
     }));
   }, []);
 

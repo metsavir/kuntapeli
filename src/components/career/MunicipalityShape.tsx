@@ -8,7 +8,10 @@ interface MunicipalityShapeProps {
 }
 
 export function MunicipalityShape({ name }: MunicipalityShapeProps) {
-  const [pathData, setPathData] = useState<{ d: string; viewBox: string } | null>(null);
+  const [pathData, setPathData] = useState<{
+    d: string;
+    viewBox: string;
+  } | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -20,7 +23,9 @@ export function MunicipalityShape({ name }: MunicipalityShapeProps) {
       if (shape) setPathData(computeShapePathData(shape));
       setLoading(false);
     });
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [name]);
 
   if (loading) {

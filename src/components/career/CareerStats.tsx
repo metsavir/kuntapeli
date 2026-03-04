@@ -10,17 +10,20 @@ interface CareerStatsProps {
   onToggleCollection: () => void;
 }
 
-export function CareerStats({ completed, total, view, onToggleMap, onToggleCollection }: CareerStatsProps) {
+export function CareerStats({
+  completed,
+  total,
+  view,
+  onToggleMap,
+  onToggleCollection,
+}: CareerStatsProps) {
   const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
 
   return (
     <div className="career-stats">
       <div className="career-progress-row">
         <div className="career-progress-bar">
-          <div
-            className="career-progress-fill"
-            style={{ width: `${pct}%` }}
-          />
+          <div className="career-progress-fill" style={{ width: `${pct}%` }} />
         </div>
         <div className="career-toggle-group">
           <button

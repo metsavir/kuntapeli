@@ -1,10 +1,18 @@
 import type { Municipality, GuessResult } from '../data/types';
 import { municipalities } from '../data/municipalities';
-import { haversineDistance, bearing, bearingToDirection, proximity } from './geo';
+import {
+  haversineDistance,
+  bearing,
+  bearingToDirection,
+  proximity,
+} from './geo';
 import { formatDate } from './format';
 
 // Deterministic daily answer from date string + clue type
-export function getDailyAnswer(dateStr: string, clueType: string = 'shape'): Municipality {
+export function getDailyAnswer(
+  dateStr: string,
+  clueType: string = 'shape',
+): Municipality {
   const seed = dateStr + ':' + clueType;
   let hash = 0;
   for (let i = 0; i < seed.length; i++) {
@@ -28,7 +36,7 @@ export function getTodayString(): string {
 
 export function evaluateGuess(
   guess: Municipality,
-  answer: Municipality
+  answer: Municipality,
 ): GuessResult {
   const dist = haversineDistance(guess.lat, guess.lng, answer.lat, answer.lng);
   const bear = bearing(guess.lat, guess.lng, answer.lat, answer.lng);
@@ -48,7 +56,7 @@ export function evaluateGuess(
 
 export function findMunicipality(name: string): Municipality | undefined {
   return municipalities.find(
-    (m) => m.name.toLowerCase() === name.toLowerCase()
+    (m) => m.name.toLowerCase() === name.toLowerCase(),
   );
 }
 
@@ -62,7 +70,7 @@ export function generateShareText(
   guesses: GuessResult[],
   gameNumber: number,
   won: boolean,
-  dateStr: string
+  dateStr: string,
 ): string {
   const distances = guesses.map((g) => g.distance);
   const chain = distances.join(' → ') + ' km';
@@ -80,7 +88,8 @@ export function getPopulationHint(population: number): string {
   if (population < 2000) return 'Pieni kylä — alle 2 000 asukasta';
   if (population < 5000) return 'Pieni kunta — muutama tuhat asukasta';
   if (population < 15000) return 'Pikkukaupunki — alle 15 000 asukasta';
-  if (population < 50000) return 'Keskikokoinen kaupunki — kymmeniätuhansia asukkaita';
+  if (population < 50000)
+    return 'Keskikokoinen kaupunki — kymmeniätuhansia asukkaita';
   if (population < 100000) return 'Iso kaupunki — alle 100 000 asukasta';
   return 'Suuri kaupunki — yli 100 000 asukasta';
 }
