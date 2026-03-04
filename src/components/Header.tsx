@@ -10,7 +10,6 @@ interface HeaderProps {
   onBack: () => void;
   onStats: () => void;
   onBadges: () => void;
-  onHelp: () => void;
   onDebugToggle?: () => void;
 }
 
@@ -20,7 +19,6 @@ export function Header({
   onBack,
   onStats,
   onBadges,
-  onHelp,
   onDebugToggle,
 }: HeaderProps) {
   const tapRef = useRef<{
@@ -131,9 +129,6 @@ export function Header({
                 fill="currentColor"
               />
             </svg>
-          </button>
-          <button className="header-help" onClick={onHelp} aria-label="Ohje">
-            ?
           </button>
         </div>
       </div>

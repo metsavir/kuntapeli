@@ -6,7 +6,6 @@ import { useScrollSnap } from './hooks/useScrollSnap';
 import { Header } from './components/Header';
 import { GamePanel } from './components/game/GamePanel';
 import { CareerPanel } from './components/career/CareerPanel';
-import { HelpModal } from './components/HelpModal';
 import { MunicipalityShape } from './components/career/MunicipalityShape';
 import { CoatOfArms } from './components/career/CoatOfArms';
 import { LandingPage } from './components/LandingPage';
@@ -56,7 +55,6 @@ function App() {
       checkBadges(stats, career.progress);
     }
   }, [stats, career.progress]);
-  const [showHelp, setShowHelp] = useState(false);
   const [showStatsModal, setShowStatsModal] = useState(false);
   const [showBadgesModal, setShowBadgesModal] = useState(false);
   const [debug, setDebug] = useState(false);
@@ -147,7 +145,6 @@ function App() {
         }}
         onStats={() => setShowStatsModal(true)}
         onBadges={() => setShowBadgesModal(true)}
-        onHelp={() => setShowHelp(true)}
         onDebugToggle={
           import.meta.env.DEV ? () => setDebug((d) => !d) : undefined
         }
@@ -205,7 +202,6 @@ function App() {
           onViewChange={setCareerView}
         />
       </div>
-      {showHelp && <HelpModal onClose={() => setShowHelp(false)} />}
       {showStatsModal && (
         <StatsModal
           stats={stats}

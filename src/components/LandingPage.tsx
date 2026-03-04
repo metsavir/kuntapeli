@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { ClueType } from '../data/types';
 import './LandingPage.css';
 
@@ -6,10 +7,13 @@ interface LandingPageProps {
 }
 
 export function LandingPage({ onSelect }: LandingPageProps) {
+  const [showHelp, setShowHelp] = useState(false);
+
   return (
     <div className="landing">
       <h1 className="landing-title">Kuntapeli</h1>
       <p className="landing-subtitle">Tunnista Suomen kunnat</p>
+
       <div className="landing-cards">
         <button className="landing-card" onClick={() => onSelect('shape')}>
           <div className="landing-card-visual">
@@ -35,6 +39,49 @@ export function LandingPage({ onSelect }: LandingPageProps) {
           </div>
           <span className="landing-card-label">Vaakunat</span>
         </button>
+      </div>
+
+      <div className="landing-help-wrapper">
+        <button
+          className="landing-help-toggle"
+          onClick={() => setShowHelp((v) => !v)}
+        >
+          {showHelp ? 'Sulje ohjeet' : 'Miten pelataan?'}
+        </button>
+        <div className={`landing-help-panel${showHelp ? ' open' : ''}`}>
+          <div className="landing-help-panel-inner">
+            <div className="landing-help-content">
+              <p>
+                Tunnista suomalainen kunta rajat- tai vaakunakuvasta. Sinulla on{' '}
+                <strong>6 arvausta</strong>.
+              </p>
+              <p>Jokaisen arvauksen jälkeen näet:</p>
+              <ul>
+                <li>
+                  <strong>Etäisyys</strong> — kuinka kaukana arvauksesi on
+                  oikeasta kunnasta
+                </li>
+                <li>
+                  <strong>Suunta</strong> — nuoli osoittaa oikean kunnan
+                  suuntaan
+                </li>
+                <li>
+                  <strong>Läheisyys</strong> — prosenttiluku kertoo kuinka
+                  lähellä olet
+                </li>
+              </ul>
+              <p>
+                Voit pyytää enintään <strong>3 vihjettä</strong>: maakunta,
+                väkiluku ja naapurikunnat.
+              </p>
+              <p className="landing-help-modes">
+                <strong>Päivittäinen</strong> — sama kunta kaikille |{' '}
+                <strong>Harjoittelu</strong> — pelaa rajattomasti |{' '}
+                <strong>Ura</strong> — arvaa kaikki 308 kuntaa
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
