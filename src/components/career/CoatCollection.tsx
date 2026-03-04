@@ -45,7 +45,11 @@ export function CoatCollection({
   }, [completedSet]);
 
   return (
-    <div className="coat-collection" ref={scrollRef} onClick={() => setSelected(null)}>
+    <div
+      className="coat-collection"
+      ref={scrollRef}
+      onClick={() => setSelected(null)}
+    >
       {selected &&
         (() => {
           const m = municipalityByName[selected];
