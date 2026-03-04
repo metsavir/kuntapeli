@@ -32,9 +32,13 @@ npm run fetch-coats     # Fetch coat of arms PNGs → public/coats/
 npm run build   # TypeScript check + Vite production build
 ```
 
+## PWA
+
+Installable as a standalone app ("add to home screen"). Works offline after first visit. Uses a prompt-to-update strategy — a banner appears when a new version is available.
+
 ## Tech
 
-React 19 + TypeScript + Vite. No router or state library — React state with localStorage persistence.
+React 19 + TypeScript + Vite. No router or state library — React state with localStorage persistence. PWA via vite-plugin-pwa.
 
 ## Data Sources
 
