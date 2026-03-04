@@ -130,6 +130,7 @@ const MANUAL_FILENAMES = {
   'Pudasjärvi': 'Pudasjarvi.vaakuna.svg',
   'Ristijärvi': 'Ristijarvi.vaakuna.svg',
   'Sodankylä': 'Sodankyla.vaakuna.svg',
+  'Tuusula': 'Tuusula.vaakuna.svg',
   'Huittinen': 'Huittisten.vaakuna.svg',
   'Sastamala': 'Karkku.vaakuna.svg',
   'Suonenjoki': 'Suonenjoki coat of arms.svg',
