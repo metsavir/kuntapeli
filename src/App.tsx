@@ -11,6 +11,7 @@ import { MunicipalityShape } from './components/career/MunicipalityShape';
 import { CoatOfArms } from './components/career/CoatOfArms';
 import { LandingPage } from './components/LandingPage';
 import { StatsModal } from './components/stats/StatsModal';
+import { UpdateBanner } from './components/UpdateBanner';
 import { useStats } from './hooks/useStats';
 import './App.css';
 
@@ -103,7 +104,12 @@ function App() {
   const { initRef, scrollTo: scrollToMode } = useScrollSnap(MODES, setMode);
 
   if (!clueType) {
-    return <LandingPage onSelect={setClueType} />;
+    return (
+      <>
+        <LandingPage onSelect={setClueType} />
+        <UpdateBanner />
+      </>
+    );
   }
 
   const renderClue = (name: string) =>
@@ -194,6 +200,7 @@ function App() {
           onClose={() => setShowStatsModal(false)}
         />
       )}
+      <UpdateBanner />
     </div>
   );
 }
