@@ -29,7 +29,7 @@ export function BadgeToast({ badgeId, onDismiss }: BadgeToastProps) {
         <span className="badge-toast-emoji">{badge.emoji}</span>
       )}
       <div className="badge-toast-text">
-        <span className="badge-toast-title">Saavutus avattu!</span>
+        <span className="badge-toast-title">Uusi saavutus!</span>
         <span className="badge-toast-name">{badge.name}</span>
       </div>
     </div>
