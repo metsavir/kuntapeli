@@ -100,7 +100,54 @@ export function FinlandMap({
       );
     }
 
-    return { globalViewBox: global.viewBox, paths, regionViewBoxes };
+    // Compute region borders by finding boundary edges (edges not shared
+    // between two municipalities in the same region)
+    const regionBorders: { region: string; d: string }[] = [];
+    for (const [region, names] of regionNames) {
+      const edgeCounts = new Map<string, number>();
+      const edgeCoords = new Map<string, [number, number, number, number]>();
+
+      for (const name of names) {
+        const shape = allShapes[name];
+        if (!shape) continue;
+        for (const ring of getRings(shape)) {
+          for (let i = 0; i < ring.length - 1; i++) {
+            const [x1, y1] = ring[i];
+            const [x2, y2] = ring[i + 1];
+            // Normalize edge direction so shared edges match
+            const key =
+              x1 < x2 || (x1 === x2 && y1 < y2)
+                ? `${x1},${y1}-${x2},${y2}`
+                : `${x2},${y2}-${x1},${y1}`;
+            edgeCounts.set(key, (edgeCounts.get(key) ?? 0) + 1);
+            if (!edgeCoords.has(key)) {
+              edgeCoords.set(key, [x1, y1, x2, y2]);
+            }
+          }
+        }
+      }
+
+      // Edges appearing once are boundary edges (region border or coastline)
+      let d = '';
+      for (const [key, count] of edgeCounts) {
+        if (count === 1) {
+          const [lng1, lat1, lng2, lat2] = edgeCoords.get(key)!;
+          const sx1 = (lng1 - global.originLng) * global.cosLat;
+          const sy1 = global.originLat - lat1;
+          const sx2 = (lng2 - global.originLng) * global.cosLat;
+          const sy2 = global.originLat - lat2;
+          d += `M${sx1} ${sy1}L${sx2} ${sy2}`;
+        }
+      }
+      regionBorders.push({ region, d });
+    }
+
+    return {
+      globalViewBox: global.viewBox,
+      paths,
+      regionViewBoxes,
+      regionBorders,
+    };
   }, [allShapes, regionNames]);
 
   const handleClick = useCallback(
@@ -178,6 +225,16 @@ export function FinlandMap({
               />
             );
           })}
+        {!zoomedRegion &&
+          mapData.regionBorders.map(({ region, d }) => (
+            <path
+              key={`border-${region}`}
+              d={d}
+              className="fm-region-border"
+              fillRule="evenodd"
+              pointerEvents="none"
+            />
+          ))}
         {hoveredRegion && !zoomedRegion && (
           <path
             d={mapData.paths
