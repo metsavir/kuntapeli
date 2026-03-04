@@ -1,3 +1,4 @@
+import type { ClueType } from '../../data/types';
 import './CareerStats.css';
 
 type CareerView = 'game' | 'map' | 'collection';
@@ -6,6 +7,7 @@ interface CareerStatsProps {
   completed: number;
   total: number;
   view: CareerView;
+  clueType: ClueType;
   onToggleMap: () => void;
   onToggleCollection: () => void;
 }
@@ -14,6 +16,7 @@ export function CareerStats({
   completed,
   total,
   view,
+  clueType,
   onToggleMap,
   onToggleCollection,
 }: CareerStatsProps) {
@@ -26,12 +29,14 @@ export function CareerStats({
           <div className="career-progress-fill" style={{ width: `${pct}%` }} />
         </div>
         <div className="career-toggle-group">
-          <button
-            className={`career-map-toggle${view === 'collection' ? ' career-map-toggle--active' : ''}`}
-            onClick={onToggleCollection}
-          >
-            {view === 'collection' ? 'Piilota' : 'Kokoelma'}
-          </button>
+          {clueType === 'coatOfArms' && (
+            <button
+              className={`career-map-toggle${view === 'collection' ? ' career-map-toggle--active' : ''}`}
+              onClick={onToggleCollection}
+            >
+              {view === 'collection' ? 'Piilota' : 'Kokoelma'}
+            </button>
+          )}
           <button
             className={`career-map-toggle${view === 'map' ? ' career-map-toggle--active' : ''}`}
             onClick={onToggleMap}

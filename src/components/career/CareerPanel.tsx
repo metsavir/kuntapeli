@@ -62,6 +62,7 @@ export function CareerPanel({
         completed={career.completedCount}
         total={career.totalCount}
         view={careerView}
+        clueType={clueType}
         onToggleMap={() => onViewChange(careerView === 'map' ? 'game' : 'map')}
         onToggleCollection={() =>
           onViewChange(careerView === 'collection' ? 'game' : 'collection')
