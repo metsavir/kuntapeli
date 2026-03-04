@@ -1,13 +1,16 @@
 import './CareerStats.css';
 
+type CareerView = 'game' | 'map' | 'collection';
+
 interface CareerStatsProps {
   completed: number;
   total: number;
-  showMap: boolean;
+  view: CareerView;
   onToggleMap: () => void;
+  onToggleCollection: () => void;
 }
 
-export function CareerStats({ completed, total, showMap, onToggleMap }: CareerStatsProps) {
+export function CareerStats({ completed, total, view, onToggleMap, onToggleCollection }: CareerStatsProps) {
   const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
 
   return (
@@ -19,9 +22,20 @@ export function CareerStats({ completed, total, showMap, onToggleMap }: CareerSt
             style={{ width: `${pct}%` }}
           />
         </div>
-        <button className="career-map-toggle" onClick={onToggleMap}>
-          {showMap ? 'Piilota kartta' : 'Kartta'}
-        </button>
+        <div className="career-toggle-group">
+          <button
+            className={`career-map-toggle${view === 'collection' ? ' career-map-toggle--active' : ''}`}
+            onClick={onToggleCollection}
+          >
+            {view === 'collection' ? 'Piilota' : 'Kokoelma'}
+          </button>
+          <button
+            className={`career-map-toggle${view === 'map' ? ' career-map-toggle--active' : ''}`}
+            onClick={onToggleMap}
+          >
+            {view === 'map' ? 'Piilota kartta' : 'Kartta'}
+          </button>
+        </div>
       </div>
       <span className="career-count">
         {completed}/{total} kuntaa ({pct} %)

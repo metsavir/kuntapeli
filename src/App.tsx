@@ -11,6 +11,7 @@ import { MunicipalityShape } from './components/MunicipalityShape';
 import { CoatOfArms } from './components/CoatOfArms';
 import { LandingPage } from './components/LandingPage';
 import { FinlandMap } from './components/FinlandMap';
+import { CoatCollection } from './components/CoatCollection';
 import { CareerStats } from './components/CareerStats';
 import { StatsModal } from './components/StatsModal';
 import { useStats } from './hooks/useStats';
@@ -32,11 +33,24 @@ function App() {
   const [showHelp, setShowHelp] = useState(false);
   const [showStatsModal, setShowStatsModal] = useState(false);
   const [debug, setDebug] = useState(false);
-  const [showMap, setShowMap] = useState(false);
+  const [careerView, setCareerView] = useState<'game' | 'map' | 'collection'>('game');
+  const flipRef = useRef<HTMLDivElement>(null);
 
   // When switching modes or clue type, reset career overlays and pick an unguessed municipality if needed
   useEffect(() => {
-    setShowMap(false);
+    if (flipRef.current) {
+      flipRef.current.style.transition = 'none';
+      flipRef.current.querySelectorAll<HTMLElement>('.career-flip-face').forEach(el => el.style.transition = 'none');
+      // Force reflow then re-enable transitions
+      flipRef.current.offsetHeight;
+      requestAnimationFrame(() => {
+        if (flipRef.current) {
+          flipRef.current.style.transition = '';
+          flipRef.current.querySelectorAll<HTMLElement>('.career-flip-face').forEach(el => el.style.transition = '');
+        }
+      });
+    }
+    setCareerView('game');
     const key = clueType ?? 'shape';
     if (mode === 'career' && !careerAnswers[key]) {
       setCareerAnswer(career.getRandomUnguessed());
@@ -66,7 +80,7 @@ function App() {
     if (mode === 'career') {
       if (status === 'won') {
         career.markCompleted(answer.name, guesses.length);
-        setTimeout(() => setShowMap(true), 1500);
+        setTimeout(() => setCareerView('map'), 1500);
       } else {
         career.markFailed(answer.name, guesses.length);
       }
@@ -74,7 +88,7 @@ function App() {
   }, [mode, status]);
 
   const handleCareerNext = useCallback(() => {
-    setShowMap(false);
+    setCareerView('game');
     const next = career.getRandomUnguessed();
     setCareerAnswer(next);
   }, [career.getRandomUnguessed]);
@@ -108,11 +122,12 @@ function App() {
           <CareerStats
             completed={career.completedCount}
             total={career.totalCount}
-            showMap={showMap}
-            onToggleMap={() => setShowMap((v) => !v)}
+            view={careerView}
+            onToggleMap={() => setCareerView((v) => v === 'map' ? 'game' : 'map')}
+            onToggleCollection={() => setCareerView((v) => v === 'collection' ? 'game' : 'collection')}
           />
         )}
-        <div className={`career-flip${mode === 'career' && showMap ? ' career-flip--map' : ''}`}>
+        <div ref={flipRef} className={`career-flip${mode === 'career' && careerView !== 'game' ? ` career-flip--${careerView}` : ''}`}>
           <div className="career-flip-face career-flip-front">
             {clueType === 'shape' ? (
               <MunicipalityShape name={answer.name} />
@@ -136,11 +151,14 @@ function App() {
               failed={career.failedSet}
               careerStats={career.progress.stats}
               currentMunicipality={status !== 'playing' && status === 'won' ? answer.name : undefined}
-              visible={showMap}
+              visible={careerView === 'map'}
             />
           </div>
+          <div className="career-flip-face career-flip-collection">
+            <CoatCollection completedSet={career.completedSet} careerStats={career.progress.stats} visible={careerView === 'collection'} />
+          </div>
         </div>
-        {status !== 'playing' && (
+        {status !== 'playing' && careerView !== 'collection' && (
           <GameOver
             status={status}
             guesses={guesses}

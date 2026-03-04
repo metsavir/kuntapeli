@@ -27,6 +27,12 @@
   transition: width 0.3s ease;
 }
 
+.career-toggle-group {
+  display: flex;
+  gap: 0.375rem;
+  flex-shrink: 0;
+}
+
 .career-map-toggle {
   flex-shrink: 0;
   padding: 0.25rem 0.5rem;
@@ -38,6 +44,11 @@
   color: var(--color-text-muted);
   cursor: pointer;
   white-space: nowrap;
+}
+
+.career-map-toggle--active {
+  color: var(--color-text);
+  border-color: var(--color-text-muted);
 }
 
 @media (hover: hover) {

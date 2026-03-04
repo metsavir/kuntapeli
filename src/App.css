@@ -50,6 +50,29 @@
   pointer-events: auto;
 }
 
+.career-flip-collection {
+  transform: rotateY(-180deg);
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+  max-height: 0;
+  transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out, max-height 0s 0.6s;
+}
+
+.career-flip--collection .career-flip-front {
+  transform: rotateY(180deg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.career-flip--collection .career-flip-collection {
+  transform: rotateY(0deg);
+  opacity: 1;
+  pointer-events: auto;
+  max-height: 70vh;
+  transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out, max-height 0s 0s;
+}
+
 @media (max-width: 374px) {
   .app-body {
     padding: 0.75rem;
