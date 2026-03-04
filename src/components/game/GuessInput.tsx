@@ -124,7 +124,7 @@ export function GuessInput({
             value={value}
             onChange={handleChange}
             onKeyDown={handleKeyDown}
-            placeholder={`Arvaa kunta... (${attemptsLeft} ${attemptsLeft === 1 ? 'yritys' : 'yritystä'} jäljellä)`}
+            placeholder={`Arvaa kunta... (${attemptsLeft} jäljellä)`}
             autoComplete="off"
             autoCapitalize="off"
             spellCheck={false}

@@ -72,7 +72,12 @@ export function CareerPanel({
         className={`career-flip${careerView !== 'game' ? ` career-flip--${careerView}` : ''}`}
       >
         <div className="career-flip-face career-flip-front">
-          {clue}
+          <div
+            className="clue-wrapper"
+            data-guesses={careerGame.guesses.length}
+          >
+            {clue}
+          </div>
           <GuessInput
             onSubmit={careerGame.submitGuess}
             onGiveUp={careerGame.giveUp}
@@ -83,6 +88,19 @@ export function CareerPanel({
             attemptsLeft={careerGame.attemptsLeft}
           />
           <GuessList guesses={careerGame.guesses} />
+          {careerGame.status !== 'playing' && (
+            <GameOver
+              status={careerGame.status}
+              guesses={careerGame.guesses}
+              answer={careerGame.answer}
+              dateStr={careerGame.dateStr}
+              mode="career"
+              stats={stats}
+              clueType={clueType}
+              careerComplete={careerComplete}
+              onNewGame={onNext}
+            />
+          )}
         </div>
         <div className="career-flip-face career-flip-back">
           <FinlandMap
@@ -105,21 +123,6 @@ export function CareerPanel({
           />
         </div>
       </div>
-      {careerGame.status !== 'playing' &&
-        careerView !== 'collection' &&
-        careerView !== 'map' && (
-          <GameOver
-            status={careerGame.status}
-            guesses={careerGame.guesses}
-            answer={careerGame.answer}
-            dateStr={careerGame.dateStr}
-            mode="career"
-            stats={stats}
-            clueType={clueType}
-            careerComplete={careerComplete}
-            onNewGame={onNext}
-          />
-        )}
     </main>
   );
 }

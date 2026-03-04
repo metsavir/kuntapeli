@@ -7,7 +7,7 @@
 
 .coat-of-arms-img {
   max-width: 200px;
-  max-height: 250px;
+  max-height: min(200px, 30vh);
   height: auto;
   width: auto;
   user-select: none;

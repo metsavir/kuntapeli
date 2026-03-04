@@ -9,7 +9,7 @@
   width: 100%;
   max-width: 250px;
   height: auto;
-  max-height: 250px;
+  max-height: min(200px, 30vh);
 }
 
 .municipality-shape path {
@@ -21,7 +21,7 @@
 
 .shape-loading,
 .shape-error {
-  min-height: 250px;
+  min-height: min(200px, 30vh);
   display: flex;
   align-items: center;
   justify-content: center;

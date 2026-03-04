@@ -24,9 +24,13 @@ export function GamePanel({
   careerComplete = false,
   onNewGame,
 }: GamePanelProps) {
+  const guessCount = game.guesses.length;
+
   return (
     <>
-      {clue}
+      <div className="clue-wrapper" data-guesses={guessCount}>
+        {clue}
+      </div>
       <GuessInput
         onSubmit={game.submitGuess}
         onGiveUp={game.giveUp}
