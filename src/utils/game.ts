@@ -1,4 +1,4 @@
-import type { Municipality, GuessResult } from '../data/types';
+import type { Municipality, GuessResult, ClueType } from '../data/types';
 import { municipalities } from '../data/municipalities';
 import {
   haversineDistance,
@@ -71,17 +71,24 @@ export function generateShareText(
   gameNumber: number,
   won: boolean,
   dateStr: string,
+  clueType: ClueType,
+  hintsUsed: number,
 ): string {
+  const mode = clueType === 'shape' ? 'Rajat' : 'Vaakunat';
   const distances = guesses.map((g) => g.distance);
   const chain = distances.join(' → ') + ' km';
   const date = formatDate(dateStr);
+  const hints =
+    hintsUsed > 0
+      ? ` · 💡 ${hintsUsed === 1 ? '1 vihje' : `${hintsUsed} vihjettä`}`
+      : '';
 
   if (won) {
-    return `Kuntapeli #${gameNumber} · ${date}\n✅ ${guesses.length}/6 arvausta\n\n📍 ${chain}\n\nhttps://kuntapeli.fi`;
+    return `Kuntapeli #${gameNumber} (${mode}) · ${date}\n✅ ${guesses.length}/6 arvausta${hints}\n\n📍 ${chain}`;
   }
 
   const closest = Math.min(...distances);
-  return `Kuntapeli #${gameNumber} · ${date}\n❌ 6/6 · lähin ${closest} km\n\n📍 ${chain}\n\nhttps://kuntapeli.fi`;
+  return `Kuntapeli #${gameNumber} (${mode}) · ${date}\n❌ 6/6 · lähin ${closest} km${hints}\n\n📍 ${chain}`;
 }
 
 export function getPopulationHint(population: number): string {

@@ -98,6 +98,7 @@ export function CareerPanel({
               mode="career"
               stats={stats}
               clueType={clueType}
+              hintsUsed={careerGame.hints.length}
               careerComplete={careerComplete}
               onNewGame={onNext}
             />
@@ -124,6 +125,7 @@ export function CareerPanel({
               mode="career"
               stats={stats}
               clueType={clueType}
+              hintsUsed={careerGame.hints.length}
               careerComplete={careerComplete}
               onNewGame={onNext}
             />

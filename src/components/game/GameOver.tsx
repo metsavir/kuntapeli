@@ -18,6 +18,7 @@ interface GameOverProps {
   mode: GameMode;
   stats: PlayerStats;
   clueType: ClueType;
+  hintsUsed: number;
   careerComplete?: boolean;
   onNewGame: () => void;
 }
@@ -30,6 +31,7 @@ export function GameOver({
   mode,
   stats,
   clueType,
+  hintsUsed,
   careerComplete,
   onNewGame,
 }: GameOverProps) {
@@ -42,6 +44,8 @@ export function GameOver({
       gameNumber,
       status === 'won',
       dateStr,
+      clueType,
+      hintsUsed,
     );
     await navigator.clipboard.writeText(text);
     setCopied(true);

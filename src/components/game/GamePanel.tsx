@@ -50,6 +50,7 @@ export function GamePanel({
           mode={mode}
           stats={stats}
           clueType={clueType}
+          hintsUsed={game.hints.length}
           careerComplete={careerComplete}
           onNewGame={onNewGame}
         />
