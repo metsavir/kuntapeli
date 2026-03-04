@@ -42,6 +42,27 @@
   }
 }
 
+.modal-overlay--closing {
+  animation: overlayFadeOut 0.2s ease-in forwards;
+}
+
+.modal--closing {
+  animation: modalSlideDown 0.2s ease-in forwards;
+}
+
+@keyframes overlayFadeOut {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes modalSlideDown {
+  to {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+}
+
 .modal h2 {
   margin: 0 0 1rem;
 }
