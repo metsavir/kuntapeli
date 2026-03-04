@@ -17,6 +17,8 @@ import { StatsModal } from './components/StatsModal';
 import { useStats } from './hooks/useStats';
 import './App.css';
 
+const MODES: GameMode[] = ['daily', 'casual', 'career'];
+
 function App() {
   const [mode, setMode] = useState<GameMode>('daily');
   const [clueType, setClueType] = useState<ClueType | null>(null);
@@ -27,21 +29,34 @@ function App() {
     setCareerAnswers((prev) => ({ ...prev, [clueType ?? 'shape']: m }));
   }, [clueType]);
 
-  const { guesses, status, answer, attemptsLeft, dateStr, submitGuess, showHint, hints, maxHints, giveUp, newGame } =
-    useGame(mode, { initialAnswer: mode === 'career' ? careerAnswer : undefined, clueType });
+  // Three independent game instances — one per mode
+  const daily = useGame('daily', { clueType });
+  const casual = useGame('casual', { clueType });
+  const careerGame = useGame('career', { initialAnswer: careerAnswer, clueType });
+
+  const games = { daily, casual, career: careerGame };
+
   const { stats, recordGame } = useStats();
   const [showHelp, setShowHelp] = useState(false);
   const [showStatsModal, setShowStatsModal] = useState(false);
   const [debug, setDebug] = useState(false);
   const [careerView, setCareerView] = useState<'game' | 'map' | 'collection'>('game');
   const flipRef = useRef<HTMLDivElement>(null);
+  const scrollerRef = useRef<HTMLDivElement>(null);
 
-  // When switching modes or clue type, reset career overlays and pick an unguessed municipality if needed
+  // Initialize career answer
+  useEffect(() => {
+    const key = clueType ?? 'shape';
+    if (!careerAnswers[key]) {
+      setCareerAnswer(career.getRandomUnguessed());
+    }
+  }, [clueType]);
+
+  // Reset career view when switching to career mode
   useEffect(() => {
     if (flipRef.current) {
       flipRef.current.style.transition = 'none';
       flipRef.current.querySelectorAll<HTMLElement>('.career-flip-face').forEach(el => el.style.transition = 'none');
-      // Force reflow then re-enable transitions
       flipRef.current.offsetHeight;
       requestAnimationFrame(() => {
         if (flipRef.current) {
@@ -51,41 +66,38 @@ function App() {
       });
     }
     setCareerView('game');
-    const key = clueType ?? 'shape';
-    if (mode === 'career' && !careerAnswers[key]) {
-      setCareerAnswer(career.getRandomUnguessed());
-    }
-  }, [mode, clueType]);
+  }, [mode]);
 
-  // On game end: record stats for all modes, handle career-specific logic
-  const prevStatus = useRef(status);
+  // On game end for any mode: record stats, handle career logic
+  const prevStatuses = useRef({ daily: daily.status, casual: casual.status, career: careerGame.status });
   useEffect(() => {
-    const wasPlaying = prevStatus.current === 'playing';
-    prevStatus.current = status;
+    for (const m of MODES) {
+      const g = games[m];
+      const prev = prevStatuses.current[m];
+      prevStatuses.current[m] = g.status;
 
-    if (status === 'playing' || !wasPlaying) return;
+      if (g.status === 'playing' || prev !== 'playing') continue;
 
-    // Record game for stats (all modes)
-    recordGame({
-      mode,
-      clueType: clueType ?? 'shape',
-      date: dateStr,
-      municipality: answer.name,
-      guesses: guesses.length,
-      won: status === 'won',
-      hintsUsed: hints.length,
-    });
+      recordGame({
+        mode: m,
+        clueType: clueType ?? 'shape',
+        date: g.dateStr,
+        municipality: g.answer.name,
+        guesses: g.guesses.length,
+        won: g.status === 'won',
+        hintsUsed: g.hints.length,
+      });
 
-    // Career-specific: mark progress and auto-show map on win
-    if (mode === 'career') {
-      if (status === 'won') {
-        career.markCompleted(answer.name, guesses.length);
-        setTimeout(() => setCareerView('map'), 1500);
-      } else {
-        career.markFailed(answer.name, guesses.length);
+      if (m === 'career') {
+        if (g.status === 'won') {
+          career.markCompleted(g.answer.name, g.guesses.length);
+          setTimeout(() => setCareerView('map'), 1500);
+        } else {
+          career.markFailed(g.answer.name, g.guesses.length);
+        }
       }
     }
-  }, [mode, status]);
+  }, [daily.status, casual.status, careerGame.status]);
 
   const handleCareerNext = useCallback(() => {
     setCareerView('game');
@@ -93,20 +105,58 @@ function App() {
     setCareerAnswer(next);
   }, [career.getRandomUnguessed]);
 
-  const handleNewGame = mode === 'career' ? handleCareerNext : newGame;
-  const careerComplete = mode === 'career' && career.completedCount === career.totalCount;
+  const careerComplete = career.completedCount === career.totalCount;
+
+  // Scroll-snap: scroll to correct panel on pill button click
+  const isProgScroll = useRef(false);
+  const scrollToMode = useCallback((m: GameMode) => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    isProgScroll.current = true;
+    const idx = MODES.indexOf(m);
+    el.scrollTo({ left: idx * el.offsetWidth, behavior: 'smooth' });
+  }, []);
+
+  // Set up scroller: initial position + scroll listener
+  const scrollCleanup = useRef<(() => void) | null>(null);
+  const initRef = useCallback((el: HTMLDivElement | null) => {
+    scrollCleanup.current?.();
+    scrollCleanup.current = null;
+    scrollerRef.current = el;
+    if (!el) return;
+
+    el.scrollLeft = MODES.indexOf(mode) * el.offsetWidth;
+
+    let scrollTimer: ReturnType<typeof setTimeout>;
+    const onScroll = () => {
+      if (isProgScroll.current) {
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(() => { isProgScroll.current = false; }, 100);
+        return;
+      }
+      const idx = Math.round(el.scrollLeft / el.offsetWidth);
+      const newMode = MODES[idx];
+      if (newMode) setMode(newMode);
+    };
+
+    el.addEventListener('scroll', onScroll, { passive: true });
+    scrollCleanup.current = () => el.removeEventListener('scroll', onScroll);
+  }, []);
 
   if (!clueType) {
     return <LandingPage onSelect={setClueType} />;
   }
 
+  const renderClue = (name: string) =>
+    clueType === 'shape' ? <MunicipalityShape name={name} /> : <CoatOfArms name={name} />;
+
   return (
     <div className="app">
       <Header
-        dateStr={dateStr}
+        dateStr={games[mode].dateStr}
         mode={mode}
         careerCount={`${career.completedCount}/${career.totalCount}`}
-        onModeChange={setMode}
+        onModeChange={(m) => { setMode(m); scrollToMode(m); }}
         onBack={() => { setClueType(null); setMode('daily'); }}
         onStats={() => setShowStatsModal(true)}
         onHelp={() => setShowHelp(true)}
@@ -114,11 +164,68 @@ function App() {
       />
       {debug && (
         <div style={{ background: '#ff000030', color: '#ff8888', textAlign: 'center', padding: '0.25rem', fontSize: '0.75rem', fontFamily: 'monospace' }}>
-          DEBUG: {answer.name} ({answer.region})
+          DEBUG: {games[mode].answer.name} ({games[mode].answer.region})
         </div>
       )}
-      <main className="app-body">
-        {mode === 'career' && (
+      <div className="mode-scroller" ref={initRef}>
+        {/* Daily panel */}
+        <main className="app-body">
+          {renderClue(daily.answer.name)}
+          <GuessInput
+            onSubmit={daily.submitGuess}
+            onGiveUp={daily.giveUp}
+            onHint={daily.showHint}
+            hints={daily.hints}
+            maxHints={daily.maxHints}
+            disabled={daily.status !== 'playing'}
+            attemptsLeft={daily.attemptsLeft}
+          />
+          <GuessList guesses={daily.guesses} />
+          {daily.status !== 'playing' && (
+            <GameOver
+              status={daily.status}
+              guesses={daily.guesses}
+              answer={daily.answer}
+              dateStr={daily.dateStr}
+              mode="daily"
+              stats={stats}
+              clueType={clueType}
+              careerComplete={false}
+              onNewGame={daily.newGame}
+            />
+          )}
+        </main>
+
+        {/* Casual panel */}
+        <main className="app-body">
+          {renderClue(casual.answer.name)}
+          <GuessInput
+            onSubmit={casual.submitGuess}
+            onGiveUp={casual.giveUp}
+            onHint={casual.showHint}
+            hints={casual.hints}
+            maxHints={casual.maxHints}
+            disabled={casual.status !== 'playing'}
+            attemptsLeft={casual.attemptsLeft}
+          />
+          <GuessList guesses={casual.guesses} />
+          {casual.status !== 'playing' && (
+            <GameOver
+              status={casual.status}
+              guesses={casual.guesses}
+              answer={casual.answer}
+              dateStr={casual.dateStr}
+              mode="casual"
+              stats={stats}
+              clueType={clueType}
+              careerComplete={false}
+              onNewGame={casual.newGame}
+            />
+          )}
+        </main>
+
+        {/* Career panel */}
+        <main className="app-body">
           <CareerStats
             completed={career.completedCount}
             total={career.totalCount}
@@ -126,52 +233,48 @@ function App() {
             onToggleMap={() => setCareerView((v) => v === 'map' ? 'game' : 'map')}
             onToggleCollection={() => setCareerView((v) => v === 'collection' ? 'game' : 'collection')}
           />
-        )}
-        <div ref={flipRef} className={`career-flip${mode === 'career' && careerView !== 'game' ? ` career-flip--${careerView}` : ''}`}>
-          <div className="career-flip-face career-flip-front">
-            {clueType === 'shape' ? (
-              <MunicipalityShape name={answer.name} />
-            ) : (
-              <CoatOfArms name={answer.name} />
-            )}
-            <GuessInput
-              onSubmit={submitGuess}
-              onGiveUp={giveUp}
-              onHint={showHint}
-              hints={hints}
-              maxHints={maxHints}
-              disabled={status !== 'playing'}
-              attemptsLeft={attemptsLeft}
+          <div ref={flipRef} className={`career-flip${careerView !== 'game' ? ` career-flip--${careerView}` : ''}`}>
+            <div className="career-flip-face career-flip-front">
+              {renderClue(careerGame.answer.name)}
+              <GuessInput
+                onSubmit={careerGame.submitGuess}
+                onGiveUp={careerGame.giveUp}
+                onHint={careerGame.showHint}
+                hints={careerGame.hints}
+                maxHints={careerGame.maxHints}
+                disabled={careerGame.status !== 'playing'}
+                attemptsLeft={careerGame.attemptsLeft}
+              />
+              <GuessList guesses={careerGame.guesses} />
+            </div>
+            <div className="career-flip-face career-flip-back">
+              <FinlandMap
+                completed={career.completedSet}
+                failed={career.failedSet}
+                careerStats={career.progress.stats}
+                currentMunicipality={careerGame.status !== 'playing' && careerGame.status === 'won' ? careerGame.answer.name : undefined}
+                visible={careerView === 'map'}
+              />
+            </div>
+            <div className="career-flip-face career-flip-collection">
+              <CoatCollection completedSet={career.completedSet} careerStats={career.progress.stats} visible={careerView === 'collection'} />
+            </div>
+          </div>
+          {careerGame.status !== 'playing' && careerView !== 'collection' && (
+            <GameOver
+              status={careerGame.status}
+              guesses={careerGame.guesses}
+              answer={careerGame.answer}
+              dateStr={careerGame.dateStr}
+              mode="career"
+              stats={stats}
+              clueType={clueType}
+              careerComplete={careerComplete}
+              onNewGame={handleCareerNext}
             />
-            <GuessList guesses={guesses} />
-          </div>
-          <div className="career-flip-face career-flip-back">
-            <FinlandMap
-              completed={career.completedSet}
-              failed={career.failedSet}
-              careerStats={career.progress.stats}
-              currentMunicipality={status !== 'playing' && status === 'won' ? answer.name : undefined}
-              visible={careerView === 'map'}
-            />
-          </div>
-          <div className="career-flip-face career-flip-collection">
-            <CoatCollection completedSet={career.completedSet} careerStats={career.progress.stats} visible={careerView === 'collection'} />
-          </div>
-        </div>
-        {status !== 'playing' && careerView !== 'collection' && (
-          <GameOver
-            status={status}
-            guesses={guesses}
-            answer={answer}
-            dateStr={dateStr}
-            mode={mode}
-            stats={stats}
-            clueType={clueType!}
-            careerComplete={careerComplete}
-            onNewGame={handleNewGame}
-          />
-        )}
-      </main>
+          )}
+        </main>
+      </div>
       {showHelp && <HelpModal onClose={() => setShowHelp(false)} />}
       {showStatsModal && (
         <StatsModal

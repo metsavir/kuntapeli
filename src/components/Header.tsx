@@ -1,7 +1,9 @@
-import { useRef } from 'react';
+import { useRef, useLayoutEffect } from 'react';
 import type { GameMode } from '../data/types';
 import { getGameNumber } from '../utils/game';
 import './Header.css';
+
+const MODES: GameMode[] = ['daily', 'casual', 'career'];
 
 interface HeaderProps {
   dateStr: string;
@@ -17,6 +19,31 @@ interface HeaderProps {
 export function Header({ dateStr, mode, careerCount, onModeChange, onBack, onStats, onHelp, onDebugToggle }: HeaderProps) {
   const gameNumber = getGameNumber(dateStr);
   const tapRef = useRef<{ count: number; timer: ReturnType<typeof setTimeout> | undefined }>({ count: 0, timer: undefined });
+  const toggleRef = useRef<HTMLDivElement>(null);
+  const indicatorRef = useRef<HTMLDivElement>(null);
+  const firstRender = useRef(true);
+
+  useLayoutEffect(() => {
+    const container = toggleRef.current;
+    const el = indicatorRef.current;
+    if (!container || !el) return;
+    const idx = MODES.indexOf(mode);
+    const btn = container.children[idx + 1] as HTMLElement; // +1 to skip the indicator div
+    if (!btn) return;
+
+    if (firstRender.current) {
+      el.style.transition = 'none';
+    }
+    el.style.left = btn.offsetLeft + 'px';
+    el.style.width = btn.offsetWidth + 'px';
+    el.style.visibility = 'visible';
+
+    if (firstRender.current) {
+      el.offsetHeight; // force reflow
+      el.style.transition = '';
+      firstRender.current = false;
+    }
+  }, [mode]);
 
   const handleTitleClick = () => {
     tapRef.current.count++;
@@ -44,7 +71,8 @@ export function Header({ dateStr, mode, careerCount, onModeChange, onBack, onSta
       <div className="header-center">
         <h1 className="header-title" onClick={handleTitleClick}>Kuntapeli</h1>
         <span className="header-game-number">{subtitle}</span>
-        <div className="mode-toggle">
+        <div className="mode-toggle" ref={toggleRef}>
+          <div className="mode-indicator" ref={indicatorRef} style={{ visibility: 'hidden' }} />
           <button
             className={`mode-pill${mode === 'daily' ? ' mode-pill--active' : ''}`}
             onClick={() => onModeChange('daily')}
