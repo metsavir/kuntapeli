@@ -5,20 +5,17 @@ import type {
   ClueType,
   CareerProgress,
 } from '../../data/types';
-import type { BadgeState } from '../../data/badges';
 import { CareerHistory } from '../career/CareerHistory';
-import { BadgeGrid } from './BadgeGrid';
 import { Modal } from '../Modal';
 import { MAX_GUESSES } from '../../utils/game';
 import './StatsModal.css';
 
-type Tab = 'all' | 'daily' | 'casual' | 'career' | 'badges';
+type Tab = 'all' | 'daily' | 'casual' | 'career';
 
 interface StatsModalProps {
   stats: PlayerStats;
   careerProgress: CareerProgress;
   clueType: ClueType;
-  badgeState: BadgeState;
   initialTab?: Tab;
   onClose: () => void;
 }
@@ -114,14 +111,12 @@ const TABS: { key: Tab; label: string }[] = [
   { key: 'daily', label: 'Päivittäinen' },
   { key: 'casual', label: 'Harjoittelu' },
   { key: 'career', label: 'Ura' },
-  { key: 'badges', label: 'Saavutukset' },
 ];
 
 export function StatsModal({
   stats,
   careerProgress,
   clueType,
-  badgeState,
   initialTab = 'all',
   onClose,
 }: StatsModalProps) {
@@ -262,8 +257,6 @@ export function StatsModal({
           ))}
 
         {tab === 'career' && <CareerHistory progress={careerProgress} />}
-
-        {tab === 'badges' && <BadgeGrid badgeState={badgeState} />}
       </div>
     </Modal>
   );

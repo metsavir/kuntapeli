@@ -11,6 +11,7 @@ import { MunicipalityShape } from './components/career/MunicipalityShape';
 import { CoatOfArms } from './components/career/CoatOfArms';
 import { LandingPage } from './components/LandingPage';
 import { StatsModal } from './components/stats/StatsModal';
+import { BadgeModal } from './components/stats/BadgeModal';
 import { UpdateBanner } from './components/UpdateBanner';
 import { BadgeToast } from './components/BadgeToast';
 import { useStats } from './hooks/useStats';
@@ -57,6 +58,7 @@ function App() {
   }, [stats, career.progress]);
   const [showHelp, setShowHelp] = useState(false);
   const [showStatsModal, setShowStatsModal] = useState(false);
+  const [showBadgesModal, setShowBadgesModal] = useState(false);
   const [debug, setDebug] = useState(false);
   const [careerView, setCareerView] = useState<'game' | 'map' | 'collection'>(
     'game',
@@ -144,6 +146,7 @@ function App() {
           setMode('daily');
         }}
         onStats={() => setShowStatsModal(true)}
+        onBadges={() => setShowBadgesModal(true)}
         onHelp={() => setShowHelp(true)}
         onDebugToggle={
           import.meta.env.DEV ? () => setDebug((d) => !d) : undefined
@@ -208,9 +211,14 @@ function App() {
           stats={stats}
           careerProgress={career.progress}
           clueType={clueType}
-          badgeState={badgeState}
           initialTab={mode}
           onClose={() => setShowStatsModal(false)}
+        />
+      )}
+      {showBadgesModal && (
+        <BadgeModal
+          badgeState={badgeState}
+          onClose={() => setShowBadgesModal(false)}
         />
       )}
       {newlyUnlocked && (
