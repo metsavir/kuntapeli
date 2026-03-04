@@ -37,6 +37,9 @@ export function useCareer(clueType: ClueType) {
   }, [clueType, progress]);
 
   const completedSet = new Set(progress.completed);
+  const failedSet = new Set(
+    (progress.failures ?? []).map((f) => f.name).filter((n) => !completedSet.has(n))
+  );
 
   const markCompleted = useCallback((name: string, attempts: number) => {
     setProgress((prev) => {
@@ -81,6 +84,7 @@ export function useCareer(clueType: ClueType) {
   return {
     progress,
     completedSet,
+    failedSet,
     completedCount: progress.completed.length,
     totalCount: municipalities.length,
     markCompleted,

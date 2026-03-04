@@ -12,15 +12,9 @@ import { CoatOfArms } from './components/CoatOfArms';
 import { LandingPage } from './components/LandingPage';
 import { FinlandMap } from './components/FinlandMap';
 import { CareerStats } from './components/CareerStats';
-import { PersonalComparison } from './components/PersonalComparison';
 import { StatsModal } from './components/StatsModal';
 import { useStats } from './hooks/useStats';
 import './App.css';
-
-// Career view phases after game ends:
-// 'shape'  → still showing the isolated shape (initial win/loss view)
-// 'map'    → transitioned to Finland map with municipality highlighted
-type CareerPhase = 'shape' | 'map';
 
 function App() {
   const [mode, setMode] = useState<GameMode>('daily');
@@ -39,8 +33,6 @@ function App() {
   const [showStatsModal, setShowStatsModal] = useState(false);
   const [debug, setDebug] = useState(false);
   const [showMap, setShowMap] = useState(false);
-  const [careerPhase, setCareerPhase] = useState<CareerPhase>('shape');
-  const timerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   // When switching modes or clue type, reset career overlays and pick an unguessed municipality if needed
   useEffect(() => {
@@ -70,36 +62,25 @@ function App() {
       hintsUsed: hints.length,
     });
 
-    // Career-specific: mark progress and transition to map
+    // Career-specific: mark progress and auto-show map on win
     if (mode === 'career') {
       if (status === 'won') {
         career.markCompleted(answer.name, guesses.length);
+        setTimeout(() => setShowMap(true), 1500);
       } else {
         career.markFailed(answer.name, guesses.length);
       }
-
-      timerRef.current = setTimeout(() => {
-        setCareerPhase('map');
-      }, 1500);
     }
-
-    return () => clearTimeout(timerRef.current);
   }, [mode, status]);
 
   const handleCareerNext = useCallback(() => {
     setShowMap(false);
-    setCareerPhase('shape');
-    clearTimeout(timerRef.current);
     const next = career.getRandomUnguessed();
     setCareerAnswer(next);
   }, [career.getRandomUnguessed]);
 
   const handleNewGame = mode === 'career' ? handleCareerNext : newGame;
   const careerComplete = mode === 'career' && career.completedCount === career.totalCount;
-
-  // Show map if: auto-revealed after win, OR manually toggled
-  const isCareerMapPhase = mode === 'career' && status !== 'playing' && careerPhase === 'map';
-  const mapVisible = mode === 'career' && (isCareerMapPhase || showMap);
 
   if (!clueType) {
     return <LandingPage onSelect={setClueType} />;
@@ -131,39 +112,8 @@ function App() {
             onToggleMap={() => setShowMap((v) => !v)}
           />
         )}
-        {mapVisible ? (
-          <>
-            <div className={isCareerMapPhase ? 'career-map-reveal' : undefined}>
-              <FinlandMap
-                completed={career.completedSet}
-                currentMunicipality={status === 'won' ? answer.name : undefined}
-              />
-            </div>
-            {status !== 'playing' && (
-              <div className="game-over career-map-actions">
-                <p className="game-over-message">
-                  {status === 'won' ? 'Oikein' : 'Oikea vastaus'}: <strong>{answer.name}</strong> ({answer.region})
-                </p>
-                <PersonalComparison
-                  municipality={answer.name}
-                  population={answer.population}
-                  attempts={guesses.length}
-                  won={status === 'won'}
-                  stats={stats}
-                  clueType={clueType!}
-                />
-                {careerComplete ? (
-                  <p className="career-complete-message">Kaikki 308 kuntaa suoritettu!</p>
-                ) : (
-                  <button className="new-game-button" onClick={handleNewGame}>
-                    Seuraava
-                  </button>
-                )}
-              </div>
-            )}
-          </>
-        ) : (
-          <>
+        <div className={`career-flip${mode === 'career' && showMap ? ' career-flip--map' : ''}`}>
+          <div className="career-flip-face career-flip-front">
             {clueType === 'shape' ? (
               <MunicipalityShape name={answer.name} />
             ) : (
@@ -179,20 +129,29 @@ function App() {
               attemptsLeft={attemptsLeft}
             />
             <GuessList guesses={guesses} />
-            {status !== 'playing' && (
-              <GameOver
-                status={status}
-                guesses={guesses}
-                answer={answer}
-                dateStr={dateStr}
-                mode={mode}
-                stats={stats}
-                clueType={clueType!}
-                careerComplete={careerComplete}
-                onNewGame={handleNewGame}
-              />
-            )}
-          </>
+          </div>
+          <div className="career-flip-face career-flip-back">
+            <FinlandMap
+              completed={career.completedSet}
+              failed={career.failedSet}
+              careerStats={career.progress.stats}
+              currentMunicipality={status !== 'playing' && status === 'won' ? answer.name : undefined}
+              visible={showMap}
+            />
+          </div>
+        </div>
+        {status !== 'playing' && (
+          <GameOver
+            status={status}
+            guesses={guesses}
+            answer={answer}
+            dateStr={dateStr}
+            mode={mode}
+            stats={stats}
+            clueType={clueType!}
+            careerComplete={careerComplete}
+            onNewGame={handleNewGame}
+          />
         )}
       </main>
       {showHelp && <HelpModal onClose={() => setShowHelp(false)} />}

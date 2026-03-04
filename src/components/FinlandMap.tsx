@@ -1,18 +1,32 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { getAllShapes } from '../data/shapes';
 import { municipalities } from '../data/municipalities';
-import type { MunicipalityShape } from '../data/types';
+import type { Municipality, MunicipalityShape } from '../data/types';
 import './FinlandMap.css';
 
 interface FinlandMapProps {
   completed: Set<string>;
+  failed: Set<string>;
+  careerStats: Record<string, { attempts: number; date: string }>;
   currentMunicipality?: string;
+  visible?: boolean;
 }
 
-// Build name → region lookup
+// Build name → region and name → municipality lookups
 const regionByName: Record<string, string> = {};
+const municipalityByName: Record<string, Municipality> = {};
 for (const m of municipalities) {
   regionByName[m.name] = m.region;
+  municipalityByName[m.name] = m;
+}
+
+function formatPopulation(pop: number): string {
+  return pop.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '\u00A0');
+}
+
+function formatDate(dateStr: string): string {
+  const d = new Date(dateStr);
+  return `${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}`;
 }
 
 function getRings(shape: MunicipalityShape): number[][][] {
@@ -76,27 +90,22 @@ function computeViewBox(bbox: BBox, pad: number): { viewBox: string; originLng: 
   return { viewBox: `0 0 ${vw} ${vh}`, originLng, originLat, cosLat };
 }
 
-export function FinlandMap({ completed, currentMunicipality }: FinlandMapProps) {
+export function FinlandMap({ completed, failed, careerStats, currentMunicipality, visible = true }: FinlandMapProps) {
   const [allShapes, setAllShapes] = useState<Record<string, MunicipalityShape> | null>(null);
   const [zoomedRegion, setZoomedRegion] = useState<string | null>(null);
   const [hoveredRegion, setHoveredRegion] = useState<string | null>(null);
-  const [tooltip, setTooltip] = useState<{ name: string; x: number; y: number } | null>(null);
-  const [animating, setAnimating] = useState(false);
+  const [selected, setSelected] = useState<string | null>(null);
+  // Increment pulseKey when map becomes visible with a currentMunicipality to re-trigger animation
+  const [pulseKey, setPulseKey] = useState(0);
+  useEffect(() => {
+    if (visible && currentMunicipality) {
+      setPulseKey((k) => k + 1);
+    }
+  }, [visible, currentMunicipality]);
 
   useEffect(() => {
     getAllShapes().then(setAllShapes);
   }, []);
-
-  useEffect(() => {
-    if (!currentMunicipality) {
-      setAnimating(false);
-      return;
-    }
-    setAnimating(true);
-    // 1.2s × 2 iterations = 2.4s
-    const timer = setTimeout(() => setAnimating(false), 2400);
-    return () => clearTimeout(timer);
-  }, [currentMunicipality]);
 
   // Group names by region
   const regionNames = useMemo(() => {
@@ -127,7 +136,6 @@ export function FinlandMap({ completed, currentMunicipality }: FinlandMapProps) 
     const regionViewBoxes = new Map<string, string>();
     for (const [region, names] of regionNames) {
       const bbox = bboxFromNames(names, allShapes);
-      // Convert region bbox to global coordinate space
       const x1 = (bbox.minLng - global.originLng) * global.cosLat;
       const y1 = global.originLat - bbox.maxLat;
       const w = (bbox.maxLng - bbox.minLng) * global.cosLat;
@@ -142,11 +150,23 @@ export function FinlandMap({ completed, currentMunicipality }: FinlandMapProps) 
   const handleClick = useCallback((name: string) => {
     const region = regionByName[name];
     if (!region) return;
-    setZoomedRegion((prev) => prev === region ? null : region);
-  }, []);
+
+    if (zoomedRegion) {
+      // Zoomed in — tap to select/deselect municipality
+      const isKnown = completed.has(name) || failed.has(name) || name === currentMunicipality;
+      if (isKnown) {
+        setSelected((prev) => prev === name ? null : name);
+      }
+    } else {
+      // Zoomed out — tap to zoom into region
+      setZoomedRegion(region);
+      setSelected(null);
+    }
+  }, [zoomedRegion, completed, failed, currentMunicipality]);
 
   const handleBackClick = useCallback(() => {
     setZoomedRegion(null);
+    setSelected(null);
   }, []);
 
   if (!mapData) {
@@ -172,38 +192,23 @@ export function FinlandMap({ completed, currentMunicipality }: FinlandMapProps) 
         {mapData.paths
           .filter(({ region }) => !zoomedRegion || region === zoomedRegion)
           .map(({ name, region, d }) => {
-          const isCompleted = completed.has(name);
           const isCurrent = name === currentMunicipality;
-          const showLabel = zoomedRegion && (isCompleted || isCurrent);
+          const isCompleted = completed.has(name);
+          const isKnown = isCurrent || isCompleted;
+          const className = isCurrent
+            ? 'fm-current'
+            : isCompleted
+              ? 'fm-completed'
+              : 'fm-pending';
           return (
             <path
-              key={name}
+              key={isCurrent ? `${name}-${pulseKey}` : name}
               d={d}
               fillRule="evenodd"
-              className={[
-                isCurrent
-                  ? 'fm-current'
-                  : isCompleted
-                    ? 'fm-completed'
-                    : 'fm-pending',
-                tooltip?.name === name ? 'fm-municipality-hover' : '',
-              ].join(' ')}
-              onClick={animating ? undefined : () => handleClick(name)}
-              onMouseEnter={animating ? undefined : (e) => {
-                setHoveredRegion(region);
-                if (showLabel) {
-                  const svg = e.currentTarget.ownerSVGElement!;
-                  const pt = svg.createSVGPoint();
-                  pt.x = e.clientX;
-                  pt.y = e.clientY;
-                  const svgPt = pt.matrixTransform(svg.getScreenCTM()!.inverse());
-                  setTooltip({ name, x: svgPt.x, y: svgPt.y });
-                }
-              }}
-              onMouseLeave={animating ? undefined : () => {
-                setHoveredRegion(null);
-                setTooltip(null);
-              }}
+              className={`${className}${selected === name ? ' fm-selected' : ''}${zoomedRegion && isKnown ? ' fm-clickable' : ''}`}
+              onClick={() => handleClick(name)}
+              onMouseEnter={!zoomedRegion ? () => setHoveredRegion(region) : undefined}
+              onMouseLeave={!zoomedRegion ? () => setHoveredRegion(null) : undefined}
             />
           );
         })}
@@ -218,17 +223,33 @@ export function FinlandMap({ completed, currentMunicipality }: FinlandMapProps) 
             pointerEvents="none"
           />
         )}
-        {tooltip && (
-          <text
-            x={tooltip.x}
-            y={tooltip.y}
-            className="fm-tooltip"
-            textAnchor="middle"
-          >
-            {tooltip.name}
-          </text>
-        )}
       </svg>
+      {selected && (() => {
+        const m = municipalityByName[selected];
+        const isCompleted = completed.has(selected);
+        const stat = careerStats[selected];
+        return (
+          <div className="fm-card">
+            {isCompleted && (
+              <img
+                src={`${import.meta.env.BASE_URL}coats/${selected}.png`}
+                alt=""
+                className="fm-card-coat"
+                draggable={false}
+              />
+            )}
+            <div className="fm-card-info">
+              <div className="fm-card-name">{selected}</div>
+              <div className="fm-card-detail">{m.region} — {formatPopulation(m.population)} asukasta</div>
+              {stat && (
+                <div className="fm-card-detail">
+                  {stat.attempts === 1 ? '1 arvaus' : `${stat.attempts} arvausta`} — {formatDate(stat.date)}
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }

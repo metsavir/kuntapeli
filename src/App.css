@@ -15,28 +15,39 @@
   padding: 1rem;
 }
 
-.career-map-reveal {
-  animation: map-fade-in 0.6s ease-out;
+.career-flip {
+  display: grid;
+  perspective: 1000px;
 }
 
-@keyframes map-fade-in {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+.career-flip-face {
+  grid-area: 1 / 1;
+  backface-visibility: hidden;
+  transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out;
 }
 
-.career-map-actions {
-  animation: actions-fade-in 0.5s ease-out 0.6s both;
+.career-flip-front {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-@keyframes actions-fade-in {
-  from { opacity: 0; transform: translateY(0.5rem); }
-  to { opacity: 1; transform: translateY(0); }
+.career-flip--map .career-flip-front {
+  transform: rotateY(180deg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.career-flip-back {
+  transform: rotateY(-180deg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.career-flip--map .career-flip-back {
+  transform: rotateY(0deg);
+  opacity: 1;
+  pointer-events: auto;
 }
 
 @media (max-width: 374px) {
