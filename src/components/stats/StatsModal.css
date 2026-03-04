@@ -42,6 +42,11 @@
 .stats-content {
   max-height: 55vh;
   overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.stats-content::-webkit-scrollbar {
+  display: none;
 }
 
 /* Summary grid — mirrors career-summary-grid */
