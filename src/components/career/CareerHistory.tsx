@@ -33,26 +33,6 @@ function computeStats(progress: CareerProgress) {
   const firstTry = attempts.filter((a) => a === 1).length;
   const winRate = Math.round((total / gamesPlayed) * 100);
 
-  // Region breakdown
-  const regionMap = new Map<string, { total: number; completed: number }>();
-  for (const m of municipalities) {
-    const entry = regionMap.get(m.region) ?? { total: 0, completed: 0 };
-    entry.total++;
-    regionMap.set(m.region, entry);
-  }
-  for (const e of entries) {
-    const entry = regionMap.get(e.region);
-    if (entry) entry.completed++;
-  }
-  const regions = [...regionMap.entries()]
-    .map(([region, { total, completed }]) => ({
-      region,
-      total,
-      completed,
-      pct: Math.round((completed / total) * 100),
-    }))
-    .sort((a, b) => b.pct - a.pct || b.completed - a.completed);
-
   return {
     total,
     gamesPlayed,
@@ -62,7 +42,6 @@ function computeStats(progress: CareerProgress) {
     firstTryPct: total > 0 ? Math.round((firstTry / total) * 100) : 0,
     winRate,
     failCount,
-    regions,
   };
 }
 
@@ -114,24 +93,6 @@ export function CareerHistory({ progress }: CareerHistoryProps) {
             <span className="career-summary-label">epäonnistumisia</span>
           </div>
         </div>
-      </div>
-
-      <div className="career-section-title">Maakunnat</div>
-      <div className="career-regions">
-        {stats.regions.map(({ region, total, completed, pct }) => (
-          <div key={region} className="career-region-row">
-            <span className="career-region-name">{region}</span>
-            <div className="career-region-bar">
-              <div
-                className="career-region-fill"
-                style={{ width: `${pct}%` }}
-              />
-            </div>
-            <span className="career-region-count">
-              {completed}/{total}
-            </span>
-          </div>
-        ))}
       </div>
 
       <div className="career-section-title">Historia</div>

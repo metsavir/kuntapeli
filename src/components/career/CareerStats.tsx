@@ -34,14 +34,14 @@ export function CareerStats({
               className={`career-map-toggle${view === 'collection' ? ' career-map-toggle--active' : ''}`}
               onClick={onToggleCollection}
             >
-              {view === 'collection' ? 'Piilota' : 'Kokoelma'}
+              Kokoelma
             </button>
           )}
           <button
             className={`career-map-toggle${view === 'map' ? ' career-map-toggle--active' : ''}`}
             onClick={onToggleMap}
           >
-            {view === 'map' ? 'Piilota kartta' : 'Kartta'}
+            Kartta
           </button>
         </div>
       </div>

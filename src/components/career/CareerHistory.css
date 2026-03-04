@@ -63,53 +63,6 @@
   margin-top: 0.25rem;
 }
 
-/* Region breakdown */
-.career-regions {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.career-region-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.75rem;
-}
-
-.career-region-name {
-  width: 7rem;
-  flex-shrink: 0;
-  color: var(--color-text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.career-region-bar {
-  flex: 1;
-  height: 0.375rem;
-  background: var(--color-bg);
-  border-radius: 999px;
-  overflow: hidden;
-}
-
-.career-region-fill {
-  height: 100%;
-  background: var(--color-correct);
-  border-radius: 999px;
-  transition: width 0.3s ease;
-}
-
-.career-region-count {
-  font-size: 0.7rem;
-  color: var(--color-text-muted);
-  font-weight: 600;
-  width: 2.5rem;
-  text-align: right;
-  flex-shrink: 0;
-}
-
 /* History entries */
 .career-entries {
   display: flex;
