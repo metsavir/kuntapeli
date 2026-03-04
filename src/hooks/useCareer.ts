@@ -79,10 +79,12 @@ export function useCareer(clueType: ClueType) {
       if (completedSet.has(m.name)) entry.completed++;
       regionMap.set(m.region, entry);
     }
-    return [...regionMap.entries()].map(([region, counts]) => ({
-      region,
-      ...counts,
-    }));
+    return [...regionMap.entries()]
+      .map(([region, counts]) => ({
+        region,
+        ...counts,
+      }))
+      .sort((a, b) => a.region.localeCompare(b.region, 'fi'));
   }, [completedSet]);
 
   return {
