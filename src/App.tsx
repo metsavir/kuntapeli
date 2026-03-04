@@ -116,9 +116,7 @@ function App() {
   return (
     <div className="app">
       <Header
-        dateStr={games[mode].dateStr}
         mode={mode}
-        careerCount={`${career.completedCount}/${career.totalCount}`}
         onModeChange={(m) => {
           setMode(m);
           scrollToMode(m);
