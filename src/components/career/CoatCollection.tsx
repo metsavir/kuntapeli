@@ -45,7 +45,7 @@ export function CoatCollection({
   }, [completedSet]);
 
   return (
-    <div className="coat-collection" ref={scrollRef}>
+    <div className="coat-collection" ref={scrollRef} onClick={() => setSelected(null)}>
       {selected &&
         (() => {
           const m = municipalityByName[selected];
@@ -54,7 +54,7 @@ export function CoatCollection({
             <div className="coat-collection-card-wrap">
               <div
                 className="coat-collection-card"
-                onClick={() => setSelected(null)}
+                onClick={(e) => e.stopPropagation()}
               >
                 <img
                   src={`${import.meta.env.BASE_URL}coats/${selected}.png`}
@@ -96,9 +96,10 @@ export function CoatCollection({
                   <button
                     key={name}
                     className={`coat-collection-cell${done ? ' coat-collection-cell--done' : ''}`}
-                    onClick={() =>
-                      done && setSelected(selected === name ? null : name)
-                    }
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      done && setSelected(selected === name ? null : name);
+                    }}
                     aria-label={done ? name : undefined}
                   >
                     <img
