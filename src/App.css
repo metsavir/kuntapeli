@@ -6,6 +6,16 @@
   flex-direction: column;
   min-height: 100dvh;
   overflow: hidden;
+  animation: fade-in 150ms ease;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .mode-scroller {
@@ -108,14 +118,14 @@
   transition: max-height 0.3s ease;
 }
 
-.clue-wrapper[data-guesses="3"] .municipality-shape,
-.clue-wrapper[data-guesses="3"] .coat-of-arms-img,
-.clue-wrapper[data-guesses="4"] .municipality-shape,
-.clue-wrapper[data-guesses="4"] .coat-of-arms-img,
-.clue-wrapper[data-guesses="5"] .municipality-shape,
-.clue-wrapper[data-guesses="5"] .coat-of-arms-img,
-.clue-wrapper[data-guesses="6"] .municipality-shape,
-.clue-wrapper[data-guesses="6"] .coat-of-arms-img {
+.clue-wrapper[data-guesses='3'] .municipality-shape,
+.clue-wrapper[data-guesses='3'] .coat-of-arms-img,
+.clue-wrapper[data-guesses='4'] .municipality-shape,
+.clue-wrapper[data-guesses='4'] .coat-of-arms-img,
+.clue-wrapper[data-guesses='5'] .municipality-shape,
+.clue-wrapper[data-guesses='5'] .coat-of-arms-img,
+.clue-wrapper[data-guesses='6'] .municipality-shape,
+.clue-wrapper[data-guesses='6'] .coat-of-arms-img {
   max-height: min(120px, 18vh);
 }
 

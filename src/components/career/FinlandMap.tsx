@@ -50,8 +50,10 @@ export function FinlandMap({
   }, [visible, currentMunicipality]);
 
   useEffect(() => {
-    getAllShapes().then(setAllShapes);
-  }, []);
+    if (visible && !allShapes) {
+      getAllShapes().then(setAllShapes);
+    }
+  }, [visible]);
 
   // Group names by region
   const regionNames = useMemo(() => {
