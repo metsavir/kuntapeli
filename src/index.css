@@ -23,6 +23,8 @@ body {
   background: var(--color-bg);
   color: var(--color-text);
   -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
 }
 
 #root {
