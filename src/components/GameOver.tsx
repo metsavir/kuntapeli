@@ -22,21 +22,9 @@ export function GameOver({ status, guesses, answer, dateStr, mode, stats, clueTy
 
   const handleShare = async () => {
     const text = generateShareText(guesses, gameNumber, status === 'won', dateStr);
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // Fallback for older browsers
-      const textarea = document.createElement('textarea');
-      textarea.value = text;
-      document.body.appendChild(textarea);
-      textarea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textarea);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    }
+    await navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
@@ -53,8 +41,6 @@ export function GameOver({ status, guesses, answer, dateStr, mode, stats, clueTy
       <PersonalComparison
         municipality={answer.name}
         population={answer.population}
-        attempts={guesses.length}
-        won={status === 'won'}
         stats={stats}
         clueType={clueType}
       />

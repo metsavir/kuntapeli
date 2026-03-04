@@ -21,7 +21,7 @@ export type ClueType = 'shape' | 'coatOfArms';
 export interface CareerProgress {
   completed: string[];
   stats: Record<string, { attempts: number; date: string }>;
-  failures?: { name: string; guesses: number; date: string }[];
+  failures: { name: string; guesses: number; date: string }[];
 }
 
 export interface MunicipalityShape {
@@ -54,11 +54,5 @@ export interface DailyStreakInfo {
 
 export interface PlayerStats {
   games: GameRecord[];
-  /** @deprecated Use dailyStreaks instead */
-  dailyStreak?: number;
-  /** @deprecated Use dailyStreaks instead */
-  dailyMaxStreak?: number;
-  /** @deprecated Use dailyStreaks instead */
-  lastDailyDate?: string;
-  dailyStreaks?: Record<string, DailyStreakInfo>;
+  dailyStreaks: Record<string, DailyStreakInfo>;
 }

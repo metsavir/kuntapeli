@@ -9,25 +9,12 @@ function emptyStats(): PlayerStats {
   return { games: [], dailyStreaks: {} };
 }
 
-function migrateStats(raw: PlayerStats): PlayerStats {
-  // Migrate old flat streak fields → per-clueType dailyStreaks
-  if (!raw.dailyStreaks && raw.dailyStreak != null) {
-    return {
-      games: raw.games,
-      dailyStreaks: {
-        shape: { streak: raw.dailyStreak, maxStreak: raw.dailyMaxStreak ?? 0, lastDate: raw.lastDailyDate ?? '' },
-        coatOfArms: { ...emptyStreak },
-      },
-    };
-  }
-  return { games: raw.games, dailyStreaks: raw.dailyStreaks ?? {} };
-}
-
 function loadStats(): PlayerStats {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return emptyStats();
-    return migrateStats(JSON.parse(raw) as PlayerStats);
+    const parsed = JSON.parse(raw) as PlayerStats;
+    return { games: parsed.games, dailyStreaks: parsed.dailyStreaks ?? {} };
   } catch {
     return emptyStats();
   }

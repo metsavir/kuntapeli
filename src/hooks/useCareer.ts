@@ -10,13 +10,12 @@ function careerKey(clueType: ClueType): string {
 
 function loadCareer(clueType: ClueType): CareerProgress {
   try {
-    // Try clue-type-specific key first, fall back to legacy key for migration
-    const raw = localStorage.getItem(careerKey(clueType))
-      ?? (clueType === 'shape' ? localStorage.getItem('kuntapeli-career') : null);
-    if (!raw) return { completed: [], stats: {} };
-    return JSON.parse(raw) as CareerProgress;
+    const raw = localStorage.getItem(careerKey(clueType));
+    if (!raw) return { completed: [], stats: {}, failures: [] };
+    const parsed = JSON.parse(raw) as CareerProgress;
+    return { ...parsed, failures: parsed.failures ?? [] };
   } catch {
-    return { completed: [], stats: {} };
+    return { completed: [], stats: {}, failures: [] };
   }
 }
 
@@ -38,7 +37,7 @@ export function useCareer(clueType: ClueType) {
 
   const completedSet = new Set(progress.completed);
   const failedSet = new Set(
-    (progress.failures ?? []).map((f) => f.name).filter((n) => !completedSet.has(n))
+    progress.failures.map((f) => f.name).filter((n) => !completedSet.has(n))
   );
 
   const markCompleted = useCallback((name: string, attempts: number) => {
@@ -50,6 +49,7 @@ export function useCareer(clueType: ClueType) {
           ...prev.stats,
           [name]: { attempts, date: getTodayString() },
         },
+        failures: prev.failures,
       };
     });
   }, []);
@@ -57,7 +57,7 @@ export function useCareer(clueType: ClueType) {
   const markFailed = useCallback((name: string, guessCount: number) => {
     setProgress((prev) => ({
       ...prev,
-      failures: [...(prev.failures ?? []), { name, guesses: guessCount, date: getTodayString() }],
+      failures: [...prev.failures, { name, guesses: guessCount, date: getTodayString() }],
     }));
   }, []);
 

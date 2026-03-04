@@ -5,8 +5,6 @@ import './PersonalComparison.css';
 interface PersonalComparisonProps {
   municipality: string;
   population: number;
-  attempts: number;
-  won: boolean;
   stats: PlayerStats;
   clueType: ClueType;
 }
