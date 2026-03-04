@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import type { CareerProgress } from '../data/types';
-import { municipalities } from '../data/municipalities';
+import type { CareerProgress } from '../../data/types';
+import { municipalities } from '../../data/municipalities';
 import './CareerHistory.css';
 
 const regionByName: Record<string, string> = {};

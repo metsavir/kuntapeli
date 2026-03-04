@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
-import type { PlayerStats, ClueType } from '../data/types';
+import type { PlayerStats, ClueType } from '../../data/types';
+import { formatPopulation } from '../../utils/format';
 import './PersonalComparison.css';
 
 interface PersonalComparisonProps {
@@ -7,10 +8,6 @@ interface PersonalComparisonProps {
   population: number;
   stats: PlayerStats;
   clueType: ClueType;
-}
-
-function formatPopulation(pop: number): string {
-  return pop.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '\u00A0');
 }
 
 export function PersonalComparison({ municipality, population, stats, clueType }: PersonalComparisonProps) {

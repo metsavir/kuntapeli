@@ -1,6 +1,7 @@
 import type { Municipality, GuessResult } from '../data/types';
 import { municipalities } from '../data/municipalities';
 import { haversineDistance, bearing, bearingToDirection, proximity } from './geo';
+import { formatDate } from './format';
 
 // Deterministic daily answer from date string + clue type
 export function getDailyAnswer(dateStr: string, clueType: string = 'shape'): Municipality {
@@ -55,11 +56,6 @@ export function searchMunicipalities(query: string): Municipality[] {
   if (!query) return [];
   const lower = query.toLowerCase();
   return municipalities.filter((m) => m.name.toLowerCase().startsWith(lower));
-}
-
-function formatDate(dateStr: string): string {
-  const d = new Date(dateStr);
-  return `${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}`;
 }
 
 export function generateShareText(

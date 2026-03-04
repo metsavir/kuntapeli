@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
-import type { Municipality } from '../data/types';
-import { searchMunicipalities } from '../utils/game';
-import { Modal } from './Modal';
+import type { Municipality } from '../../data/types';
+import { searchMunicipalities } from '../../utils/game';
+import { Modal } from '../Modal';
 import './GuessInput.css';
 
 function GiveUpModal({ onConfirm, onCancel }: { onConfirm: () => void; onCancel: () => void }) {

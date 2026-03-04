@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import type { GuessResult, Municipality, GameMode, PlayerStats, ClueType } from '../data/types';
-import { generateShareText, getGameNumber } from '../utils/game';
+import type { GuessResult, Municipality, GameMode, PlayerStats, ClueType } from '../../data/types';
+import { generateShareText, getGameNumber } from '../../utils/game';
 import { PersonalComparison } from './PersonalComparison';
 import './GameOver.css';
 

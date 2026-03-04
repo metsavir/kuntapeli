@@ -1,7 +1,9 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { getAllShapes } from '../data/shapes';
-import { municipalities } from '../data/municipalities';
-import type { Municipality, MunicipalityShape } from '../data/types';
+import { getAllShapes } from '../../data/shapes';
+import { municipalities } from '../../data/municipalities';
+import type { Municipality, MunicipalityShape } from '../../data/types';
+import { formatPopulation, formatDate } from '../../utils/format';
+import { getRings, buildPath, bboxFromNames, computeViewBox } from '../../utils/mapGeometry';
 import './FinlandMap.css';
 
 interface FinlandMapProps {
@@ -20,75 +22,6 @@ for (const m of municipalities) {
   municipalityByName[m.name] = m;
 }
 
-function formatPopulation(pop: number): string {
-  return pop.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '\u00A0');
-}
-
-function formatDate(dateStr: string): string {
-  const d = new Date(dateStr);
-  return `${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}`;
-}
-
-function getRings(shape: MunicipalityShape): number[][][] {
-  if (shape.type === 'Polygon') {
-    return [(shape.coordinates as number[][][])[0]];
-  }
-  return (shape.coordinates as number[][][][]).map((poly) => poly[0]);
-}
-
-function buildPath(
-  rings: number[][][],
-  originLng: number,
-  originLat: number,
-  cosLat: number
-): string {
-  return rings
-    .map((ring) => {
-      const points = ring.map(([lng, lat]) => {
-        const x = (lng - originLng) * cosLat;
-        const y = originLat - lat;
-        return `${x},${y}`;
-      });
-      return `M${points.join('L')}Z`;
-    })
-    .join('');
-}
-
-interface BBox {
-  minLng: number; maxLng: number; minLat: number; maxLat: number;
-}
-
-function bboxFromNames(
-  names: string[],
-  allShapes: Record<string, MunicipalityShape>
-): BBox {
-  let minLng = Infinity, maxLng = -Infinity, minLat = Infinity, maxLat = -Infinity;
-  for (const name of names) {
-    const shape = allShapes[name];
-    if (!shape) continue;
-    for (const ring of getRings(shape)) {
-      for (const [lng, lat] of ring) {
-        if (lng < minLng) minLng = lng;
-        if (lng > maxLng) maxLng = lng;
-        if (lat < minLat) minLat = lat;
-        if (lat > maxLat) maxLat = lat;
-      }
-    }
-  }
-  return { minLng, maxLng, minLat, maxLat };
-}
-
-function computeViewBox(bbox: BBox, pad: number): { viewBox: string; originLng: number; originLat: number; cosLat: number } {
-  const centerLat = (bbox.minLat + bbox.maxLat) / 2;
-  const cosLat = Math.cos((centerLat * Math.PI) / 180);
-  const width = (bbox.maxLng - bbox.minLng) * cosLat;
-  const height = bbox.maxLat - bbox.minLat;
-  const vw = width * (1 + pad * 2);
-  const vh = height * (1 + pad * 2);
-  const originLng = bbox.minLng - (width * pad) / cosLat;
-  const originLat = bbox.maxLat + height * pad;
-  return { viewBox: `0 0 ${vw} ${vh}`, originLng, originLat, cosLat };
-}
 
 export function FinlandMap({ completed, failed, careerStats, currentMunicipality, visible = true }: FinlandMapProps) {
   const [allShapes, setAllShapes] = useState<Record<string, MunicipalityShape> | null>(null);

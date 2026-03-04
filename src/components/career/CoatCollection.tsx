@@ -1,17 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { municipalities } from '../data/municipalities';
+import { municipalities } from '../../data/municipalities';
+import { formatPopulation, formatDate } from '../../utils/format';
 import './CoatCollection.css';
 
 const municipalityByName = Object.fromEntries(municipalities.map((m) => [m.name, m]));
-
-function formatPopulation(pop: number): string {
-  return pop.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '\u00A0');
-}
-
-function formatDate(dateStr: string): string {
-  const d = new Date(dateStr);
-  return `${d.getDate()}.${d.getMonth() + 1}.${d.getFullYear()}`;
-}
 
 interface CoatCollectionProps {
   completedSet: Set<string>;

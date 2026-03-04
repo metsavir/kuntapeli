@@ -1,8 +1,8 @@
 import { useState, useMemo } from 'react';
-import type { PlayerStats, GameMode, ClueType, CareerProgress } from '../data/types';
-import { CareerHistory } from './CareerHistory';
-import { Modal } from './Modal';
-import { MAX_GUESSES } from '../utils/game';
+import type { PlayerStats, GameMode, ClueType, CareerProgress } from '../../data/types';
+import { CareerHistory } from '../career/CareerHistory';
+import { Modal } from '../Modal';
+import { MAX_GUESSES } from '../../utils/game';
 import './StatsModal.css';
 
 type Tab = 'all' | 'daily' | 'casual' | 'career';
@@ -48,6 +48,19 @@ function computeDistribution(stats: PlayerStats, mode?: GameMode) {
 
   const max = Math.max(...Object.values(dist), 1);
   return { dist, max };
+}
+
+function StatsGrid({ items }: { items: { value: string; label: string }[] }) {
+  return (
+    <div className="stats-grid">
+      {items.map(({ value, label }) => (
+        <div key={label} className="stats-item">
+          <span className="stats-value">{value}</span>
+          <span className="stats-label">{label}</span>
+        </div>
+      ))}
+    </div>
+  );
 }
 
 function Distribution({ dist, max }: { dist: Record<string, number>; max: number }) {
@@ -117,28 +130,13 @@ export function StatsModal({ stats, careerProgress, clueType, initialTab = 'all'
           {tab === 'all' && (
             allStats ? (
               <>
-                <div className="stats-grid">
-                  <div className="stats-item">
-                    <span className="stats-value">{allStats.total}</span>
-                    <span className="stats-label">pelejä</span>
-                  </div>
-                  <div className="stats-item">
-                    <span className="stats-value">{allStats.winRate} %</span>
-                    <span className="stats-label">voittoprosentti</span>
-                  </div>
-                  <div className="stats-item">
-                    <span className="stats-value">{allStats.avgGuesses.toFixed(1)}</span>
-                    <span className="stats-label">keskim. arvaukset</span>
-                  </div>
-                  <div className="stats-item">
-                    <span className="stats-value">{allStats.firstTryPct} %</span>
-                    <span className="stats-label">ekalla arvauksella</span>
-                  </div>
-                  <div className="stats-item">
-                    <span className="stats-value">{allStats.avgHints.toFixed(1)}</span>
-                    <span className="stats-label">keskim. vihjeet</span>
-                  </div>
-                </div>
+                <StatsGrid items={[
+                  { value: String(allStats.total), label: 'pelejä' },
+                  { value: `${allStats.winRate} %`, label: 'voittoprosentti' },
+                  { value: allStats.avgGuesses.toFixed(1), label: 'keskim. arvaukset' },
+                  { value: `${allStats.firstTryPct} %`, label: 'ekalla arvauksella' },
+                  { value: allStats.avgHints.toFixed(1), label: 'keskim. vihjeet' },
+                ]} />
                 <Distribution dist={allDist.dist} max={allDist.max} />
               </>
             ) : (
@@ -149,28 +147,13 @@ export function StatsModal({ stats, careerProgress, clueType, initialTab = 'all'
           {tab === 'daily' && (
             dailyStats ? (
               <>
-                <div className="stats-grid">
-                  <div className="stats-item">
-                    <span className="stats-value">{dailyStats.total}</span>
-                    <span className="stats-label">pelejä</span>
-                  </div>
-                  <div className="stats-item">
-                    <span className="stats-value">{dailyStats.winRate} %</span>
-                    <span className="stats-label">voittoprosentti</span>
-                  </div>
-                  <div className="stats-item">
-                    <span className="stats-value">{streakInfo.streak}</span>
-                    <span className="stats-label">putki</span>
-                  </div>
-                  <div className="stats-item">
-                    <span className="stats-value">{streakInfo.maxStreak}</span>
-                    <span className="stats-label">paras putki</span>
-                  </div>
-                  <div className="stats-item">
-                    <span className="stats-value">{dailyStats.avgHints.toFixed(1)}</span>
-                    <span className="stats-label">keskim. vihjeet</span>
-                  </div>
-                </div>
+                <StatsGrid items={[
+                  { value: String(dailyStats.total), label: 'pelejä' },
+                  { value: `${dailyStats.winRate} %`, label: 'voittoprosentti' },
+                  { value: String(streakInfo.streak), label: 'putki' },
+                  { value: String(streakInfo.maxStreak), label: 'paras putki' },
+                  { value: dailyStats.avgHints.toFixed(1), label: 'keskim. vihjeet' },
+                ]} />
                 <Distribution dist={dailyDist.dist} max={dailyDist.max} />
               </>
             ) : (
@@ -181,28 +164,13 @@ export function StatsModal({ stats, careerProgress, clueType, initialTab = 'all'
           {tab === 'casual' && (
             casualStats ? (
               <>
-                <div className="stats-grid">
-                  <div className="stats-item">
-                    <span className="stats-value">{casualStats.total}</span>
-                    <span className="stats-label">pelejä</span>
-                  </div>
-                  <div className="stats-item">
-                    <span className="stats-value">{casualStats.winRate} %</span>
-                    <span className="stats-label">voittoprosentti</span>
-                  </div>
-                  <div className="stats-item">
-                    <span className="stats-value">{casualStats.avgGuesses.toFixed(1)}</span>
-                    <span className="stats-label">keskim. arvaukset</span>
-                  </div>
-                  <div className="stats-item">
-                    <span className="stats-value">{casualStats.firstTryPct} %</span>
-                    <span className="stats-label">ekalla arvauksella</span>
-                  </div>
-                  <div className="stats-item">
-                    <span className="stats-value">{casualStats.avgHints.toFixed(1)}</span>
-                    <span className="stats-label">keskim. vihjeet</span>
-                  </div>
-                </div>
+                <StatsGrid items={[
+                  { value: String(casualStats.total), label: 'pelejä' },
+                  { value: `${casualStats.winRate} %`, label: 'voittoprosentti' },
+                  { value: casualStats.avgGuesses.toFixed(1), label: 'keskim. arvaukset' },
+                  { value: `${casualStats.firstTryPct} %`, label: 'ekalla arvauksella' },
+                  { value: casualStats.avgHints.toFixed(1), label: 'keskim. vihjeet' },
+                ]} />
                 <Distribution dist={casualDist.dist} max={casualDist.max} />
               </>
             ) : (

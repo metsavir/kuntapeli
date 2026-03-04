@@ -1,4 +1,4 @@
-import type { GuessResult } from '../data/types';
+import type { GuessResult } from '../../data/types';
 import './GuessRow.css';
 
 interface GuessRowProps {
