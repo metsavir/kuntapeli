@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import type { ReactNode } from 'react';
 import { useLockScroll } from '../hooks/useLockScroll';
 import './HelpModal.css';
@@ -26,7 +27,7 @@ export function Modal({
     return () => window.removeEventListener('keydown', handleKey);
   }, [onClose]);
 
-  return (
+  return createPortal(
     <div className="modal-overlay" onClick={onClose}>
       <div
         className={`modal${className ? ` ${className}` : ''}`}
@@ -39,6 +40,7 @@ export function Modal({
         )}
         {children}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
