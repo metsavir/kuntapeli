@@ -52,27 +52,24 @@ export function LandingPage({ onSelect }: LandingPageProps) {
           <div className="landing-help-panel-inner">
             <div className="landing-help-content">
               <p>
-                Tunnista suomalainen kunta rajat- tai vaakunakuvasta. Sinulla on{' '}
+                Arvaa kunta rajakuvan tai vaakunan perusteella. Käytössäsi on{' '}
                 <strong>6 arvausta</strong>.
               </p>
-              <p>Jokaisen arvauksen jälkeen näet:</p>
+              <p>Jokaisesta arvauksesta näet:</p>
               <ul>
                 <li>
-                  <strong>Etäisyys</strong> — kuinka kaukana arvauksesi on
-                  oikeasta kunnasta
+                  <strong>Etäisyys</strong> — kilometrit oikeaan kuntaan
                 </li>
                 <li>
-                  <strong>Suunta</strong> — nuoli osoittaa oikean kunnan
-                  suuntaan
+                  <strong>Suunta</strong> — nuoli kohti oikeaa kuntaa
                 </li>
                 <li>
-                  <strong>Läheisyys</strong> — prosenttiluku kertoo kuinka
-                  lähellä olet
+                  <strong>Läheisyys</strong> — kuinka lähellä olet prosentteina
                 </li>
               </ul>
               <p>
-                Voit pyytää enintään <strong>3 vihjettä</strong>: maakunta,
-                väkiluku ja naapurikunnat.
+                Lisäksi voit käyttää enintään <strong>3 vihjettä</strong>:
+                maakunta, väkiluku ja naapurikunnat.
               </p>
               <p className="landing-help-modes">
                 <strong>Päivittäinen</strong> — sama kunta kaikille |{' '}
