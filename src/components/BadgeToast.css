@@ -1,0 +1,59 @@
+.badge-toast {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  background: #16213e;
+  border: 1px solid #e94560;
+  border-radius: 0.75rem;
+  color: #eee;
+  z-index: 1100;
+  cursor: pointer;
+  animation: badge-toast-in 0.3s ease-out;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.badge-toast-emoji {
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.badge-toast-icon {
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+}
+
+.badge-toast-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.badge-toast-title {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #e94560;
+}
+
+.badge-toast-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+@keyframes badge-toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}

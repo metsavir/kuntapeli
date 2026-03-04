@@ -12,7 +12,9 @@ import { CoatOfArms } from './components/career/CoatOfArms';
 import { LandingPage } from './components/LandingPage';
 import { StatsModal } from './components/stats/StatsModal';
 import { UpdateBanner } from './components/UpdateBanner';
+import { BadgeToast } from './components/BadgeToast';
 import { useStats } from './hooks/useStats';
+import { useBadges } from './hooks/useBadges';
 import './App.css';
 
 const MODES: GameMode[] = ['daily', 'casual', 'career'];
@@ -43,6 +45,14 @@ function App() {
   const games = { daily, casual, career: careerGame };
 
   const { stats, recordGame } = useStats();
+  const { badgeState, checkBadges, newlyUnlocked, dismissToast } = useBadges();
+
+  // Check badges whenever stats or career progress changes
+  useEffect(() => {
+    if (stats.games.length > 0) {
+      checkBadges(stats, career.progress);
+    }
+  }, [stats, career.progress]);
   const [showHelp, setShowHelp] = useState(false);
   const [showStatsModal, setShowStatsModal] = useState(false);
   const [debug, setDebug] = useState(false);
@@ -107,6 +117,12 @@ function App() {
     return (
       <>
         <LandingPage onSelect={setClueType} />
+        {newlyUnlocked && (
+          <BadgeToast
+            badgeId={newlyUnlocked.badgeId}
+            onDismiss={dismissToast}
+          />
+        )}
         <UpdateBanner />
       </>
     );
@@ -196,9 +212,13 @@ function App() {
           stats={stats}
           careerProgress={career.progress}
           clueType={clueType}
+          badgeState={badgeState}
           initialTab={mode}
           onClose={() => setShowStatsModal(false)}
         />
+      )}
+      {newlyUnlocked && (
+        <BadgeToast badgeId={newlyUnlocked.badgeId} onDismiss={dismissToast} />
       )}
       <UpdateBanner />
     </div>
