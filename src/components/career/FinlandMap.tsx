@@ -191,11 +191,25 @@ export function FinlandMap({
 
   return (
     <div className="finland-map-container">
-      {zoomedRegion && (
-        <button className="finland-map-back" onClick={handleBackClick}>
-          ← {zoomedRegion}
-        </button>
-      )}
+      {zoomedRegion &&
+        (() => {
+          const regionMunis = mapData.paths.filter(
+            (p) => p.region === zoomedRegion,
+          );
+          const regionCompleted = regionMunis.filter((p) =>
+            completed.has(p.name),
+          ).length;
+          return (
+            <div className="finland-map-header">
+              <button className="finland-map-back" onClick={handleBackClick}>
+                ← {zoomedRegion}
+              </button>
+              <span className="finland-map-region-count">
+                {regionCompleted}/{regionMunis.length}
+              </span>
+            </div>
+          );
+        })()}
       <svg
         viewBox={activeViewBox}
         className="finland-map"

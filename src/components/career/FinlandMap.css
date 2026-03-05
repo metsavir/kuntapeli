@@ -5,8 +5,15 @@
   padding: 0.5rem;
 }
 
+.finland-map-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 0.25rem;
+}
+
 .finland-map-back {
-  align-self: flex-start;
   padding: 0.5rem 0.75rem;
   font-size: 0.8125rem;
   font-weight: 600;
@@ -15,7 +22,13 @@
   background: transparent;
   color: var(--color-text-muted);
   cursor: pointer;
-  margin-bottom: 0.25rem;
+}
+
+.finland-map-region-count {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  padding: 0.5rem 0.75rem;
 }
 
 @media (hover: hover) {
