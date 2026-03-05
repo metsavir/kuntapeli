@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import type { CareerProgress, ClueType, Municipality } from '../data/types';
 import { municipalities } from '../data/municipalities';
 import { getTodayString } from '../utils/game';
@@ -36,9 +36,18 @@ export function useCareer(clueType: ClueType) {
     saveCareer(clueType, progress);
   }, [clueType, progress]);
 
-  const completedSet = new Set(progress.completed);
-  const failedSet = new Set(
-    progress.failures.map((f) => f.name).filter((n) => !completedSet.has(n)),
+  const completedSet = useMemo(
+    () => new Set(progress.completed),
+    [progress.completed],
+  );
+  const failedSet = useMemo(
+    () =>
+      new Set(
+        progress.failures
+          .map((f) => f.name)
+          .filter((n) => !completedSet.has(n)),
+      ),
+    [progress.failures, completedSet],
   );
 
   const markCompleted = useCallback((name: string, attempts: number) => {

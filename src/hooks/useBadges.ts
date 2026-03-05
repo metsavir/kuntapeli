@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import type { PlayerStats, CareerProgress, ClueType } from '../data/types';
 import type { BadgeState, UnlockedBadge } from '../data/badges';
 import { BADGE_DEFINITIONS } from '../data/badges';
@@ -33,11 +33,9 @@ export function useBadges(clueType: ClueType) {
   clueTypeRef.current = clueType;
 
   // Reload state when clueType changes
-  const prevClueType = useRef(clueType);
-  if (clueType !== prevClueType.current) {
-    prevClueType.current = clueType;
+  useEffect(() => {
     setBadgeState(loadBadges(clueType));
-  }
+  }, [clueType]);
 
   const showNextToast = useCallback((state: BadgeState) => {
     if (toastQueue.current.length === 0) return;

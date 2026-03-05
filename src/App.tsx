@@ -54,7 +54,7 @@ function App() {
     if (stats.games.length > 0) {
       checkBadges(stats, career.progress);
     }
-  }, [stats, career.progress]);
+  }, [stats, career.progress, checkBadges]);
   const [showStatsModal, setShowStatsModal] = useState(false);
   const [showBadgesModal, setShowBadgesModal] = useState(false);
   const [debug, setDebug] = useState(false);
