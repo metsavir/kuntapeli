@@ -8,9 +8,17 @@ Finnish municipality guessing game. Identify all 308 municipalities from visual 
 - **Harjoittelu** (Casual) — Unlimited practice with random municipalities
 - **Ura** (Career) — Complete all 308 municipalities, tracked separately for each clue type
 
+## Clue Types
+
+- **Rajat** (Shapes) — Identify municipalities from their border outlines
+- **Vaakunat** (Coats of arms) — Identify municipalities from their coat of arms
+- **Vaakunat Hard** — Hidden mode (long-press Vaakunat card): one guess, no hints
+
 ## How It Works
 
-Players see a visual clue (municipality border outline or coat of arms) and type their guess. Each guess shows distance, direction, and proximity feedback. Three progressive hints are available: region, population category, and nearest neighbors. Six attempts per round.
+Players see a visual clue and type their guess. Each guess shows distance, direction, and proximity feedback with temperature-colored bars. Three progressive hints are available: region, population category, and nearest neighbors. Six attempts per round (except hard mode: one attempt).
+
+Career mode includes a **Finland map** view with region zoom and a **coat collection** with sorting by region, date, or number of tries.
 
 ## Development
 
@@ -38,7 +46,7 @@ Installable as a standalone app ("add to home screen"). Works offline after firs
 
 ## Tech
 
-React 19 + TypeScript + Vite. No router or state library — React state with localStorage persistence. PWA via vite-plugin-pwa.
+React 19 + TypeScript 5.9 + Vite 7. No router or state library — React state with localStorage persistence. PWA via vite-plugin-pwa.
 
 ## Data Sources
 
