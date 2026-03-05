@@ -66,10 +66,12 @@ export function useCareer(clueType: ClueType) {
   }, []);
 
   const getRandomUnguessed = useCallback((): Municipality | null => {
-    const remaining = municipalities.filter((m) => !completedSet.has(m.name));
+    const current = loadCareer(clueType);
+    const completed = new Set(current.completed);
+    const remaining = municipalities.filter((m) => !completed.has(m.name));
     if (remaining.length === 0) return null;
     return remaining[Math.floor(Math.random() * remaining.length)];
-  }, [completedSet]);
+  }, [clueType]);
 
   const getRegionStats = useCallback(() => {
     const regionMap = new Map<string, { total: number; completed: number }>();
