@@ -138,6 +138,7 @@ export function CareerPanel({
         <div className="career-flip-face career-flip-collection">
           <CoatCollection
             completedSet={career.completedSet}
+            completedOrder={career.progress.completed}
             careerStats={career.progress.stats}
             failures={career.progress.failures}
             visible={careerView === 'collection'}

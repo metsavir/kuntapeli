@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { municipalities } from '../../data/municipalities';
+import { formatDate } from '../../utils/format';
 import { MunicipalityCard } from './MunicipalityCard';
 import './CoatCollection.css';
 
@@ -9,19 +10,33 @@ const municipalityByName = Object.fromEntries(
 
 interface CoatCollectionProps {
   completedSet: Set<string>;
+  completedOrder: string[];
   careerStats: Record<string, { attempts: number; date: string }>;
   failures: { name: string; guesses: number; date: string }[];
   visible: boolean;
 }
 
+type SortMode = 'region' | 'date' | 'tries';
+
+const SORT_OPTIONS: { key: SortMode; label: string }[] = [
+  { key: 'region', label: 'Maakunta' },
+  { key: 'date', label: 'Päivämäärä' },
+  { key: 'tries', label: 'Yritykset' },
+];
+
 export function CoatCollection({
   completedSet,
+  completedOrder,
   careerStats,
   failures,
   visible,
 }: CoatCollectionProps) {
   const [selected, setSelected] = useState<string | null>(null);
+  const [sort, setSort] = useState<SortMode>('region');
   const scrollRef = useRef<HTMLDivElement>(null);
+  const sortRef = useRef<HTMLDivElement>(null);
+  const sortIndicatorRef = useRef<HTMLDivElement>(null);
+  const sortFirstRender = useRef(true);
 
   useEffect(() => {
     if (visible) {
@@ -29,6 +44,36 @@ export function CoatCollection({
       setSelected(null);
     }
   }, [visible]);
+
+  useLayoutEffect(() => {
+    const container = sortRef.current;
+    const el = sortIndicatorRef.current;
+    if (!container || !el) return;
+    const idx = SORT_OPTIONS.findIndex((o) => o.key === sort);
+    const btn = container.children[idx + 1] as HTMLElement;
+    if (!btn) return;
+
+    if (sortFirstRender.current) {
+      el.style.transition = 'none';
+    }
+    el.style.left = btn.offsetLeft + 'px';
+    el.style.width = btn.offsetWidth + 'px';
+    el.style.visibility = 'visible';
+
+    if (sortFirstRender.current) {
+      el.offsetHeight;
+      el.style.transition = '';
+      sortFirstRender.current = false;
+    }
+  }, [sort]);
+
+  const failCounts = useMemo(() => {
+    const map: Record<string, number> = {};
+    for (const f of failures) {
+      map[f.name] = (map[f.name] ?? 0) + 1;
+    }
+    return map;
+  }, [failures]);
 
   const regions = useMemo(() => {
     const map = new Map<string, string[]>();
@@ -45,6 +90,64 @@ export function CoatCollection({
         completed: names.filter((n) => completedSet.has(n)).length,
       }));
   }, [completedSet]);
+
+  const groupedFlat = useMemo(() => {
+    if (sort === 'region') return null;
+    const completed = municipalities
+      .filter((m) => completedSet.has(m.name))
+      .map((m) => ({
+        name: m.name,
+        stat: careerStats[m.name],
+        tries: (failCounts[m.name] ?? 0) + 1,
+      }));
+
+    if (sort === 'date') {
+      const orderMap = new Map(completedOrder.map((n, i) => [n, i]));
+      completed.sort(
+        (a, b) => (orderMap.get(b.name) ?? 0) - (orderMap.get(a.name) ?? 0),
+      );
+      const groups: { label: string; names: string[] }[] = [];
+      for (const item of completed) {
+        const label = item.stat ? formatDate(item.stat.date) : 'Tuntematon';
+        const last = groups[groups.length - 1];
+        if (last && last.label === label) {
+          last.names.push(item.name);
+        } else {
+          groups.push({ label, names: [item.name] });
+        }
+      }
+      return groups;
+    }
+
+    // tries sort — exact 1-3, then buckets 4-4, 5-9, 10-19, 20+
+    completed.sort((a, b) => a.tries - b.tries);
+    const triesBuckets = [1, 2, 3, 4, 5, 10, 20] as const;
+    const triesLabel = (tries: number) => {
+      if (tries === 1) return '1 yritys';
+      if (tries <= 3) return `${tries} yritystä`;
+      for (let i = triesBuckets.length - 1; i >= 0; i--) {
+        if (tries >= triesBuckets[i]) {
+          const next = triesBuckets[i + 1];
+          return next
+            ? `${triesBuckets[i]}–${next - 1} yritystä`
+            : `${triesBuckets[i]}+ yritystä`;
+        }
+      }
+      return `${tries} yritystä`;
+    };
+    const groups: { label: string; names: string[] }[] = [];
+    for (const item of completed) {
+      const label = triesLabel(item.tries);
+      const last = groups[groups.length - 1];
+      if (last && last.label === label) {
+        last.names.push(item.name);
+      } else {
+        groups.push({ label, names: [item.name] });
+      }
+    }
+    for (const g of groups) g.names.sort((a, b) => a.localeCompare(b, 'fi'));
+    return groups;
+  }, [sort, completedSet, completedOrder, careerStats, failCounts]);
 
   return (
     <div
@@ -72,40 +175,109 @@ export function CoatCollection({
             </div>
           );
         })()}
-      <div className="coat-collection-regions">
-        {regions.map(({ region, names, completed }) => (
-          <section key={region} className="coat-collection-region">
-            <h3 className="coat-collection-region-header">
-              {region}{' '}
-              <span className="coat-collection-count">
-                {completed}/{names.length}
-              </span>
-            </h3>
-            <div className="coat-collection-grid">
-              {names.map((name) => {
-                const done = completedSet.has(name);
-                return (
-                  <button
-                    key={name}
-                    className={`coat-collection-cell${done ? ' coat-collection-cell--done' : ''}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      done && setSelected(selected === name ? null : name);
-                    }}
-                    aria-label={done ? name : undefined}
-                  >
-                    <img
-                      src={`${import.meta.env.BASE_URL}coats/${name}.png`}
-                      alt=""
-                      draggable={false}
-                      loading="lazy"
-                    />
-                  </button>
-                );
-              })}
-            </div>
-          </section>
-        ))}
+      <div className="coat-collection-body">
+        <div className="coat-collection-sort" ref={sortRef}>
+          <div
+            className="coat-collection-sort-indicator"
+            ref={sortIndicatorRef}
+            style={{ visibility: 'hidden' }}
+          />
+          {SORT_OPTIONS.map(({ key, label }) => (
+            <button
+              key={key}
+              className={`coat-collection-sort-btn${sort === key ? ' coat-collection-sort-btn--active' : ''}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                setSort(key);
+              }}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+        {sort === 'region' ? (
+          <div className="coat-collection-regions">
+            {regions.map(({ region, names, completed }) => (
+              <section key={region} className="coat-collection-region">
+                <h3 className="coat-collection-region-header">
+                  {region}{' '}
+                  <span className="coat-collection-count">
+                    {completed}/{names.length}
+                  </span>
+                </h3>
+                <div className="coat-collection-grid">
+                  {names.map((name) => {
+                    const done = completedSet.has(name);
+                    return (
+                      <button
+                        key={name}
+                        className={`coat-collection-cell${done ? ' coat-collection-cell--done' : ''}`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          done && setSelected(selected === name ? null : name);
+                        }}
+                        aria-label={done ? name : undefined}
+                      >
+                        <img
+                          src={`${import.meta.env.BASE_URL}coats/${name}.png`}
+                          alt=""
+                          draggable={false}
+                          loading="lazy"
+                        />
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+            ))}
+          </div>
+        ) : (
+          <div className="coat-collection-regions">
+            {groupedFlat?.map(({ label, names }) => (
+              <section key={label} className="coat-collection-region">
+                <h3 className="coat-collection-region-header">{label}</h3>
+                <div className="coat-collection-grid">
+                  {names.map((name) => (
+                    <button
+                      key={name}
+                      className="coat-collection-cell coat-collection-cell--done"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelected(selected === name ? null : name);
+                      }}
+                      aria-label={name}
+                    >
+                      <img
+                        src={`${import.meta.env.BASE_URL}coats/${name}.png`}
+                        alt=""
+                        draggable={false}
+                        loading="lazy"
+                      />
+                    </button>
+                  ))}
+                </div>
+              </section>
+            ))}
+            <section className="coat-collection-region">
+              <h3 className="coat-collection-region-header">Arvaamatta</h3>
+              <div className="coat-collection-grid">
+                {municipalities
+                  .filter((m) => !completedSet.has(m.name))
+                  .sort((a, b) => a.name.localeCompare(b.name, 'fi'))
+                  .map((m) => (
+                    <button key={m.name} className="coat-collection-cell">
+                      <img
+                        src={`${import.meta.env.BASE_URL}coats/${m.name}.png`}
+                        alt=""
+                        draggable={false}
+                        loading="lazy"
+                      />
+                    </button>
+                  ))}
+              </div>
+            </section>
+          </div>
+        )}
       </div>
     </div>
   );
