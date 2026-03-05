@@ -58,6 +58,7 @@ function App() {
   const [showStatsModal, setShowStatsModal] = useState(false);
   const [showBadgesModal, setShowBadgesModal] = useState(false);
   const [debug, setDebug] = useState(false);
+  const mapTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const [careerView, setCareerView] = useState<'game' | 'map' | 'collection'>(
     'game',
   );
@@ -97,7 +98,7 @@ function App() {
       if (m === 'career') {
         if (g.status === 'won') {
           career.markCompleted(g.answer.name, g.guesses.length);
-          setTimeout(() => setCareerView('map'), 1500);
+          mapTimerRef.current = setTimeout(() => setCareerView('map'), 1500);
         } else {
           career.markFailed(g.answer.name, g.guesses.length);
         }
@@ -106,6 +107,7 @@ function App() {
   }, [daily.status, casual.status, careerGame.status]);
 
   const handleCareerNext = useCallback(() => {
+    clearTimeout(mapTimerRef.current);
     setCareerView('game');
     const next = career.getRandomUnguessed();
     setCareerAnswer(next);
