@@ -8,6 +8,20 @@ interface LandingPageProps {
 
 export function LandingPage({ onSelect }: LandingPageProps) {
   const [showHelp, setShowHelp] = useState(false);
+  const [loading, setLoading] = useState<ClueType | null>(null);
+
+  const handleSelect = (type: ClueType) => {
+    setLoading(type);
+    requestAnimationFrame(() => onSelect(type));
+  };
+
+  if (loading) {
+    return (
+      <div className="landing">
+        <span className="landing-spinner" />
+      </div>
+    );
+  }
 
   return (
     <div className="landing">
@@ -15,7 +29,7 @@ export function LandingPage({ onSelect }: LandingPageProps) {
       <p className="landing-subtitle">Tunnista Suomen kunnat</p>
 
       <div className="landing-cards">
-        <button className="landing-card" onClick={() => onSelect('shape')}>
+        <button className="landing-card" onClick={() => handleSelect('shape')}>
           <div className="landing-card-visual">
             <svg
               viewBox="0 0 80 80"
@@ -29,7 +43,10 @@ export function LandingPage({ onSelect }: LandingPageProps) {
           </div>
           <span className="landing-card-label">Rajat</span>
         </button>
-        <button className="landing-card" onClick={() => onSelect('coatOfArms')}>
+        <button
+          className="landing-card"
+          onClick={() => handleSelect('coatOfArms')}
+        >
           <div className="landing-card-visual">
             <img
               src={`${import.meta.env.BASE_URL}coats/Helsinki.png`}

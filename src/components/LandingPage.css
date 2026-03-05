@@ -166,3 +166,19 @@
   color: var(--color-text-muted);
   font-size: 0.75rem;
 }
+
+.landing-spinner {
+  display: inline-block;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: landing-spin 0.6s linear infinite;
+}
+
+@keyframes landing-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
