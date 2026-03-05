@@ -88,7 +88,10 @@ export function CareerPanel({
             disabled={careerGame.status !== 'playing'}
             attemptsLeft={careerGame.attemptsLeft}
           />
-          <GuessList guesses={careerGame.guesses} />
+          <GuessList
+            guesses={careerGame.guesses}
+            minimal={clueType === 'coatOfArmsHard'}
+          />
           {careerGame.status !== 'playing' && (
             <GameOver
               status={careerGame.status}

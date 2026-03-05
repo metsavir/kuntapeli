@@ -95,6 +95,59 @@
   color: var(--color-text);
 }
 
+/* Hard mode confirm */
+.landing-hard-confirm {
+  width: 100%;
+  max-width: 320px;
+  padding: 1rem;
+  background: var(--color-surface);
+  border: 2px solid var(--color-error);
+  border-radius: 1rem;
+  text-align: center;
+  animation: fade-in 150ms ease;
+}
+
+.landing-hard-title {
+  margin: 0 0 0.25rem;
+  font-size: 1.125rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-error);
+}
+
+.landing-hard-desc {
+  margin: 0 0 1rem;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.landing-hard-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.landing-hard-cancel,
+.landing-hard-go {
+  padding: 0.625rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.landing-hard-cancel {
+  background: var(--color-border);
+  color: var(--color-text);
+}
+
+.landing-hard-go {
+  background: var(--color-error);
+  color: #fff;
+}
+
 /* Help toggle + overlay */
 .landing-help-wrapper {
   position: relative;

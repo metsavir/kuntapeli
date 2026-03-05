@@ -3,14 +3,24 @@ import './GuessRow.css';
 
 interface GuessRowProps {
   guess: GuessResult;
+  minimal?: boolean;
 }
 
-export function GuessRow({ guess }: GuessRowProps) {
+export function GuessRow({ guess, minimal }: GuessRowProps) {
   if (guess.isCorrect) {
     return (
       <div className="guess-row guess-row--correct">
         <span className="guess-name">{guess.municipality.name}</span>
         <span className="guess-correct-label">Oikein!</span>
+      </div>
+    );
+  }
+
+  if (minimal) {
+    return (
+      <div className="guess-row guess-row--wrong">
+        <span className="guess-name">{guess.municipality.name}</span>
+        <span className="guess-wrong-label">Väärin</span>
       </div>
     );
   }

@@ -41,6 +41,17 @@
   }
 }
 
+.guess-row--wrong {
+  background: var(--color-error);
+  animation: correctBounce 0.5s ease-out;
+}
+
+.guess-wrong-label {
+  font-weight: 700;
+  font-size: 1rem;
+  text-align: right;
+}
+
 .guess-correct-label {
   font-weight: 700;
   font-size: 1rem;

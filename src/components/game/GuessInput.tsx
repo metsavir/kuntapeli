@@ -164,21 +164,25 @@ export function GuessInput({
           ))}
         </div>
       )}
-      <div className="input-actions">
-        <button
-          className="hint-button"
-          onClick={onHint}
-          disabled={hints.length >= maxHints}
-        >
-          Vihje ({hints.length}/{maxHints})
-        </button>
-        <button
-          className="give-up-button"
-          onClick={() => setShowGiveUpModal(true)}
-        >
-          Luovuta
-        </button>
-      </div>
+      {(maxHints > 0 || attemptsLeft > 1) && (
+        <div className="input-actions">
+          {maxHints > 0 && (
+            <button
+              className="hint-button"
+              onClick={onHint}
+              disabled={hints.length >= maxHints}
+            >
+              Vihje ({hints.length}/{maxHints})
+            </button>
+          )}
+          <button
+            className="give-up-button"
+            onClick={() => setShowGiveUpModal(true)}
+          >
+            Luovuta
+          </button>
+        </div>
+      )}
       {showGiveUpModal && (
         <GiveUpModal
           onConfirm={() => {

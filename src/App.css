@@ -9,6 +9,31 @@
   animation: fade-in 150ms ease;
 }
 
+.app--hard {
+  --color-bg: #1e1a20;
+  --color-surface: #2c2530;
+  --color-border: #4a3a4a;
+  --color-text: #e8e8f0;
+  --color-text-muted: #a0a0b8;
+  --color-primary: #c0392b;
+  --color-primary-hover: #d44637;
+  --color-proximity: #c0392b;
+  --color-error: #c0392b;
+  background: #1e1a20;
+  animation:
+    fade-in 150ms ease,
+    hardBgShift 2s ease-out;
+}
+
+@keyframes hardBgShift {
+  from {
+    background-color: #1a1a2e;
+  }
+  to {
+    background-color: #1e1a20;
+  }
+}
+
 @keyframes fade-in {
   from {
     opacity: 0;

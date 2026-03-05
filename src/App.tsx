@@ -63,6 +63,18 @@ function App() {
     'game',
   );
 
+  // Sync body background for hard mode theme
+  useEffect(() => {
+    if (clueType === 'coatOfArmsHard') {
+      document.body.style.transition = 'background-color 2s ease-out';
+      document.body.style.backgroundColor = '#1e1a20';
+    }
+    return () => {
+      document.body.style.transition = '';
+      document.body.style.backgroundColor = '';
+    };
+  }, [clueType]);
+
   // Initialize career answer
   useEffect(() => {
     const key = clueType ?? 'shape';
@@ -134,7 +146,7 @@ function App() {
     );
 
   return (
-    <div className="app">
+    <div className={`app${clueType === 'coatOfArmsHard' ? ' app--hard' : ''}`}>
       <Header
         mode={mode}
         onModeChange={(m) => {

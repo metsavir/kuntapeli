@@ -40,7 +40,10 @@ export function GamePanel({
         disabled={game.status !== 'playing'}
         attemptsLeft={game.attemptsLeft}
       />
-      <GuessList guesses={game.guesses} />
+      <GuessList
+        guesses={game.guesses}
+        minimal={clueType === 'coatOfArmsHard'}
+      />
       {game.status !== 'playing' && (
         <GameOver
           status={game.status}

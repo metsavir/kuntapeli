@@ -16,7 +16,7 @@ export interface GuessResult {
 }
 
 export type GameMode = 'daily' | 'casual' | 'career';
-export type ClueType = 'shape' | 'coatOfArms';
+export type ClueType = 'shape' | 'coatOfArms' | 'coatOfArmsHard';
 
 export interface CareerProgress {
   completed: string[];

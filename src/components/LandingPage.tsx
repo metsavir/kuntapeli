@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import type { ClueType } from '../data/types';
 import './LandingPage.css';
 
@@ -10,10 +10,27 @@ export function LandingPage({ onSelect }: LandingPageProps) {
   const [showHelp, setShowHelp] = useState(false);
   const [loading, setLoading] = useState<ClueType | null>(null);
 
+  const longPressTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const longPressTriggered = useRef(false);
+  const [showHardConfirm, setShowHardConfirm] = useState(false);
+
   const handleSelect = (type: ClueType) => {
+    if (longPressTriggered.current) return;
     setLoading(type);
     requestAnimationFrame(() => onSelect(type));
   };
+
+  const handleCoatDown = useCallback(() => {
+    longPressTriggered.current = false;
+    longPressTimer.current = setTimeout(() => {
+      longPressTriggered.current = true;
+      setShowHardConfirm(true);
+    }, 800);
+  }, []);
+
+  const handleCoatUp = useCallback(() => {
+    clearTimeout(longPressTimer.current);
+  }, []);
 
   if (loading) {
     return (
@@ -46,6 +63,9 @@ export function LandingPage({ onSelect }: LandingPageProps) {
         <button
           className="landing-card"
           onClick={() => handleSelect('coatOfArms')}
+          onPointerDown={handleCoatDown}
+          onPointerUp={handleCoatUp}
+          onPointerLeave={handleCoatUp}
         >
           <div className="landing-card-visual">
             <img
@@ -57,6 +77,33 @@ export function LandingPage({ onSelect }: LandingPageProps) {
           <span className="landing-card-label">Vaakunat</span>
         </button>
       </div>
+
+      {showHardConfirm && (
+        <div className="landing-hard-confirm">
+          <p className="landing-hard-title">Hard Mode</p>
+          <p className="landing-hard-desc">
+            1 arvaus, ei vihjeitä. Tunnistatko vaakunan?
+          </p>
+          <div className="landing-hard-actions">
+            <button
+              className="landing-hard-cancel"
+              onClick={() => setShowHardConfirm(false)}
+            >
+              Peruuta
+            </button>
+            <button
+              className="landing-hard-go"
+              onClick={() => {
+                setShowHardConfirm(false);
+                setLoading('coatOfArmsHard');
+                requestAnimationFrame(() => onSelect('coatOfArmsHard'));
+              }}
+            >
+              Pelaan
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="landing-help-wrapper">
         <button

@@ -9,6 +9,8 @@
   --color-correct: #538d4e;
   --color-proximity: #4a6cf7;
   --color-error: #e74c3c;
+  --color-hard: #e74c3c;
+  --color-hard-hover: #ef5e4f;
 }
 
 *,

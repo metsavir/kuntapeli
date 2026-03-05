@@ -74,7 +74,12 @@ export function generateShareText(
   clueType: ClueType,
   hintsUsed: number,
 ): string {
-  const mode = clueType === 'shape' ? 'Rajat' : 'Vaakunat';
+  const mode =
+    clueType === 'shape'
+      ? 'Rajat'
+      : clueType === 'coatOfArmsHard'
+        ? 'Vaakunat Hard'
+        : 'Vaakunat';
   const distances = guesses.map((g) => g.distance);
   const chain = distances.join(' → ') + ' km';
   const date = formatDate(dateStr);
@@ -83,12 +88,13 @@ export function generateShareText(
       ? ` · 💡 ${hintsUsed === 1 ? '1 vihje' : `${hintsUsed} vihjettä`}`
       : '';
 
+  const maxG = clueType === 'coatOfArmsHard' ? 1 : MAX_GUESSES;
   if (won) {
-    return `Kuntapeli #${gameNumber} (${mode}) · ${date}\n✅ ${guesses.length}/6 arvausta${hints}\n\n📍 ${chain}`;
+    return `Kuntapeli #${gameNumber} (${mode}) · ${date}\n✅ ${guesses.length}/${maxG} arvausta${hints}\n\n📍 ${chain}`;
   }
 
   const closest = Math.min(...distances);
-  return `Kuntapeli #${gameNumber} (${mode}) · ${date}\n❌ 6/6 · lähin ${closest} km${hints}\n\n📍 ${chain}`;
+  return `Kuntapeli #${gameNumber} (${mode}) · ${date}\n❌ ${maxG}/${maxG} · lähin ${closest} km${hints}\n\n📍 ${chain}`;
 }
 
 export function getPopulationHint(population: number): string {
