@@ -9,7 +9,14 @@ export function UpdateBanner() {
   return (
     <div className="update-banner">
       <span>Päivitys saatavilla</span>
-      <button onClick={() => updateServiceWorker(true)}>Päivitä</button>
+      <button
+        onClick={async () => {
+          await updateServiceWorker(true);
+          window.location.reload();
+        }}
+      >
+        Päivitä
+      </button>
     </div>
   );
 }
