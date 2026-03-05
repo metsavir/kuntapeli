@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { municipalities } from '../../data/municipalities';
 import { formatDate } from '../../utils/format';
-import { PillTabs } from '../PillTabs';
 import { MunicipalityCard } from './MunicipalityCard';
 import './CoatCollection.css';
 
@@ -152,13 +151,20 @@ export function CoatCollection({
           );
         })()}
       <div className="coat-collection-body">
-        <PillTabs
-          options={SORT_OPTIONS}
-          value={sort}
-          onChange={setSort}
+        <div
           className="coat-collection-sort"
-          stopPropagation
-        />
+          onClick={(e) => e.stopPropagation()}
+        >
+          {SORT_OPTIONS.map(({ key, label }) => (
+            <button
+              key={key}
+              className={`coat-collection-sort-btn${sort === key ? ' coat-collection-sort-btn--active' : ''}`}
+              onClick={() => setSort(key)}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
         {sort === 'region' ? (
           <div className="coat-collection-regions">
             {regions.map(({ region, names, completed }) => (
