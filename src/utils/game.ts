@@ -63,7 +63,9 @@ export function findMunicipality(name: string): Municipality | undefined {
 export function searchMunicipalities(query: string): Municipality[] {
   if (!query) return [];
   const lower = query.toLowerCase();
-  return municipalities.filter((m) => m.name.toLowerCase().startsWith(lower));
+  return municipalities
+    .filter((m) => m.name.toLowerCase().startsWith(lower))
+    .sort((a, b) => a.name.localeCompare(b.name, 'fi'));
 }
 
 export function generateShareText(
