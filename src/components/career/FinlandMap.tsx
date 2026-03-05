@@ -168,6 +168,7 @@ export function FinlandMap({
         // Zoomed out — tap to zoom into region
         setZoomedRegion(region);
         setSelected(null);
+        setHoveredRegion(null);
       }
     },
     [zoomedRegion, completed, failed, currentMunicipality],
