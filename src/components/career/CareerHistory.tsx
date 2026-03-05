@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import type { CareerProgress } from '../../data/types';
 import { municipalities } from '../../data/municipalities';
+import { Distribution, computeDistribution } from '../stats/StatsModal';
 import './CareerHistory.css';
 
 const regionByName: Record<string, string> = {};
@@ -10,6 +11,19 @@ for (const m of municipalities) {
 
 interface CareerHistoryProps {
   progress: CareerProgress;
+}
+
+function careerToGames(progress: CareerProgress) {
+  const games: { won: boolean; guesses: number }[] = progress.completed.map(
+    (name) => ({
+      won: true,
+      guesses: progress.stats[name]?.attempts ?? 0,
+    }),
+  );
+  for (const f of progress.failures ?? []) {
+    games.push({ won: false, guesses: f.guesses });
+  }
+  return games;
 }
 
 function computeStats(progress: CareerProgress) {
@@ -47,6 +61,10 @@ function computeStats(progress: CareerProgress) {
 
 export function CareerHistory({ progress }: CareerHistoryProps) {
   const stats = useMemo(() => computeStats(progress), [progress]);
+  const distribution = useMemo(
+    () => computeDistribution(careerToGames(progress)),
+    [progress],
+  );
 
   const entries = progress.completed
     .map((name) => ({
@@ -94,6 +112,8 @@ export function CareerHistory({ progress }: CareerHistoryProps) {
           </div>
         </div>
       </div>
+
+      <Distribution dist={distribution.dist} max={distribution.max} />
 
       <div className="career-section-title">Historia</div>
       <div className="career-entries">

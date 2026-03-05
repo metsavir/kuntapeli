@@ -47,8 +47,9 @@ function computeModeStats(stats: PlayerStats, mode?: GameMode) {
   };
 }
 
-function computeDistribution(stats: PlayerStats, mode?: GameMode) {
-  const games = mode ? stats.games.filter((g) => g.mode === mode) : stats.games;
+export function computeDistribution(
+  games: { won: boolean; guesses: number }[],
+) {
   const dist: Record<string, number> = {};
   for (let i = 1; i <= MAX_GUESSES; i++) dist[String(i)] = 0;
   dist['X'] = 0;
@@ -78,7 +79,7 @@ function StatsGrid({ items }: { items: { value: string; label: string }[] }) {
   );
 }
 
-function Distribution({
+export function Distribution({
   dist,
   max,
 }: {
@@ -146,13 +147,17 @@ export function StatsModal({
     () => computeModeStats(filtered, 'casual'),
     [filtered],
   );
-  const allDist = useMemo(() => computeDistribution(filtered), [filtered]);
+  const allDist = useMemo(
+    () => computeDistribution(filtered.games),
+    [filtered],
+  );
   const dailyDist = useMemo(
-    () => computeDistribution(filtered, 'daily'),
+    () => computeDistribution(filtered.games.filter((g) => g.mode === 'daily')),
     [filtered],
   );
   const casualDist = useMemo(
-    () => computeDistribution(filtered, 'casual'),
+    () =>
+      computeDistribution(filtered.games.filter((g) => g.mode === 'casual')),
     [filtered],
   );
 
