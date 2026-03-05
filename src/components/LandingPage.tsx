@@ -66,6 +66,7 @@ export function LandingPage({ onSelect }: LandingPageProps) {
           onPointerDown={handleCoatDown}
           onPointerUp={handleCoatUp}
           onPointerLeave={handleCoatUp}
+          onContextMenu={(e) => e.preventDefault()}
         >
           <div className="landing-card-visual">
             <img

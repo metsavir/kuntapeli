@@ -52,6 +52,9 @@
   border-radius: 1rem;
   background: var(--color-surface);
   cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
   transition:
     border-color 0.15s,
     transform 0.15s,
