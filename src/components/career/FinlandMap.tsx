@@ -189,6 +189,10 @@ export function FinlandMap({
     ? (mapData.regionViewBoxes.get(zoomedRegion) ?? mapData.globalViewBox)
     : mapData.globalViewBox;
 
+  // Derive stroke width from viewBox so borders stay visually consistent at any zoom
+  const vbWidth = parseFloat(activeViewBox.split(' ')[2] ?? '1');
+  const strokeWidth = vbWidth * 0.002;
+
   return (
     <div className="finland-map-container">
       {zoomedRegion &&
@@ -232,6 +236,13 @@ export function FinlandMap({
                 d={d}
                 fillRule="evenodd"
                 className={`${className}${selected === name ? ' fm-selected' : ''}${zoomedRegion && isKnown ? ' fm-clickable' : ''}`}
+                strokeWidth={
+                  isCurrent
+                    ? strokeWidth * 6
+                    : selected === name
+                      ? strokeWidth * 2
+                      : strokeWidth
+                }
                 onClick={() => handleClick(name)}
                 onMouseEnter={
                   !zoomedRegion ? () => setHoveredRegion(region) : undefined
@@ -248,6 +259,7 @@ export function FinlandMap({
               key={`border-${region}`}
               d={d}
               className="fm-region-border"
+              strokeWidth={strokeWidth * 1.2}
               fillRule="evenodd"
               pointerEvents="none"
             />
