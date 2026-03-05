@@ -76,26 +76,6 @@
   }
 }
 
-.header-help {
-  min-width: 2.25rem;
-  min-height: 2.25rem;
-  border-radius: 50%;
-  border: 2px solid var(--color-text-muted);
-  background: transparent;
-  color: var(--color-text);
-  font-size: 1.125rem;
-  font-weight: 700;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-@media (hover: hover) {
-  .header-help:hover {
-    border-color: var(--color-text);
-  }
-}
 
 @media (max-width: 374px) {
   .header-title {

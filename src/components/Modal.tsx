@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import type { ReactNode } from 'react';
 import { useLockScroll } from '../hooks/useLockScroll';
-import './HelpModal.css';
+import './Modal.css';
 
 interface ModalProps {
   onClose: () => void;
