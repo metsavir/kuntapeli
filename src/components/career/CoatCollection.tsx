@@ -213,8 +213,10 @@ export function CoatCollection({
                         key={name}
                         className={`coat-collection-cell${done ? ' coat-collection-cell--done' : ''}`}
                         onClick={(e) => {
-                          e.stopPropagation();
-                          done && setSelected(selected === name ? null : name);
+                          if (done) {
+                            e.stopPropagation();
+                            setSelected(selected === name ? null : name);
+                          }
                         }}
                         aria-label={done ? name : undefined}
                       >
