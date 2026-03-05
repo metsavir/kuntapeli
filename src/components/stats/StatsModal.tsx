@@ -7,6 +7,7 @@ import type {
 } from '../../data/types';
 import { CareerHistory } from '../career/CareerHistory';
 import { Modal } from '../Modal';
+import { ProgressRing } from './ProgressRing';
 import { MAX_GUESSES } from '../../utils/game';
 import './StatsModal.css';
 
@@ -66,18 +67,14 @@ export function computeDistribution(
   return { dist, max };
 }
 
-function StatsGrid({ items }: { items: { value: string; label: string }[] }) {
-  return (
-    <div className="stats-grid">
-      {items.map(({ value, label }) => (
-        <div key={label} className="stats-item">
-          <span className="stats-value">{value}</span>
-          <span className="stats-label">{label}</span>
-        </div>
-      ))}
-    </div>
-  );
-}
+const BAR_COLORS = [
+  'var(--color-correct)',
+  '#4a9e44',
+  '#5a9a3e',
+  '#6b9538',
+  '#7c8f32',
+  '#8d892c',
+];
 
 export function Distribution({
   dist,
@@ -87,23 +84,35 @@ export function Distribution({
   max: number;
 }) {
   return (
-    <>
-      <div className="stats-section-title">Arvausjakauma</div>
-      <div className="stats-distribution">
-        {Object.entries(dist).map(([key, count]) => (
-          <div key={key} className="stats-dist-row">
-            <span className="stats-dist-label">{key}</span>
-            <div className="stats-dist-bar-bg">
-              <div
-                className={`stats-dist-bar${key === 'X' ? ' stats-dist-bar--loss' : ''}`}
-                style={{ width: `${(count / max) * 100}%` }}
-              />
-            </div>
-            <span className="stats-dist-count">{count}</span>
+    <div className="stats-distribution">
+      {Object.entries(dist).map(([key, count], i) => (
+        <div key={key} className="stats-dist-row">
+          <span className="stats-dist-label">{key}</span>
+          <div className="stats-dist-bar-bg">
+            <div
+              className="stats-dist-bar"
+              style={{
+                width: `${(count / max) * 100}%`,
+                background:
+                  key === 'X'
+                    ? 'var(--color-error)'
+                    : (BAR_COLORS[i] ?? BAR_COLORS[5]),
+              }}
+            />
           </div>
-        ))}
-      </div>
-    </>
+          <span className="stats-dist-count">{count}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function StatRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="stats-row">
+      <span className="stats-row-label">{label}</span>
+      <span className="stats-row-value">{value}</span>
+    </div>
   );
 }
 
@@ -123,7 +132,6 @@ export function StatsModal({
 }: StatsModalProps) {
   const [tab, setTab] = useState<Tab>(initialTab);
 
-  // Filter stats to current clue type
   const filtered = useMemo<PlayerStats>(
     () => ({
       ...stats,
@@ -161,6 +169,45 @@ export function StatsModal({
     [filtered],
   );
 
+  const renderModeTab = (
+    modeStats: ReturnType<typeof computeModeStats>,
+    dist: { dist: Record<string, number>; max: number },
+    emptyMsg: string,
+    extra?: React.ReactNode,
+  ) => {
+    if (!modeStats) {
+      return <p className="stats-empty">{emptyMsg}</p>;
+    }
+    return (
+      <>
+        <div className="stats-hero">
+          <ProgressRing
+            value={modeStats.winRate}
+            label={`${modeStats.winRate}%`}
+            sublabel="voitto"
+          />
+          <div className="stats-hero-details">
+            <StatRow label="Pelejä" value={String(modeStats.total)} />
+            <StatRow
+              label="Keskim. arvaukset"
+              value={modeStats.avgGuesses.toFixed(1)}
+            />
+            <StatRow
+              label="Ekalla arvauksella"
+              value={`${modeStats.firstTryPct}%`}
+            />
+            <StatRow
+              label="Keskim. vihjeet"
+              value={modeStats.avgHints.toFixed(1)}
+            />
+            {extra}
+          </div>
+        </div>
+        <Distribution dist={dist.dist} max={dist.max} />
+      </>
+    );
+  };
+
   return (
     <Modal onClose={onClose} className="stats-modal">
       <h2>Tilastot</h2>
@@ -179,89 +226,32 @@ export function StatsModal({
 
       <div className="stats-content">
         {tab === 'all' &&
-          (allStats ? (
-            <>
-              <StatsGrid
-                items={[
-                  { value: String(allStats.total), label: 'pelejä' },
-                  { value: `${allStats.winRate} %`, label: 'voittoprosentti' },
-                  {
-                    value: allStats.avgGuesses.toFixed(1),
-                    label: 'keskim. arvaukset',
-                  },
-                  {
-                    value: `${allStats.firstTryPct} %`,
-                    label: 'ekalla arvauksella',
-                  },
-                  {
-                    value: allStats.avgHints.toFixed(1),
-                    label: 'keskim. vihjeet',
-                  },
-                ]}
-              />
-              <Distribution dist={allDist.dist} max={allDist.max} />
-            </>
-          ) : (
-            <p className="stats-empty">Ei vielä pelattuja pelejä.</p>
-          ))}
+          renderModeTab(allStats, allDist, 'Ei vielä pelattuja pelejä.')}
 
         {tab === 'daily' &&
-          (dailyStats ? (
+          renderModeTab(
+            dailyStats,
+            dailyDist,
+            'Ei vielä pelattuja päivittäisiä pelejä.',
             <>
-              <StatsGrid
-                items={[
-                  { value: String(dailyStats.total), label: 'pelejä' },
-                  {
-                    value: `${dailyStats.winRate} %`,
-                    label: 'voittoprosentti',
-                  },
-                  { value: String(streakInfo.streak), label: 'putki' },
-                  { value: String(streakInfo.maxStreak), label: 'paras putki' },
-                  {
-                    value: dailyStats.avgHints.toFixed(1),
-                    label: 'keskim. vihjeet',
-                  },
-                ]}
+              <StatRow label="Putki" value={String(streakInfo.streak)} />
+              <StatRow
+                label="Paras putki"
+                value={String(streakInfo.maxStreak)}
               />
-              <Distribution dist={dailyDist.dist} max={dailyDist.max} />
-            </>
-          ) : (
-            <p className="stats-empty">
-              Ei vielä pelattuja päivittäisiä pelejä.
-            </p>
-          ))}
+            </>,
+          )}
 
         {tab === 'casual' &&
-          (casualStats ? (
-            <>
-              <StatsGrid
-                items={[
-                  { value: String(casualStats.total), label: 'pelejä' },
-                  {
-                    value: `${casualStats.winRate} %`,
-                    label: 'voittoprosentti',
-                  },
-                  {
-                    value: casualStats.avgGuesses.toFixed(1),
-                    label: 'keskim. arvaukset',
-                  },
-                  {
-                    value: `${casualStats.firstTryPct} %`,
-                    label: 'ekalla arvauksella',
-                  },
-                  {
-                    value: casualStats.avgHints.toFixed(1),
-                    label: 'keskim. vihjeet',
-                  },
-                ]}
-              />
-              <Distribution dist={casualDist.dist} max={casualDist.max} />
-            </>
-          ) : (
-            <p className="stats-empty">Ei vielä pelattuja harjoittelupelejä.</p>
-          ))}
+          renderModeTab(
+            casualStats,
+            casualDist,
+            'Ei vielä pelattuja harjoittelupelejä.',
+          )}
 
-        {tab === 'career' && <CareerHistory progress={careerProgress} />}
+        {tab === 'career' && (
+          <CareerHistory progress={careerProgress} />
+        )}
       </div>
     </Modal>
   );
