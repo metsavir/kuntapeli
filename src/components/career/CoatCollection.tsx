@@ -102,9 +102,10 @@ export function CoatCollection({
       for (let i = triesBuckets.length - 1; i >= 0; i--) {
         if (tries >= triesBuckets[i]) {
           const next = triesBuckets[i + 1];
-          return next
-            ? `${triesBuckets[i]}–${next - 1} yritystä`
-            : `${triesBuckets[i]}+ yritystä`;
+          if (!next) return `${triesBuckets[i]}+ yritystä`;
+          return next - 1 === triesBuckets[i]
+            ? `${triesBuckets[i]} yritystä`
+            : `${triesBuckets[i]}–${next - 1} yritystä`;
         }
       }
       return `${tries} yritystä`;
