@@ -53,7 +53,7 @@
 
 /* Content area */
 .stats-content {
-  height: 18rem;
+  max-height: 55vh;
   overflow-y: auto;
   scrollbar-width: none;
 }
