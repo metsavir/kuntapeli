@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import type { PlayerStats, ClueType } from '../../data/types';
+import type { PlayerStats, GameMode, ClueType } from '../../data/types';
 import { formatPopulation } from '../../utils/format';
 import './PersonalComparison.css';
 
@@ -7,18 +7,25 @@ interface PersonalComparisonProps {
   municipality: string;
   population: number;
   stats: PlayerStats;
+  mode: GameMode;
   clueType: ClueType;
+  showHistory?: boolean;
 }
 
 export function PersonalComparison({
   municipality,
   population,
   stats,
+  mode,
   clueType,
+  showHistory = true,
 }: PersonalComparisonProps) {
   const history = useMemo(() => {
     const past = stats.games.filter(
-      (g) => g.municipality === municipality && g.clueType === clueType,
+      (g) =>
+        g.municipality === municipality &&
+        g.clueType === clueType &&
+        g.mode === mode,
     );
     // Current game was just recorded — exclude it
     const previous = past.slice(0, -1);
@@ -36,7 +43,7 @@ export function PersonalComparison({
       <div className="personal-fact">
         {formatPopulation(population)} asukasta
       </div>
-      {history && (
+      {showHistory && history && (
         <div className="personal-history">
           {history.bestResult !== null
             ? `Pelattu ${history.totalPlays} kertaa aiemmin — paras tulos: ${history.bestResult} arvausta`

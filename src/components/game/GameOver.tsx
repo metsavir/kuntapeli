@@ -70,7 +70,9 @@ export function GameOver({
         municipality={answer.name}
         population={answer.population}
         stats={stats}
+        mode={mode}
         clueType={clueType}
+        showHistory={mode === 'career'}
       />
       <div className="game-over-actions">
         {mode === 'daily' && (
