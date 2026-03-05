@@ -97,59 +97,11 @@
   }
 }
 
-.mode-toggle {
-  position: relative;
-  display: flex;
-  gap: 0.25rem;
-  background: var(--color-border);
-  border-radius: 999px;
-  padding: 0.125rem;
-}
-
-.mode-indicator {
-  position: absolute;
-  top: 0.125rem;
-  height: calc(100% - 0.25rem);
-  background: var(--color-surface);
-  border-radius: 999px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  transition:
-    left 0.3s ease,
-    width 0.3s ease;
-  z-index: 0;
-}
-
-.mode-pill {
-  position: relative;
-  z-index: 1;
-  padding: 0.375rem 0.75rem;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 999px;
-  background: transparent;
-  color: var(--color-text-muted);
-  cursor: pointer;
-  transition: color 0.2s;
-  outline: none;
-  -webkit-tap-highlight-color: transparent;
-}
-
-@media (hover: hover) {
-  .mode-pill:hover {
-    color: var(--color-text);
-  }
-}
-
-.mode-pill--active {
-  color: var(--color-text);
-}
-
 @media (max-width: 374px) {
   .header-title {
     font-size: 1.125rem;
   }
-  .mode-pill {
+  .mode-toggle .pill-tabs-btn {
     padding: 0.375rem 0.5rem;
     font-size: 0.75rem;
   }

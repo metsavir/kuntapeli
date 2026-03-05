@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useLayoutEffect } from 'react';
+import { useState, useMemo } from 'react';
 import type {
   PlayerStats,
   GameMode,
@@ -7,6 +7,7 @@ import type {
 } from '../../data/types';
 import { CareerHistory } from '../career/CareerHistory';
 import { Modal } from '../Modal';
+import { PillTabs } from '../PillTabs';
 import { ProgressRing } from './ProgressRing';
 import { MAX_GUESSES } from '../../utils/game';
 import './StatsModal.css';
@@ -131,31 +132,6 @@ export function StatsModal({
   onClose,
 }: StatsModalProps) {
   const [tab, setTab] = useState<Tab>(initialTab);
-  const tabsRef = useRef<HTMLDivElement>(null);
-  const indicatorRef = useRef<HTMLDivElement>(null);
-  const firstRender = useRef(true);
-
-  useLayoutEffect(() => {
-    const container = tabsRef.current;
-    const el = indicatorRef.current;
-    if (!container || !el) return;
-    const idx = TABS.findIndex((t) => t.key === tab);
-    const btn = container.children[idx + 1] as HTMLElement;
-    if (!btn) return;
-
-    if (firstRender.current) {
-      el.style.transition = 'none';
-    }
-    el.style.left = btn.offsetLeft + 'px';
-    el.style.width = btn.offsetWidth + 'px';
-    el.style.visibility = 'visible';
-
-    if (firstRender.current) {
-      el.offsetHeight;
-      el.style.transition = '';
-      firstRender.current = false;
-    }
-  }, [tab]);
 
   const filtered = useMemo<PlayerStats>(
     () => ({
@@ -237,22 +213,12 @@ export function StatsModal({
     <Modal onClose={onClose} className="stats-modal">
       <h2>Tilastot</h2>
 
-      <div className="stats-tabs" ref={tabsRef}>
-        <div
-          className="stats-tab-indicator"
-          ref={indicatorRef}
-          style={{ visibility: 'hidden' }}
-        />
-        {TABS.map(({ key, label }) => (
-          <button
-            key={key}
-            className={`stats-tab${tab === key ? ' stats-tab--active' : ''}`}
-            onClick={() => setTab(key)}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
+      <PillTabs
+        options={TABS}
+        value={tab}
+        onChange={setTab}
+        className="stats-tabs"
+      />
 
       <div className="stats-content">
         {tab === 'all' &&

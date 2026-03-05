@@ -4,51 +4,13 @@
 
 /* Tabs */
 .stats-tabs {
-  position: relative;
-  display: flex;
-  gap: 0.25rem;
-  background: var(--color-border);
-  border-radius: 999px;
-  padding: 0.125rem;
   margin-bottom: 1rem;
 }
 
-.stats-tab-indicator {
-  position: absolute;
-  top: 0.125rem;
-  height: calc(100% - 0.25rem);
-  background: var(--color-bg);
-  border-radius: 999px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  transition:
-    left 0.3s ease,
-    width 0.3s ease;
-  z-index: 0;
-}
-
-.stats-tab {
-  position: relative;
-  z-index: 1;
+.stats-tabs .pill-tabs-btn {
   flex: 1;
   padding: 0.375rem 0.25rem;
   font-size: 0.75rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 999px;
-  background: transparent;
-  color: var(--color-text-muted);
-  cursor: pointer;
-  transition: color 0.2s;
-}
-
-@media (hover: hover) {
-  .stats-tab:hover {
-    color: var(--color-text);
-  }
-}
-
-.stats-tab--active {
-  color: var(--color-text);
 }
 
 /* Content area */

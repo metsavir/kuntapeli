@@ -1,8 +1,13 @@
-import { useRef, useLayoutEffect } from 'react';
+import { useRef } from 'react';
 import type { GameMode } from '../data/types';
+import { PillTabs } from './PillTabs';
 import './Header.css';
 
-const MODES: GameMode[] = ['daily', 'casual', 'career'];
+const MODE_OPTIONS: { key: GameMode; label: string }[] = [
+  { key: 'daily', label: 'Päivittäinen' },
+  { key: 'casual', label: 'Harjoittelu' },
+  { key: 'career', label: 'Ura' },
+];
 
 interface HeaderProps {
   mode: GameMode;
@@ -25,31 +30,6 @@ export function Header({
     count: number;
     timer: ReturnType<typeof setTimeout> | undefined;
   }>({ count: 0, timer: undefined });
-  const toggleRef = useRef<HTMLDivElement>(null);
-  const indicatorRef = useRef<HTMLDivElement>(null);
-  const firstRender = useRef(true);
-
-  useLayoutEffect(() => {
-    const container = toggleRef.current;
-    const el = indicatorRef.current;
-    if (!container || !el) return;
-    const idx = MODES.indexOf(mode);
-    const btn = container.children[idx + 1] as HTMLElement; // +1 to skip the indicator div
-    if (!btn) return;
-
-    if (firstRender.current) {
-      el.style.transition = 'none';
-    }
-    el.style.left = btn.offsetLeft + 'px';
-    el.style.width = btn.offsetWidth + 'px';
-    el.style.visibility = 'visible';
-
-    if (firstRender.current) {
-      el.offsetHeight; // force reflow
-      el.style.transition = '';
-      firstRender.current = false;
-    }
-  }, [mode]);
 
   const handleTitleClick = () => {
     tapRef.current.count++;
@@ -132,31 +112,12 @@ export function Header({
           </button>
         </div>
       </div>
-      <div className="mode-toggle" ref={toggleRef}>
-        <div
-          className="mode-indicator"
-          ref={indicatorRef}
-          style={{ visibility: 'hidden' }}
-        />
-        <button
-          className={`mode-pill${mode === 'daily' ? ' mode-pill--active' : ''}`}
-          onClick={() => onModeChange('daily')}
-        >
-          Päivittäinen
-        </button>
-        <button
-          className={`mode-pill${mode === 'casual' ? ' mode-pill--active' : ''}`}
-          onClick={() => onModeChange('casual')}
-        >
-          Harjoittelu
-        </button>
-        <button
-          className={`mode-pill${mode === 'career' ? ' mode-pill--active' : ''}`}
-          onClick={() => onModeChange('career')}
-        >
-          Ura
-        </button>
-      </div>
+      <PillTabs
+        options={MODE_OPTIONS}
+        value={mode}
+        onChange={onModeChange}
+        className="mode-toggle"
+      />
     </header>
   );
 }

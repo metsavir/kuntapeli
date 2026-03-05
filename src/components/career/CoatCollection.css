@@ -36,45 +36,13 @@
 }
 
 .coat-collection-sort {
-  position: relative;
-  display: flex;
-  gap: 0.25rem;
-  background: var(--color-border);
-  border-radius: 999px;
-  padding: 0.125rem;
   margin-bottom: 0.5rem;
   align-self: start;
 }
 
-.coat-collection-sort-indicator {
-  position: absolute;
-  top: 0.125rem;
-  height: calc(100% - 0.25rem);
-  background: var(--color-bg);
-  border-radius: 999px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  transition:
-    left 0.3s ease,
-    width 0.3s ease;
-  z-index: 0;
-}
-
-.coat-collection-sort-btn {
-  position: relative;
-  z-index: 1;
+.coat-collection-sort .pill-tabs-btn {
   padding: 0.3rem 0.6rem;
   font-size: 0.7rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 999px;
-  background: transparent;
-  color: var(--color-text-muted);
-  cursor: pointer;
-  transition: color 0.2s;
-}
-
-.coat-collection-sort-btn--active {
-  color: var(--color-text);
 }
 
 .coat-collection-body {

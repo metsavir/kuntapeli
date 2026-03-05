@@ -1,6 +1,7 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { municipalities } from '../../data/municipalities';
 import { formatDate } from '../../utils/format';
+import { PillTabs } from '../PillTabs';
 import { MunicipalityCard } from './MunicipalityCard';
 import './CoatCollection.css';
 
@@ -34,9 +35,6 @@ export function CoatCollection({
   const [selected, setSelected] = useState<string | null>(null);
   const [sort, setSort] = useState<SortMode>('region');
   const scrollRef = useRef<HTMLDivElement>(null);
-  const sortRef = useRef<HTMLDivElement>(null);
-  const sortIndicatorRef = useRef<HTMLDivElement>(null);
-  const sortFirstRender = useRef(true);
 
   useEffect(() => {
     if (visible) {
@@ -44,28 +42,6 @@ export function CoatCollection({
       setSelected(null);
     }
   }, [visible]);
-
-  useLayoutEffect(() => {
-    const container = sortRef.current;
-    const el = sortIndicatorRef.current;
-    if (!container || !el) return;
-    const idx = SORT_OPTIONS.findIndex((o) => o.key === sort);
-    const btn = container.children[idx + 1] as HTMLElement;
-    if (!btn) return;
-
-    if (sortFirstRender.current) {
-      el.style.transition = 'none';
-    }
-    el.style.left = btn.offsetLeft + 'px';
-    el.style.width = btn.offsetWidth + 'px';
-    el.style.visibility = 'visible';
-
-    if (sortFirstRender.current) {
-      el.offsetHeight;
-      el.style.transition = '';
-      sortFirstRender.current = false;
-    }
-  }, [sort]);
 
   const failCounts = useMemo(() => {
     const map: Record<string, number> = {};
@@ -176,25 +152,13 @@ export function CoatCollection({
           );
         })()}
       <div className="coat-collection-body">
-        <div className="coat-collection-sort" ref={sortRef}>
-          <div
-            className="coat-collection-sort-indicator"
-            ref={sortIndicatorRef}
-            style={{ visibility: 'hidden' }}
-          />
-          {SORT_OPTIONS.map(({ key, label }) => (
-            <button
-              key={key}
-              className={`coat-collection-sort-btn${sort === key ? ' coat-collection-sort-btn--active' : ''}`}
-              onClick={(e) => {
-                e.stopPropagation();
-                setSort(key);
-              }}
-            >
-              {label}
-            </button>
-          ))}
-        </div>
+        <PillTabs
+          options={SORT_OPTIONS}
+          value={sort}
+          onChange={setSort}
+          className="coat-collection-sort"
+          stopPropagation
+        />
         {sort === 'region' ? (
           <div className="coat-collection-regions">
             {regions.map(({ region, names, completed }) => (
