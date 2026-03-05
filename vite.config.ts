@@ -42,7 +42,7 @@ export default defineConfig({
         runtimeCaching: [
           {
             urlPattern: /\/coats\/.*\.png$/,
-            handler: 'CacheFirst',
+            handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'coat-images',
               expiration: {
