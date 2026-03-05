@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { municipalities } from '../../data/municipalities';
-import { formatPopulation, formatDate } from '../../utils/format';
+import { MunicipalityCard } from './MunicipalityCard';
 import './CoatCollection.css';
 
 const municipalityByName = Object.fromEntries(
@@ -10,12 +10,14 @@ const municipalityByName = Object.fromEntries(
 interface CoatCollectionProps {
   completedSet: Set<string>;
   careerStats: Record<string, { attempts: number; date: string }>;
+  failures: { name: string; guesses: number; date: string }[];
   visible: boolean;
 }
 
 export function CoatCollection({
   completedSet,
   careerStats,
+  failures,
   visible,
 }: CoatCollectionProps) {
   const [selected, setSelected] = useState<string | null>(null);
@@ -53,33 +55,19 @@ export function CoatCollection({
       {selected &&
         (() => {
           const m = municipalityByName[selected];
-          const stat = careerStats[selected];
+          const failCount = failures.filter((f) => f.name === selected).length;
           return (
             <div className="coat-collection-card-wrap">
               <div
                 className="coat-collection-card"
                 onClick={(e) => e.stopPropagation()}
               >
-                <img
-                  src={`${import.meta.env.BASE_URL}coats/${selected}.png`}
-                  alt=""
-                  className="fm-card-coat"
-                  draggable={false}
+                <MunicipalityCard
+                  name={selected}
+                  municipality={m}
+                  stat={careerStats[selected]}
+                  failCount={failCount}
                 />
-                <div className="fm-card-info">
-                  <div className="fm-card-name">{selected}</div>
-                  <div className="fm-card-detail">
-                    {m.region} — {formatPopulation(m.population)} asukasta
-                  </div>
-                  {stat && (
-                    <div className="fm-card-detail">
-                      {stat.attempts === 1
-                        ? '1 arvaus'
-                        : `${stat.attempts} arvausta`}{' '}
-                      — {formatDate(stat.date)}
-                    </div>
-                  )}
-                </div>
               </div>
             </div>
           );

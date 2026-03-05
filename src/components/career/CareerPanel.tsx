@@ -112,6 +112,7 @@ export function CareerPanel({
             completed={career.completedSet}
             failed={career.failedSet}
             careerStats={career.progress.stats}
+            failures={career.progress.failures}
             currentMunicipality={
               careerGame.status !== 'playing' && careerGame.status === 'won'
                 ? careerGame.answer.name
@@ -138,6 +139,7 @@ export function CareerPanel({
           <CoatCollection
             completedSet={career.completedSet}
             careerStats={career.progress.stats}
+            failures={career.progress.failures}
             visible={careerView === 'collection'}
           />
         </div>

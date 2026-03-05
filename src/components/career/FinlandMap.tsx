@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { getAllShapes } from '../../data/shapes';
 import { municipalities } from '../../data/municipalities';
 import type { Municipality, MunicipalityShape } from '../../data/types';
-import { formatPopulation, formatDate } from '../../utils/format';
+import { MunicipalityCard } from './MunicipalityCard';
 import {
   getRings,
   buildPath,
@@ -15,6 +15,7 @@ interface FinlandMapProps {
   completed: Set<string>;
   failed: Set<string>;
   careerStats: Record<string, { attempts: number; date: string }>;
+  failures: { name: string; guesses: number; date: string }[];
   currentMunicipality?: string;
   visible?: boolean;
 }
@@ -31,6 +32,7 @@ export function FinlandMap({
   completed,
   failed,
   careerStats,
+  failures,
   currentMunicipality,
   visible = true,
 }: FinlandMapProps) {
@@ -252,31 +254,16 @@ export function FinlandMap({
         (() => {
           const m = municipalityByName[selected];
           const isCompleted = completed.has(selected);
-          const stat = careerStats[selected];
+          const failCount = failures.filter((f) => f.name === selected).length;
           return (
             <div className="fm-card">
-              {isCompleted && (
-                <img
-                  src={`${import.meta.env.BASE_URL}coats/${selected}.png`}
-                  alt=""
-                  className="fm-card-coat"
-                  draggable={false}
-                />
-              )}
-              <div className="fm-card-info">
-                <div className="fm-card-name">{selected}</div>
-                <div className="fm-card-detail">
-                  {m.region} — {formatPopulation(m.population)} asukasta
-                </div>
-                {stat && (
-                  <div className="fm-card-detail">
-                    {stat.attempts === 1
-                      ? '1 arvaus'
-                      : `${stat.attempts} arvausta`}{' '}
-                    — {formatDate(stat.date)}
-                  </div>
-                )}
-              </div>
+              <MunicipalityCard
+                name={selected}
+                municipality={m}
+                stat={careerStats[selected]}
+                failCount={failCount}
+                showCoat={isCompleted}
+              />
             </div>
           );
         })()}
