@@ -53,7 +53,10 @@ export function GameOver({
   };
 
   return (
-    <div className="game-over">
+    <div className={`game-over${status === 'won' ? ' game-over--won' : ''}`}>
+      {status === 'won' && (
+        <div className="game-over-flash" aria-hidden="true" />
+      )}
       {status === 'won' ? (
         <p className="game-over-message">
           Oikein! <strong>{answer.name}</strong> ({answer.region})

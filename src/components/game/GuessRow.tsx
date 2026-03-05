@@ -15,6 +15,13 @@ export function GuessRow({ guess }: GuessRowProps) {
     );
   }
 
+  const barClass =
+    guess.proximity >= 80
+      ? ' guess-proximity-bar--scorching'
+      : guess.proximity >= 60
+        ? ' guess-proximity-bar--warm'
+        : '';
+
   return (
     <div className="guess-row">
       <span className="guess-name">{guess.municipality.name}</span>
@@ -22,7 +29,7 @@ export function GuessRow({ guess }: GuessRowProps) {
       <span className="guess-direction">{guess.direction}</span>
       <div className="guess-proximity">
         <div
-          className={`guess-proximity-bar${guess.proximity >= 80 ? ' guess-proximity-bar--hot' : ''}`}
+          className={`guess-proximity-bar${barClass}`}
           style={{ width: `${guess.proximity}%` }}
         />
         <span className="guess-proximity-text">{guess.proximity}%</span>
