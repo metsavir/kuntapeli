@@ -18,7 +18,7 @@
 .coat-collection-card-wrap {
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 2;
   align-self: start;
   pointer-events: none;
 }
