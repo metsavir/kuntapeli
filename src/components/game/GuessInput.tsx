@@ -68,6 +68,7 @@ export function GuessInput({
 
   const submit = (name: string) => {
     const result = onSubmit(name);
+    setSuggestions([]);
     if (result.error) {
       setError(result.error);
     } else {
@@ -126,6 +127,7 @@ export function GuessInput({
             onKeyDown={handleKeyDown}
             placeholder={`Arvaa kunta... (${attemptsLeft} jäljellä)`}
             autoComplete="off"
+            autoCorrect="off"
             autoCapitalize="off"
             spellCheck={false}
           />
