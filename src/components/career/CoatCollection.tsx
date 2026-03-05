@@ -66,8 +66,7 @@ export function CoatCollection({
       }));
   }, [completedSet]);
 
-  const groupedFlat = useMemo(() => {
-    if (sort === 'region') return null;
+  const { dateGroups, triesGroups } = useMemo(() => {
     const completed = municipalities
       .filter((m) => completedSet.has(m.name))
       .map((m) => ({
@@ -76,26 +75,26 @@ export function CoatCollection({
         tries: (failCounts[m.name] ?? 0) + 1,
       }));
 
-    if (sort === 'date') {
-      const orderMap = new Map(completedOrder.map((n, i) => [n, i]));
-      completed.sort(
-        (a, b) => (orderMap.get(b.name) ?? 0) - (orderMap.get(a.name) ?? 0),
-      );
-      const groups: { label: string; names: string[] }[] = [];
-      for (const item of completed) {
-        const label = item.stat ? formatDate(item.stat.date) : 'Tuntematon';
-        const last = groups[groups.length - 1];
-        if (last && last.label === label) {
-          last.names.push(item.name);
-        } else {
-          groups.push({ label, names: [item.name] });
-        }
+    // Date groups
+    const byDate = [...completed];
+    const orderMap = new Map(completedOrder.map((n, i) => [n, i]));
+    byDate.sort(
+      (a, b) => (orderMap.get(b.name) ?? 0) - (orderMap.get(a.name) ?? 0),
+    );
+    const dateGroups: { label: string; names: string[] }[] = [];
+    for (const item of byDate) {
+      const label = item.stat ? formatDate(item.stat.date) : 'Tuntematon';
+      const last = dateGroups[dateGroups.length - 1];
+      if (last && last.label === label) {
+        last.names.push(item.name);
+      } else {
+        dateGroups.push({ label, names: [item.name] });
       }
-      return groups;
     }
 
-    // tries sort — exact 1-3, then buckets 4-4, 5-9, 10-19, 20+
-    completed.sort((a, b) => a.tries - b.tries);
+    // Tries groups
+    const byTries = [...completed];
+    byTries.sort((a, b) => a.tries - b.tries);
     const triesBuckets = [1, 2, 3, 4, 5, 10, 20] as const;
     const triesLabel = (tries: number) => {
       if (tries === 1) return '1 yritys';
@@ -110,19 +109,29 @@ export function CoatCollection({
       }
       return `${tries} yritystä`;
     };
-    const groups: { label: string; names: string[] }[] = [];
-    for (const item of completed) {
+    const triesGroups: { label: string; names: string[] }[] = [];
+    for (const item of byTries) {
       const label = triesLabel(item.tries);
-      const last = groups[groups.length - 1];
+      const last = triesGroups[triesGroups.length - 1];
       if (last && last.label === label) {
         last.names.push(item.name);
       } else {
-        groups.push({ label, names: [item.name] });
+        triesGroups.push({ label, names: [item.name] });
       }
     }
-    for (const g of groups) g.names.sort((a, b) => a.localeCompare(b, 'fi'));
-    return groups;
-  }, [sort, completedSet, completedOrder, careerStats, failCounts]);
+    for (const g of triesGroups)
+      g.names.sort((a, b) => a.localeCompare(b, 'fi'));
+
+    return { dateGroups, triesGroups };
+  }, [completedSet, completedOrder, careerStats, failCounts]);
+
+  const unguessed = useMemo(
+    () =>
+      municipalities
+        .filter((m) => !completedSet.has(m.name))
+        .sort((a, b) => a.name.localeCompare(b.name, 'fi')),
+    [completedSet],
+  );
 
   return (
     <div
@@ -165,59 +174,32 @@ export function CoatCollection({
             </button>
           ))}
         </div>
-        {sort === 'region' ? (
-          <div className="coat-collection-regions">
-            {regions.map(({ region, names, completed }) => (
-              <section key={region} className="coat-collection-region">
-                <h3 className="coat-collection-region-header">
-                  {region}{' '}
-                  <span className="coat-collection-count">
-                    {completed}/{names.length}
-                  </span>
-                </h3>
-                <div className="coat-collection-grid">
-                  {names.map((name) => {
-                    const done = completedSet.has(name);
-                    return (
-                      <button
-                        key={name}
-                        className={`coat-collection-cell${done ? ' coat-collection-cell--done' : ''}`}
-                        onClick={(e) => {
-                          if (done) {
-                            e.stopPropagation();
-                            setSelected(selected === name ? null : name);
-                          }
-                        }}
-                        aria-label={done ? name : undefined}
-                      >
-                        <img
-                          src={`${import.meta.env.BASE_URL}coats/${name}.png`}
-                          alt=""
-                          draggable={false}
-                          loading="lazy"
-                        />
-                      </button>
-                    );
-                  })}
-                </div>
-              </section>
-            ))}
-          </div>
-        ) : (
-          <div className="coat-collection-regions">
-            {groupedFlat?.map(({ label, names }) => (
-              <section key={label} className="coat-collection-region">
-                <h3 className="coat-collection-region-header">{label}</h3>
-                <div className="coat-collection-grid">
-                  {names.map((name) => (
+        <div
+          className="coat-collection-regions"
+          style={{ display: sort === 'region' ? undefined : 'none' }}
+        >
+          {regions.map(({ region, names, completed }) => (
+            <section key={region} className="coat-collection-region">
+              <h3 className="coat-collection-region-header">
+                {region}{' '}
+                <span className="coat-collection-count">
+                  {completed}/{names.length}
+                </span>
+              </h3>
+              <div className="coat-collection-grid">
+                {names.map((name) => {
+                  const done = completedSet.has(name);
+                  return (
                     <button
                       key={name}
-                      className="coat-collection-cell coat-collection-cell--done"
+                      className={`coat-collection-cell${done ? ' coat-collection-cell--done' : ''}`}
                       onClick={(e) => {
-                        e.stopPropagation();
-                        setSelected(selected === name ? null : name);
+                        if (done) {
+                          e.stopPropagation();
+                          setSelected(selected === name ? null : name);
+                        }
                       }}
-                      aria-label={name}
+                      aria-label={done ? name : undefined}
                     >
                       <img
                         src={`${import.meta.env.BASE_URL}coats/${name}.png`}
@@ -226,30 +208,62 @@ export function CoatCollection({
                         loading="lazy"
                       />
                     </button>
-                  ))}
-                </div>
-              </section>
-            ))}
+                  );
+                })}
+              </div>
+            </section>
+          ))}
+        </div>
+        {(['date', 'tries'] as const).map((mode) => (
+          <div
+            key={mode}
+            className="coat-collection-regions"
+            style={{ display: sort === mode ? undefined : 'none' }}
+          >
+            {(mode === 'date' ? dateGroups : triesGroups).map(
+              ({ label, names }) => (
+                <section key={label} className="coat-collection-region">
+                  <h3 className="coat-collection-region-header">{label}</h3>
+                  <div className="coat-collection-grid">
+                    {names.map((name) => (
+                      <button
+                        key={name}
+                        className="coat-collection-cell coat-collection-cell--done"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelected(selected === name ? null : name);
+                        }}
+                        aria-label={name}
+                      >
+                        <img
+                          src={`${import.meta.env.BASE_URL}coats/${name}.png`}
+                          alt=""
+                          draggable={false}
+                          loading="lazy"
+                        />
+                      </button>
+                    ))}
+                  </div>
+                </section>
+              ),
+            )}
             <section className="coat-collection-region">
               <h3 className="coat-collection-region-header">Arvaamatta</h3>
               <div className="coat-collection-grid">
-                {municipalities
-                  .filter((m) => !completedSet.has(m.name))
-                  .sort((a, b) => a.name.localeCompare(b.name, 'fi'))
-                  .map((m) => (
-                    <button key={m.name} className="coat-collection-cell">
-                      <img
-                        src={`${import.meta.env.BASE_URL}coats/${m.name}.png`}
-                        alt=""
-                        draggable={false}
-                        loading="lazy"
-                      />
-                    </button>
-                  ))}
+                {unguessed.map((m) => (
+                  <button key={m.name} className="coat-collection-cell">
+                    <img
+                      src={`${import.meta.env.BASE_URL}coats/${m.name}.png`}
+                      alt=""
+                      draggable={false}
+                      loading="lazy"
+                    />
+                  </button>
+                ))}
               </div>
             </section>
           </div>
-        )}
+        ))}
       </div>
     </div>
   );
