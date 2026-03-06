@@ -13,6 +13,7 @@
     "fetch-coats": "node scripts/fetch-coats.mjs"
   },
   "dependencies": {
+    "idb-keyval": "^6.2.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },

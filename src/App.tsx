@@ -11,6 +11,7 @@ import { CoatOfArms } from './components/career/CoatOfArms';
 import { LandingPage } from './components/LandingPage';
 import { StatsModal } from './components/stats/StatsModal';
 import { BadgeModal } from './components/stats/BadgeModal';
+import { SettingsModal } from './components/SettingsModal';
 import { UpdateBanner } from './components/UpdateBanner';
 import { BadgeToast } from './components/BadgeToast';
 import { useStats } from './hooks/useStats';
@@ -57,6 +58,7 @@ function App() {
   }, [stats, career.progress, checkBadges]);
   const [showStatsModal, setShowStatsModal] = useState(false);
   const [showBadgesModal, setShowBadgesModal] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [debug, setDebug] = useState(false);
   const mapTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const [careerView, setCareerView] = useState<'game' | 'map' | 'collection'>(
@@ -79,7 +81,7 @@ function App() {
   useEffect(() => {
     const key = clueType ?? 'shape';
     if (!careerAnswers[key]) {
-      setCareerAnswer(career.getRandomUnguessed());
+      career.getRandomUnguessed().then(setCareerAnswer);
     }
   }, [clueType]);
 
@@ -121,8 +123,7 @@ function App() {
   const handleCareerNext = useCallback(() => {
     clearTimeout(mapTimerRef.current);
     setCareerView('game');
-    const next = career.getRandomUnguessed();
-    setCareerAnswer(next);
+    career.getRandomUnguessed().then(setCareerAnswer);
   }, [career.getRandomUnguessed]);
 
   const careerComplete = career.completedCount === career.totalCount;
@@ -159,6 +160,7 @@ function App() {
         }}
         onStats={() => setShowStatsModal(true)}
         onBadges={() => setShowBadgesModal(true)}
+        onSettings={() => setShowSettingsModal(true)}
         onDebugToggle={
           import.meta.env.DEV ? () => setDebug((d) => !d) : undefined
         }
@@ -230,6 +232,9 @@ function App() {
           badgeState={badgeState}
           onClose={() => setShowBadgesModal(false)}
         />
+      )}
+      {showSettingsModal && (
+        <SettingsModal onClose={() => setShowSettingsModal(false)} />
       )}
       {newlyUnlocked && (
         <BadgeToast badgeId={newlyUnlocked.badgeId} onDismiss={dismissToast} />

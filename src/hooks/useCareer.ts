@@ -1,39 +1,46 @@
-import { useState, useCallback, useEffect, useMemo } from 'react';
+import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import type { CareerProgress, ClueType, Municipality } from '../data/types';
 import { municipalities } from '../data/municipalities';
 import { getTodayString } from '../utils/game';
+import { getItem, setItem } from '../utils/storage';
 
 function careerKey(clueType: ClueType): string {
   return `kuntapeli-career-${clueType}`;
 }
 
-function loadCareer(clueType: ClueType): CareerProgress {
+const EMPTY: CareerProgress = { completed: [], stats: {}, failures: [] };
+
+function parseCareer(raw: string | null): CareerProgress {
+  if (!raw) return EMPTY;
   try {
-    const raw = localStorage.getItem(careerKey(clueType));
-    if (!raw) return { completed: [], stats: {}, failures: [] };
     const parsed = JSON.parse(raw) as CareerProgress;
     return { ...parsed, failures: parsed.failures ?? [] };
   } catch {
-    return { completed: [], stats: {}, failures: [] };
+    return EMPTY;
   }
 }
 
-function saveCareer(clueType: ClueType, progress: CareerProgress): void {
-  localStorage.setItem(careerKey(clueType), JSON.stringify(progress));
-}
-
 export function useCareer(clueType: ClueType) {
-  const [progress, setProgress] = useState<CareerProgress>(() =>
-    loadCareer(clueType),
-  );
+  const [progress, setProgress] = useState<CareerProgress>(EMPTY);
+  const loaded = useRef(false);
+  const saving = useRef(false);
 
-  // Reload progress when clue type changes
+  // Async load from storage
   useEffect(() => {
-    setProgress(loadCareer(clueType));
+    loaded.current = false;
+    getItem(careerKey(clueType)).then((raw) => {
+      setProgress(parseCareer(raw));
+      loaded.current = true;
+    });
   }, [clueType]);
 
+  // Persist on change (skip initial empty state before load)
   useEffect(() => {
-    saveCareer(clueType, progress);
+    if (!loaded.current) return;
+    saving.current = true;
+    setItem(careerKey(clueType), JSON.stringify(progress)).then(() => {
+      saving.current = false;
+    });
   }, [clueType, progress]);
 
   const completedSet = useMemo(
@@ -74,29 +81,15 @@ export function useCareer(clueType: ClueType) {
     }));
   }, []);
 
-  const getRandomUnguessed = useCallback((): Municipality | null => {
-    const current = loadCareer(clueType);
-    const completed = new Set(current.completed);
-    const remaining = municipalities.filter((m) => !completed.has(m.name));
-    if (remaining.length === 0) return null;
-    return remaining[Math.floor(Math.random() * remaining.length)];
-  }, [clueType]);
-
-  const getRegionStats = useCallback(() => {
-    const regionMap = new Map<string, { total: number; completed: number }>();
-    for (const m of municipalities) {
-      const entry = regionMap.get(m.region) ?? { total: 0, completed: 0 };
-      entry.total++;
-      if (completedSet.has(m.name)) entry.completed++;
-      regionMap.set(m.region, entry);
-    }
-    return [...regionMap.entries()]
-      .map(([region, counts]) => ({
-        region,
-        ...counts,
-      }))
-      .sort((a, b) => a.region.localeCompare(b.region, 'fi'));
-  }, [completedSet]);
+  const getRandomUnguessed =
+    useCallback(async (): Promise<Municipality | null> => {
+      const raw = await getItem(careerKey(clueType));
+      const current = parseCareer(raw);
+      const completed = new Set(current.completed);
+      const remaining = municipalities.filter((m) => !completed.has(m.name));
+      if (remaining.length === 0) return null;
+      return remaining[Math.floor(Math.random() * remaining.length)];
+    }, [clueType]);
 
   return {
     progress,
@@ -107,6 +100,5 @@ export function useCareer(clueType: ClueType) {
     markCompleted,
     markFailed,
     getRandomUnguessed,
-    getRegionStats,
   };
 }

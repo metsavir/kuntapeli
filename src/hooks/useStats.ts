@@ -1,5 +1,6 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import type { GameRecord, PlayerStats, DailyStreakInfo } from '../data/types';
+import { getItem, setItem } from '../utils/storage';
 
 const STORAGE_KEY = 'kuntapeli-stats';
 
@@ -9,19 +10,14 @@ function emptyStats(): PlayerStats {
   return { games: [], dailyStreaks: {} };
 }
 
-function loadStats(): PlayerStats {
+function parseStats(raw: string | null): PlayerStats {
+  if (!raw) return emptyStats();
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return emptyStats();
     const parsed = JSON.parse(raw) as PlayerStats;
     return { games: parsed.games, dailyStreaks: parsed.dailyStreaks ?? {} };
   } catch {
     return emptyStats();
   }
-}
-
-function saveStats(stats: PlayerStats): void {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(stats));
 }
 
 /** Check if dateA is exactly one day before dateB (YYYY-MM-DD strings) */
@@ -33,10 +29,21 @@ function isYesterday(dateA: string, dateB: string): boolean {
 }
 
 export function useStats() {
-  const [stats, setStats] = useState<PlayerStats>(loadStats);
+  const [stats, setStats] = useState<PlayerStats>(emptyStats);
+  const loaded = useRef(false);
 
+  // Async load from storage
   useEffect(() => {
-    saveStats(stats);
+    getItem(STORAGE_KEY).then((raw) => {
+      setStats(parseStats(raw));
+      loaded.current = true;
+    });
+  }, []);
+
+  // Persist on change
+  useEffect(() => {
+    if (!loaded.current) return;
+    setItem(STORAGE_KEY, JSON.stringify(stats));
   }, [stats]);
 
   const recordGame = useCallback((record: GameRecord) => {

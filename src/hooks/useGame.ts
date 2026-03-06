@@ -16,25 +16,24 @@ import {
   findMunicipality,
   MAX_GUESSES,
 } from '../utils/game';
+import { getItem, setItem } from '../utils/storage';
 
 function dailyStorageKey(clueType: string): string {
   return `kuntapeli-state-${clueType}`;
 }
 
-function loadDailyState(dateStr: string, clueType: string): GameState | null {
+function parseDailyState(
+  raw: string | null,
+  dateStr: string,
+): GameState | null {
+  if (!raw) return null;
   try {
-    const raw = localStorage.getItem(dailyStorageKey(clueType));
-    if (!raw) return null;
     const parsed = JSON.parse(raw) as GameState;
     if (parsed.date !== dateStr) return null;
     return parsed;
   } catch {
     return null;
   }
-}
-
-function saveDailyState(state: GameState, clueType: string): void {
-  localStorage.setItem(dailyStorageKey(clueType), JSON.stringify(state));
 }
 
 function createDailyState(dateStr: string, clueType: string): GameState {
@@ -73,12 +72,19 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
 
   const [state, setState] = useState<GameState>(() => {
     if (mode === 'daily') {
-      return (
-        loadDailyState(dateStr, clueType) ?? createDailyState(dateStr, clueType)
-      );
+      return createDailyState(dateStr, clueType);
     }
     return createFreshState(dateStr, getAnswer());
   });
+
+  // Async load daily state from storage on mount and when clueType changes
+  useEffect(() => {
+    if (mode !== 'daily') return;
+    getItem(dailyStorageKey(clueType)).then((raw) => {
+      const loaded = parseDailyState(raw, dateStr);
+      if (loaded) setState(loaded);
+    });
+  }, [mode, clueType, dateStr]);
 
   // Handle mode or clue type switches
   useEffect(() => {
@@ -90,15 +96,15 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
     if (!modeChanged && !clueTypeChanged) return;
 
     if (mode === 'daily') {
-      setState(
-        loadDailyState(dateStr, clueType) ??
-          createDailyState(dateStr, clueType),
-      );
+      // Start with fresh daily state; async load will update if saved state exists
+      setState(createDailyState(dateStr, clueType));
+      getItem(dailyStorageKey(clueType)).then((raw) => {
+        const loaded = parseDailyState(raw, dateStr);
+        if (loaded) setState(loaded);
+      });
     } else if (mode === 'career') {
-      // Career state is managed via initialAnswer prop
       setState(createFreshState(dateStr, getAnswer()));
     } else {
-      // Casual: always start fresh
       setState(createFreshState(dateStr, getRandomAnswer()));
     }
     setHints([]);
@@ -118,7 +124,7 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
   // Persist only daily mode
   useEffect(() => {
     if (mode === 'daily') {
-      saveDailyState(state, clueType);
+      setItem(dailyStorageKey(clueType), JSON.stringify(state));
     }
   }, [state, mode, clueType]);
 

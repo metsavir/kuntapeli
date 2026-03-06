@@ -1,0 +1,43 @@
+.settings-modal {
+  max-width: 22rem;
+}
+
+.settings-section {
+  margin-top: 1rem;
+}
+
+.settings-section-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem;
+}
+
+.settings-description {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin: 0 0 0.75rem;
+  line-height: 1.4;
+}
+
+.settings-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.settings-btn {
+  flex: 1;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid var(--color-border, rgba(255, 255, 255, 0.15));
+  border-radius: 0.5rem;
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.settings-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-text);
+}
