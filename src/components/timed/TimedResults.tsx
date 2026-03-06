@@ -68,7 +68,12 @@ export function TimedResults({ results, onPlayAgain }: TimedResultsProps) {
                 <span className="timed-answer-icon">
                   {r.correct ? '✓' : '✗'}
                 </span>
-                <span className="timed-answer-name">{r.name}</span>
+                <span className="timed-answer-name">
+                  {r.name}
+                  {!r.correct && (
+                    <span className="timed-answer-guess">{r.guess}</span>
+                  )}
+                </span>
                 <div className="timed-answer-bar-wrap">
                   <div
                     className={`timed-answer-bar ${r.correct ? 'timed-answer-bar--correct' : 'timed-answer-bar--wrong'}`}
