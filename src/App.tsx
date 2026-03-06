@@ -68,8 +68,9 @@ function App() {
   // Sync body background for hard mode theme
   useEffect(() => {
     if (clueType === 'coatOfArmsHard') {
+      const isLight = document.documentElement.dataset.theme === 'light';
       document.body.style.transition = 'background-color 2s ease-out';
-      document.body.style.backgroundColor = '#1e1a20';
+      document.body.style.backgroundColor = isLight ? '#fdf0f0' : '#1e1a20';
     }
     return () => {
       document.body.style.transition = '';

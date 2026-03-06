@@ -34,6 +34,31 @@
   }
 }
 
+[data-theme='light'] .app--hard {
+  --color-bg: #fdf0f0;
+  --color-surface: #fff5f5;
+  --color-border: #e8c4c4;
+  --color-text: #2d1a1a;
+  --color-text-muted: #8a5a5a;
+  --color-primary: #c0392b;
+  --color-primary-hover: #a93226;
+  --color-proximity: #c0392b;
+  --color-error: #c0392b;
+  background: #fdf0f0;
+  animation:
+    fade-in 150ms ease,
+    hardBgShiftLight 2s ease-out;
+}
+
+@keyframes hardBgShiftLight {
+  from {
+    background-color: #f0f0f5;
+  }
+  to {
+    background-color: #fdf0f0;
+  }
+}
+
 @keyframes fade-in {
   from {
     opacity: 0;

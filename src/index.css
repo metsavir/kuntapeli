@@ -13,6 +13,21 @@
   --color-hard-hover: #ef5e4f;
 }
 
+[data-theme='light'] {
+  --color-bg: #f0f0f5;
+  --color-surface: #ffffff;
+  --color-border: #d0d0dc;
+  --color-text: #1a1a2e;
+  --color-text-muted: #6b6b85;
+  --color-primary: #4a6cf7;
+  --color-primary-hover: #3a5ce0;
+  --color-correct: #538d4e;
+  --color-proximity: #4a6cf7;
+  --color-error: #d63031;
+  --color-hard: #d63031;
+  --color-hard-hover: #e74c3c;
+}
+
 *,
 *::before,
 *::after {

@@ -12,6 +12,10 @@
   margin: 0 0 0.25rem;
 }
 
+.settings-theme-tabs {
+  display: inline-flex;
+}
+
 .settings-description {
   font-size: 0.8rem;
   color: var(--color-text-muted);

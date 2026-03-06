@@ -1,13 +1,22 @@
 import { useRef } from 'react';
 import { Modal } from './Modal';
+import { PillTabs } from './PillTabs';
+import { useTheme } from '../hooks/useTheme';
+import type { Theme } from '../hooks/useTheme';
 import { exportAllData, importData } from '../utils/exportData';
 import './SettingsModal.css';
+
+const THEME_OPTIONS: { key: Theme; label: string }[] = [
+  { key: 'dark', label: 'Tumma' },
+  { key: 'light', label: 'Vaalea' },
+];
 
 interface SettingsModalProps {
   onClose: () => void;
 }
 
 export function SettingsModal({ onClose }: SettingsModalProps) {
+  const { theme, setTheme } = useTheme();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,6 +34,16 @@ export function SettingsModal({ onClose }: SettingsModalProps) {
   return (
     <Modal onClose={onClose} className="settings-modal">
       <h2>Asetukset</h2>
+
+      <section className="settings-section">
+        <h3 className="settings-section-title">Teema</h3>
+        <PillTabs
+          options={THEME_OPTIONS}
+          value={theme}
+          onChange={setTheme}
+          className="settings-theme-tabs"
+        />
+      </section>
 
       <section className="settings-section">
         <h3 className="settings-section-title">Tietojen varmuuskopiointi</h3>
