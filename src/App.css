@@ -96,6 +96,7 @@
 .career-flip {
   display: grid;
   perspective: 1000px;
+  flex: 1;
 }
 
 .career-flip-face {
