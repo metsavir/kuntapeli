@@ -114,6 +114,7 @@ export function LandingPage({ onSelect }: LandingPageProps) {
               }}
               onPointerUp={() => clearTimeout(impossibleTimer.current)}
               onPointerLeave={() => clearTimeout(impossibleTimer.current)}
+              onContextMenu={(e) => e.preventDefault()}
             >
               Pelaan
             </button>
