@@ -32,12 +32,13 @@ export function CareerPanel({
   onViewChange,
   careerView,
 }: CareerPanelProps) {
-  const failCount = useMemo(
-    () =>
-      career.progress.failures.filter((f) => f.name === careerGame.answer.name)
-        .length,
-    [career.progress.failures, careerGame.answer.name],
-  );
+  const failCount = useMemo(() => {
+    const total = career.progress.failures.filter(
+      (f) => f.name === careerGame.answer.name,
+    ).length;
+    // Exclude current game's failure
+    return careerGame.status === 'lost' ? total - 1 : total;
+  }, [career.progress.failures, careerGame.answer.name, careerGame.status]);
   const flipRef = useRef<HTMLDivElement>(null);
 
   // Reset flip animation instantly when switching modes

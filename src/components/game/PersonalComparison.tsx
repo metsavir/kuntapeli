@@ -17,7 +17,7 @@ export function PersonalComparison({
       </div>
       {failCount != null && failCount > 0 && (
         <div className="personal-history">
-          Epäonnistunut {failCount} {failCount === 1 ? 'kerta' : 'kertaa'}{' '}
+          Epäonnistunut {failCount} kertaa{' '}
           aiemmin
         </div>
       )}
