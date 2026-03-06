@@ -13,6 +13,10 @@ export function LandingPage({ onSelect }: LandingPageProps) {
   const longPressTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const longPressTriggered = useRef(false);
   const [showHardConfirm, setShowHardConfirm] = useState(false);
+  const [showImpossibleConfirm, setShowImpossibleConfirm] = useState(false);
+
+  const impossibleTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const impossibleTriggered = useRef(false);
 
   const handleSelect = (type: ClueType) => {
     if (longPressTriggered.current) return;
@@ -95,9 +99,47 @@ export function LandingPage({ onSelect }: LandingPageProps) {
             <button
               className="landing-hard-go"
               onClick={() => {
+                if (impossibleTriggered.current) return;
                 setShowHardConfirm(false);
                 setLoading('coatOfArmsHard');
                 requestAnimationFrame(() => onSelect('coatOfArmsHard'));
+              }}
+              onPointerDown={() => {
+                impossibleTriggered.current = false;
+                impossibleTimer.current = setTimeout(() => {
+                  impossibleTriggered.current = true;
+                  setShowHardConfirm(false);
+                  setShowImpossibleConfirm(true);
+                }, 800);
+              }}
+              onPointerUp={() => clearTimeout(impossibleTimer.current)}
+              onPointerLeave={() => clearTimeout(impossibleTimer.current)}
+            >
+              Pelaan
+            </button>
+          </div>
+        </div>
+      )}
+
+      {showImpossibleConfirm && (
+        <div className="landing-hard-confirm landing-impossible-confirm">
+          <p className="landing-hard-title">Impossible Mode</p>
+          <p className="landing-hard-desc">
+            1 arvaus, ei vihjeitä. Pelkkä heraldinen selitys.
+          </p>
+          <div className="landing-hard-actions">
+            <button
+              className="landing-hard-cancel"
+              onClick={() => setShowImpossibleConfirm(false)}
+            >
+              Peruuta
+            </button>
+            <button
+              className="landing-hard-go"
+              onClick={() => {
+                setShowImpossibleConfirm(false);
+                setLoading('coatOfArmsImpossible');
+                requestAnimationFrame(() => onSelect('coatOfArmsImpossible'));
               }}
             >
               Pelaan

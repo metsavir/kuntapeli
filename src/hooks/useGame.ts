@@ -156,7 +156,10 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
       const newGuesses = [...state.guesses, result];
       let newStatus: GameState['status'] = 'playing';
 
-      const maxG = clueType === 'coatOfArmsHard' ? 1 : MAX_GUESSES;
+      const maxG =
+        clueType === 'coatOfArmsHard' || clueType === 'coatOfArmsImpossible'
+          ? 1
+          : MAX_GUESSES;
       if (result.isCorrect) {
         newStatus = 'won';
       } else if (newGuesses.length >= maxG) {
@@ -199,7 +202,8 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
     setHints([]);
   }, [dateStr]);
 
-  const isHard = clueType === 'coatOfArmsHard';
+  const isHard =
+    clueType === 'coatOfArmsHard' || clueType === 'coatOfArmsImpossible';
   const maxGuesses = isHard ? 1 : MAX_GUESSES;
 
   return {

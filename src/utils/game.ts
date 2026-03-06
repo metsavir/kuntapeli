@@ -79,9 +79,11 @@ export function generateShareText(
   const mode =
     clueType === 'shape'
       ? 'Rajat'
-      : clueType === 'coatOfArmsHard'
-        ? 'Vaakunat Hard'
-        : 'Vaakunat';
+      : clueType === 'coatOfArmsImpossible'
+        ? 'Selitykset'
+        : clueType === 'coatOfArmsHard'
+          ? 'Vaakunat Hard'
+          : 'Vaakunat';
   const distances = guesses.map((g) => g.distance);
   const chain = distances.join(' → ') + ' km';
   const date = formatDate(dateStr);
@@ -90,7 +92,10 @@ export function generateShareText(
       ? ` · 💡 ${hintsUsed === 1 ? '1 vihje' : `${hintsUsed} vihjettä`}`
       : '';
 
-  const maxG = clueType === 'coatOfArmsHard' ? 1 : MAX_GUESSES;
+  const maxG =
+    clueType === 'coatOfArmsHard' || clueType === 'coatOfArmsImpossible'
+      ? 1
+      : MAX_GUESSES;
   if (won) {
     return `Kuntapeli #${gameNumber} (${mode}) · ${date}\n✅ ${guesses.length}/${maxG} arvausta${hints}\n\n📍 ${chain}`;
   }

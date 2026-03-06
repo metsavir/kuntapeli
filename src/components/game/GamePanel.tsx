@@ -38,7 +38,9 @@ export function GamePanel({
       />
       <GuessList
         guesses={game.guesses}
-        minimal={clueType === 'coatOfArmsHard'}
+        minimal={
+          clueType === 'coatOfArmsHard' || clueType === 'coatOfArmsImpossible'
+        }
       />
       {game.status !== 'playing' && (
         <GameOver

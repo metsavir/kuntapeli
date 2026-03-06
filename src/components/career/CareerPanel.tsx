@@ -95,7 +95,10 @@ export function CareerPanel({
           />
           <GuessList
             guesses={careerGame.guesses}
-            minimal={clueType === 'coatOfArmsHard'}
+            minimal={
+              clueType === 'coatOfArmsHard' ||
+              clueType === 'coatOfArmsImpossible'
+            }
           />
           {careerGame.status !== 'playing' && (
             <GameOver

@@ -8,6 +8,7 @@ export const municipalities: Municipality[] = [
     lng: 25.67,
     region: 'Uusimaa',
     population: 4651,
+    description: 'Hopeakentässä myllynkivi, josta kasvaa kolme ruusua; kaikki punaista.',
   },
   {
     name: 'Espoo',
@@ -15,14 +16,18 @@ export const municipalities: Municipality[] = [
     lng: 24.7,
     region: 'Uusimaa',
     population: 320931,
+    description: 'Sinisessä kentässä hevosenkenkä, sen yläpuolella kruunu, kaikki kultaa.',
   },
-  { name: 'Hanko', lat: 59.86, lng: 23.1, region: 'Uusimaa', population: 7702 },
+  { name: 'Hanko', lat: 59.86, lng: 23.1, region: 'Uusimaa', population: 7702,
+    description: 'Sini-hopeakatkoisessa kilvessä hopea-punakatkoinen majakka, jonka ovi- ja ikkuna-aukot ovat siniset; tornin yläpuolella kuusisakarainen hopeatähti.',
+  },
   {
     name: 'Helsinki',
     lat: 60.2,
     lng: 25.07,
     region: 'Uusimaa',
     population: 684018,
+    description: 'Sinisessä kentässä kultainen vene uimassa hopeisella, aaltokoroisella tyviöllä; veneen yläpuolella saatteena kultakruunu.',
   },
   {
     name: 'Hyvinkää',
@@ -30,6 +35,7 @@ export const municipalities: Municipality[] = [
     lng: 24.82,
     region: 'Uusimaa',
     population: 47031,
+    description: 'Sinisessä kentässä kolme hirsittäin asetettua, keskenään paaluittain järjestettyä kultasyöstävää, joiden kärjet ja langat hopeaa.',
   },
   {
     name: 'Inkoo',
@@ -37,6 +43,7 @@ export const municipalities: Municipality[] = [
     lng: 23.99,
     region: 'Uusimaa',
     population: 5402,
+    description: 'Kilpi aaltokoroisesti kulta-sinikatkoinen; yläkentässä punainen vihkiristi, alakentässä palkeittain asetettu kulta-ankkuri.',
   },
   {
     name: 'Järvenpää',
@@ -44,6 +51,7 @@ export const municipalities: Municipality[] = [
     lng: 25.12,
     region: 'Uusimaa',
     population: 46871,
+    description: 'Sinisessä kentässä hopeinen siivekäs lyyra.',
   },
   {
     name: 'Karkkila',
@@ -51,6 +59,7 @@ export const municipalities: Municipality[] = [
     lng: 24.28,
     region: 'Uusimaa',
     population: 8440,
+    description: 'Punaisessa kentässä liekkikoroinen tyviö, jonka yläpuolella kaksi vasaraa ristikkäin; kaikki kultaa.',
   },
   {
     name: 'Kauniainen',
@@ -58,6 +67,7 @@ export const municipalities: Municipality[] = [
     lng: 24.73,
     region: 'Uusimaa',
     population: 10253,
+    description: 'Sinisessä kilvessä istuva, etukäpälissään mustaa kuusenkäpyä pitelevä kultainen, punavaruksinen orava, sen yläpuolella saatteena kolme kultaista ruusua vieretysten.',
   },
   {
     name: 'Kerava',
@@ -65,6 +75,7 @@ export const municipalities: Municipality[] = [
     lng: 25.13,
     region: 'Uusimaa',
     population: 38461,
+    description: 'Sinisessä kentässä yläreunaltaan lohenpyrstökoroinen kultahirsi.',
   },
   {
     name: 'Kirkkonummi',
@@ -72,6 +83,7 @@ export const municipalities: Municipality[] = [
     lng: 24.46,
     region: 'Uusimaa',
     population: 41635,
+    description: 'Kilpi aaltokoroisesti sini-hopeakatkoinen; yläkentässä kultainen irtonainen kreikkalainen risti, alakentässä sininen vene.',
   },
   {
     name: 'Lapinjärvi',
@@ -79,6 +91,7 @@ export const municipalities: Municipality[] = [
     lng: 26.17,
     region: 'Uusimaa',
     population: 2429,
+    description: 'Hopea-sinihalkoinen kilpi, kummassakin kentässä vuorovärinen kärki, josta nousee apilaristi.',
   },
   {
     name: 'Lohja',
@@ -86,6 +99,7 @@ export const municipalities: Municipality[] = [
     lng: 23.92,
     region: 'Uusimaa',
     population: 45687,
+    description: 'Sinisessä kentässä hopeinen halstari paaluttain; sen varren kummallakin puolella saatteena kultainen pähkinäterttu.',
   },
   {
     name: 'Loviisa',
@@ -93,6 +107,7 @@ export const municipalities: Municipality[] = [
     lng: 26.21,
     region: 'Uusimaa',
     population: 14352,
+    description: 'Sini-kultakatkoinen kilpi. Sinisessä kentässä kaksi kultaista tykkiä ristikkäin ja kultaisessa kentässä musta ankkuri.',
   },
   {
     name: 'Myrskylä',
@@ -100,6 +115,7 @@ export const municipalities: Municipality[] = [
     lng: 25.89,
     region: 'Uusimaa',
     population: 1677,
+    description: 'Sinisessä kentässä hopeinen honka palkeittain.',
   },
   {
     name: 'Mäntsälä',
@@ -107,6 +123,7 @@ export const municipalities: Municipality[] = [
     lng: 25.3,
     region: 'Uusimaa',
     population: 20934,
+    description: 'Sinisessä kentässä kultainen, edestäpäinen hirvenpää, jonka varuksetkin kultaa; saatteena kolme hopea-apilaa asetettuina 1 + 2.',
   },
   {
     name: 'Nurmijärvi',
@@ -114,6 +131,7 @@ export const municipalities: Municipality[] = [
     lng: 24.77,
     region: 'Uusimaa',
     population: 45048,
+    description: 'Sinisessä kentässä seitsemän luonnonväristä kultatukkaista nuorukaisen päätä asetettuina 2 + 3 + 2.',
   },
   {
     name: 'Pornainen',
@@ -121,6 +139,7 @@ export const municipalities: Municipality[] = [
     lng: 25.38,
     region: 'Uusimaa',
     population: 4961,
+    description: 'Sinisessä kentässä kultainen kirkonkello, jonka kummallakin puolella saatteena kultainen, hopealankainen värttinä.',
   },
   {
     name: 'Porvoo',
@@ -128,6 +147,7 @@ export const municipalities: Municipality[] = [
     lng: 25.7,
     region: 'Uusimaa',
     population: 51737,
+    description: 'Sinisessä kentässä hopeinen, tulusraudanmuotoinen C-kirjain.',
   },
   {
     name: 'Pukkila',
@@ -135,6 +155,7 @@ export const municipalities: Municipality[] = [
     lng: 25.6,
     region: 'Uusimaa',
     population: 1743,
+    description: 'Sinisessä kentässä hopeinen pukinpää.',
   },
   {
     name: 'Raasepori',
@@ -142,6 +163,7 @@ export const municipalities: Municipality[] = [
     lng: 23.36,
     region: 'Uusimaa',
     population: 27036,
+    description: 'Vihreällä kilvellä kahdeksan hopeista kultaemiöistä valkovuokonkukkaa renkaan tavoin.',
   },
   {
     name: 'Sipoo',
@@ -149,6 +171,7 @@ export const municipalities: Municipality[] = [
     lng: 25.33,
     region: 'Uusimaa',
     population: 22826,
+    description: 'Mustassa kentässä aaltokoroinen, alainen hirsi ja yläpuolella sudenpää; kaikki hopeaa.',
   },
   {
     name: 'Siuntio',
@@ -156,6 +179,7 @@ export const municipalities: Municipality[] = [
     lng: 24.24,
     region: 'Uusimaa',
     population: 6182,
+    description: 'Sinisessä kentässä hirsittäin asetettu kultainen avain, jonka kieli muodostaa ristin ja perä on neliapilan muotoinen, kahden aaltokoroisen hopeahirren välissä.',
   },
   {
     name: 'Tuusula',
@@ -163,6 +187,7 @@ export const municipalities: Municipality[] = [
     lng: 25.04,
     region: 'Uusimaa',
     population: 42225,
+    description: 'Puna-hopealohkoisen kilven yläkentässä hopeinen pistoolinlukko ja alakentässä vihreä laakerinoksa, jonka marjat punaiset.',
   },
   {
     name: 'Vantaa',
@@ -170,6 +195,7 @@ export const municipalities: Municipality[] = [
     lng: 25.03,
     region: 'Uusimaa',
     population: 251269,
+    description: 'Sinisessä kentässä alainen, aaltokoroinen hopeahirsi, josta nousee oikealle kaartuva kultainen kalanpyrstö.',
   },
   {
     name: 'Vihti',
@@ -177,6 +203,7 @@ export const municipalities: Municipality[] = [
     lng: 24.43,
     region: 'Uusimaa',
     population: 28799,
+    description: 'Kultakentässä aaltokoroinen, kaateinen polviorsi, jonka yläpuolelle saatteena vesipyörä, molemmat siniset.',
   },
   // Varsinais-Suomi
   {
@@ -185,6 +212,7 @@ export const municipalities: Municipality[] = [
     lng: 22.55,
     region: 'Varsinais-Suomi',
     population: 3966,
+    description: 'Punaisessa kentässä alainen, aaltokoroinen hirsi, jonka yläpuolella kehäaura; kaikki kultaa.',
   },
   {
     name: 'Kaarina',
@@ -192,6 +220,7 @@ export const municipalities: Municipality[] = [
     lng: 22.45,
     region: 'Varsinais-Suomi',
     population: 36551,
+    description: 'Punaisessa kentässä kolme nousevaa kultaista, apilakärkistä sudenhammasta.',
   },
   {
     name: 'Kemiönsaari',
@@ -199,6 +228,7 @@ export const municipalities: Municipality[] = [
     lng: 22.55,
     region: 'Varsinais-Suomi',
     population: 6371,
+    description: 'Sinisessä kentässä kultainen potkuri vinoristikkäin.',
   },
   {
     name: 'Koski Tl',
@@ -206,6 +236,7 @@ export const municipalities: Municipality[] = [
     lng: 23.13,
     region: 'Varsinais-Suomi',
     population: 2186,
+    description: 'Punaisessa kentässä kuusisakaraista kannustähteä ympäröivä rengas, jonka ulkoreuna on lohenpyrstökoroinen, molemmat hopeaa.',
   },
   {
     name: 'Kustavi',
@@ -213,6 +244,7 @@ export const municipalities: Municipality[] = [
     lng: 21.34,
     region: 'Varsinais-Suomi',
     population: 970,
+    description: 'Punaisessa kentässä aaltokoroinen hopeapalkki, jonka saatteena molemmin puolin paaluittain kulta-ankkuri.',
   },
   {
     name: 'Laitila',
@@ -220,6 +252,7 @@ export const municipalities: Municipality[] = [
     lng: 21.76,
     region: 'Varsinais-Suomi',
     population: 8479,
+    description: 'Punaisessa kentässä hopeinen, kultavaruksinen kukko pidellen oikeassa jalassaan hopeista kovelia.',
   },
   {
     name: 'Lieto',
@@ -227,6 +260,7 @@ export const municipalities: Municipality[] = [
     lng: 22.61,
     region: 'Varsinais-Suomi',
     population: 20666,
+    description: 'Punaisessa kentässä nouseva Pyhä Pietari pidellen oikeassa kädessään avainta ja vasemmassa kirjaa; kaikki kultaa.',
   },
   {
     name: 'Loimaa',
@@ -234,6 +268,7 @@ export const municipalities: Municipality[] = [
     lng: 22.93,
     region: 'Varsinais-Suomi',
     population: 15295,
+    description: 'Sinisessä kilvessä palkeittain puupuntari; saatteena sen molemmin puolin paaluittainen tähkä; kaikki kultaa.',
   },
   {
     name: 'Marttila',
@@ -241,6 +276,7 @@ export const municipalities: Municipality[] = [
     lng: 22.91,
     region: 'Varsinais-Suomi',
     population: 1910,
+    description: 'Punaisessa, vihreätyviöisessä kilvessä ratsastava, viittaansa leikkaava Pyhä Martti, jonka alapuolella istuva kerjäläinen; kaikki kultaa.',
   },
   {
     name: 'Masku',
@@ -248,6 +284,7 @@ export const municipalities: Municipality[] = [
     lng: 21.97,
     region: 'Varsinais-Suomi',
     population: 9592,
+    description: 'Punaisessa kentässä ristikkäin kaksi hopeista marsalkansauvaa, joiden päätehelat kultaa. Sauvojen saatteena neljä kulta-apilaa.',
   },
   {
     name: 'Mynämäki',
@@ -255,6 +292,7 @@ export const municipalities: Municipality[] = [
     lng: 22,
     region: 'Varsinais-Suomi',
     population: 7477,
+    description: 'Punaisessa kentässä kolme kultaista sulkakynää paaluittain.',
   },
   {
     name: 'Naantali',
@@ -262,6 +300,7 @@ export const municipalities: Municipality[] = [
     lng: 21.86,
     region: 'Varsinais-Suomi',
     population: 20129,
+    description: 'Mustassa kentässä minuskelikirjaimet vg, joiden yläpuolella avonainen ritarikruunu; kaikki kultaa.',
   },
   {
     name: 'Nousiainen',
@@ -269,6 +308,7 @@ export const municipalities: Municipality[] = [
     lng: 22.15,
     region: 'Varsinais-Suomi',
     population: 4659,
+    description: 'Punaisessa kentässä piispanistuimella istuva Pyhä Henrik, joka polkee jaloillaan kirves kädessä maassa makaavaa miestä, kaikki kultaa.',
   },
   {
     name: 'Oripää',
@@ -276,6 +316,7 @@ export const municipalities: Municipality[] = [
     lng: 22.69,
     region: 'Varsinais-Suomi',
     population: 1304,
+    description: 'Punaisessa kentässä kultainen hevosenpää, jonka kaula jatkuu kultaisena paaluna kilven alareunaan.',
   },
   {
     name: 'Paimio',
@@ -283,6 +324,7 @@ export const municipalities: Municipality[] = [
     lng: 22.76,
     region: 'Varsinais-Suomi',
     population: 11221,
+    description: 'Punaisessa, kulta-apilasirotteisessa kentässä hopeinen napakaira.',
   },
   {
     name: 'Parainen',
@@ -290,6 +332,7 @@ export const municipalities: Municipality[] = [
     lng: 21.76,
     region: 'Varsinais-Suomi',
     population: 14868,
+    description: 'Punaisessa kentässä hopeinen, kultakruunuinen ankkuri.',
   },
   {
     name: 'Pyhäranta',
@@ -297,6 +340,7 @@ export const municipalities: Municipality[] = [
     lng: 21.45,
     region: 'Varsinais-Suomi',
     population: 1919,
+    description: 'Punaisessa kentässä kultainen apilaristi, jonka alaosa muodostaa ankkurin.',
   },
   {
     name: 'Pöytyä',
@@ -304,6 +348,7 @@ export const municipalities: Municipality[] = [
     lng: 22.56,
     region: 'Varsinais-Suomi',
     population: 8011,
+    description: 'Punaisessa kentässä kultainen lyhde, jonka päällikkeenä hopeinen orsivaaka.',
   },
   {
     name: 'Raisio',
@@ -311,6 +356,7 @@ export const municipalities: Municipality[] = [
     lng: 22.16,
     region: 'Varsinais-Suomi',
     population: 25738,
+    description: 'Hopeakentässä punaisella hevosella ratsastava Pyhä Martti leikkaamassa miekallaan kappaletta viitastaan. Pyhimyksen kasvot ja kädet luonnonväriä, puku sininen, viitta ja saappaat punaiset, miekka hopeaa sekä sädekehä ja tukka kultaa. Hevosen varustus ja varukset kultaa.',
   },
   {
     name: 'Rusko',
@@ -318,6 +364,7 @@ export const municipalities: Municipality[] = [
     lng: 22.27,
     region: 'Varsinais-Suomi',
     population: 6418,
+    description: 'Punaisessa kentässä kolme kruunattua viikatteen terää alakkain; kaikki kultaa.',
   },
   {
     name: 'Salo',
@@ -325,6 +372,7 @@ export const municipalities: Municipality[] = [
     lng: 23.12,
     region: 'Varsinais-Suomi',
     population: 50870,
+    description: 'Punaisessa kentässä kultatammi ja sakarakoroinen kultalakio, jossa musta sarvi.',
   },
   {
     name: 'Sauvo',
@@ -332,6 +380,7 @@ export const municipalities: Municipality[] = [
     lng: 22.66,
     region: 'Varsinais-Suomi',
     population: 2965,
+    description: 'Kultakentässä seisova naakka, saatteena kummallakin puolellaan kuusikärkinen kannustähti keskenään vastapalkeittain; kaikki mustia.',
   },
   {
     name: 'Somero',
@@ -339,6 +388,7 @@ export const municipalities: Municipality[] = [
     lng: 23.55,
     region: 'Varsinais-Suomi',
     population: 8429,
+    description: 'Hopeisessa kentässä musta havupuun kanto, josta punaiset, kultasydämiset liekit nousevat ylös ja sivuille.',
   },
   {
     name: 'Taivassalo',
@@ -346,6 +396,7 @@ export const municipalities: Municipality[] = [
     lng: 21.59,
     region: 'Varsinais-Suomi',
     population: 1692,
+    description: 'Punaisessa kentässä kultainen yksimastoinen purjealus, jonka purjeessa punainen Mantovan risti.',
   },
   {
     name: 'Turku',
@@ -353,6 +404,7 @@ export const municipalities: Municipality[] = [
     lng: 22.24,
     region: 'Varsinais-Suomi',
     population: 206073,
+    description: 'Sinisessä kentässä kultainen goottilainen A-kirjain, jonka ympärillä neljä hopealiljaa 1 + 2 + 1.',
   },
   {
     name: 'Uusikaupunki',
@@ -360,6 +412,7 @@ export const municipalities: Municipality[] = [
     lng: 21.37,
     region: 'Varsinais-Suomi',
     population: 14814,
+    description: 'Hopeakentässä pystyssä selätysten kaksi sinistä haukea.',
   },
   {
     name: 'Vehmaa',
@@ -367,6 +420,7 @@ export const municipalities: Municipality[] = [
     lng: 21.7,
     region: 'Varsinais-Suomi',
     population: 2246,
+    description: 'Kultakentässä punainen, ristisauvaa ja kirjaa pitelevä ja vihreää lohikäärmettä polkeva Pyhä Margareeta, jonka kasvot ja kädet luonnonväriä.',
   },
   // Satakunta
   {
@@ -375,6 +429,7 @@ export const municipalities: Municipality[] = [
     lng: 22.06,
     region: 'Satakunta',
     population: 11084,
+    description: 'Kultakentässä sinisen, sakarakoroisen reunuksen ympäröimänä musta, punavaruksinen karhu pystyasennossa, oikeassa kämmenessään iskuun kohotettu sininen miekka.',
   },
   {
     name: 'Eurajoki',
@@ -382,6 +437,7 @@ export const municipalities: Municipality[] = [
     lng: 21.58,
     region: 'Satakunta',
     population: 9052,
+    description: 'Sinisessä kentässä kultainen, kolmimastoinen kuunarilaiva.',
   },
   {
     name: 'Harjavalta',
@@ -389,6 +445,7 @@ export const municipalities: Municipality[] = [
     lng: 22.15,
     region: 'Satakunta',
     population: 6647,
+    description: 'Sinisessä kentässä salamakimppu paaluittain, saatteena sen kummallakin puolella kaksi vinoristiä keskenään hirsittäin, kaikki kultaa.',
   },
   {
     name: 'Huittinen',
@@ -396,6 +453,7 @@ export const municipalities: Municipality[] = [
     lng: 22.77,
     region: 'Satakunta',
     population: 9555,
+    description: 'Vihreässä kentässä kaksi kultaista häränotsaa alakkain.',
   },
   {
     name: 'Jämijärvi',
@@ -403,6 +461,7 @@ export const municipalities: Municipality[] = [
     lng: 22.71,
     region: 'Satakunta',
     population: 1658,
+    description: 'Kultakentässä palkki, jonka kummallakin puolella saatteena palkeittain lentävä pääskynen, kaikki siniset.',
   },
   {
     name: 'Kankaanpää',
@@ -410,6 +469,7 @@ export const municipalities: Municipality[] = [
     lng: 22.35,
     region: 'Satakunta',
     population: 12478,
+    description: 'Sinisessä kentässä alainen, yläreunaltaan liekkikoroinen hopeahirsi, jonka päällikkeenä pystyssä kultamänty.',
   },
   {
     name: 'Karvia',
@@ -417,6 +477,7 @@ export const municipalities: Municipality[] = [
     lng: 22.58,
     region: 'Satakunta',
     population: 2170,
+    description: 'Sinisessä kentässä kuusikoroisen tyviön yläpuolella linnake, kaikki kultaa.',
   },
   {
     name: 'Kokemäki',
@@ -424,6 +485,7 @@ export const municipalities: Municipality[] = [
     lng: 22.36,
     region: 'Satakunta',
     population: 6668,
+    description: 'Sinisessä kentässä hopeinen, kultapäärmeinen ja -nauhainen piispanhiippa.',
   },
   {
     name: 'Merikarvia',
@@ -431,6 +493,7 @@ export const municipalities: Municipality[] = [
     lng: 21.5,
     region: 'Satakunta',
     population: 2904,
+    description: 'Sinisessä kentässä hopeinen, kolmimastoinen, etu- ja raakapurjeilla varustettu alus, joka ui aaltokoroisella kultatyviöllä.',
   },
   {
     name: 'Nakkila',
@@ -438,6 +501,7 @@ export const municipalities: Municipality[] = [
     lng: 21.96,
     region: 'Satakunta',
     population: 4939,
+    description: 'Sinisessä kentässä kultainen palkki, jossa musta nahkiainen; palkin kummallakin puolella kolme paaluttaista kultatähkää.',
   },
   {
     name: 'Pomarkku',
@@ -445,6 +509,7 @@ export const municipalities: Municipality[] = [
     lng: 22.14,
     region: 'Satakunta',
     population: 1931,
+    description: 'Kultakentässä sininen, sahakoroinen lakio; viisi sakaraa ylöspäin.',
   },
   {
     name: 'Pori',
@@ -452,6 +517,7 @@ export const municipalities: Municipality[] = [
     lng: 21.74,
     region: 'Satakunta',
     population: 83305,
+    description: 'Kullanvärisessä kilvessä edestäpäin punaisella ritarikruunulla varustettu musta karhunpää punainen kieli ojossa. Kilven alapuolta ympäröi sininen nauha, jossa hopeakirjaimin on lause «Deus protector noster«.',
   },
   {
     name: 'Rauma',
@@ -459,6 +525,7 @@ export const municipalities: Municipality[] = [
     lng: 21.49,
     region: 'Satakunta',
     population: 38968,
+    description: 'Kultaisen latinalaisen ristin jakamassa sinisessä kilvessä neljä minuskeli r-kirjainta, yksi kussakin neljässä kentässä.',
   },
   {
     name: 'Siikainen',
@@ -466,6 +533,7 @@ export const municipalities: Municipality[] = [
     lng: 21.96,
     region: 'Satakunta',
     population: 1264,
+    description: 'Sinisessä kentässä palkeittain asetettu, hyppäävä, hopeinen, punavaruksinen siika ja sen molemmin puolin saatteena seitsenkärkinen hopeatähti.',
   },
   {
     name: 'Säkylä',
@@ -473,6 +541,7 @@ export const municipalities: Municipality[] = [
     lng: 22.4,
     region: 'Satakunta',
     population: 6256,
+    description: 'Sinisessä kentässä punainen, kultapäärmeinen piispanhiippa, alapuolella aaltokoroinen kultatyviö, jossa sininen kirves.',
   },
   {
     name: 'Ulvila',
@@ -480,6 +549,7 @@ export const municipalities: Municipality[] = [
     lng: 22.14,
     region: 'Satakunta',
     population: 12382,
+    description: 'Vihreässä kentässä kultainen Pyhän Olavin kuva, käsissään sotakirves ja valtakunnanomena, istumassa hopeisella valtaistuimella.',
   },
   // Kanta-Häme
   {
@@ -488,6 +558,7 @@ export const municipalities: Municipality[] = [
     lng: 23.65,
     region: 'Kanta-Häme',
     population: 16478,
+    description: 'Sinisessä kentässä hopeinen vesiratas.',
   },
   {
     name: 'Hattula',
@@ -495,6 +566,7 @@ export const municipalities: Municipality[] = [
     lng: 24.25,
     region: 'Kanta-Häme',
     population: 9361,
+    description: 'Punaisessa kentässä reunoihin ulottuva yksikaarinen silta, jonka yläpuolella kreikkalainen risti, molemmat kultaa.',
   },
   {
     name: 'Hausjärvi',
@@ -502,6 +574,7 @@ export const municipalities: Municipality[] = [
     lng: 25,
     region: 'Kanta-Häme',
     population: 7901,
+    description: 'Punaisessa kentässä vinoristi ja lakipisteessä tähti, kaikki hopeaa.',
   },
   {
     name: 'Humppila',
@@ -509,6 +582,7 @@ export const municipalities: Municipality[] = [
     lng: 23.35,
     region: 'Kanta-Häme',
     population: 2094,
+    description: 'Kultakentässä tyvestä nousevasta katoksesta riippuva ruokakello; kaikki mustaa.',
   },
   {
     name: 'Hämeenlinna',
@@ -516,6 +590,7 @@ export const municipalities: Municipality[] = [
     lng: 24.51,
     region: 'Kanta-Häme',
     population: 68433,
+    description: 'Punaisessa kentässä alareunaltaan aaltokoroinen, kilven reunasta toiseen ulottuva muuri, josta nousee kaksi jyrkkäkattoista tornia ja näiden välissä rakennus, kaikki hopeaa, ikkuna-aukot ovat mustat ja linnan yläpuolella saatteena kultaiset auringonkasvot.',
   },
   {
     name: 'Janakkala',
@@ -523,6 +598,7 @@ export const municipalities: Municipality[] = [
     lng: 24.7,
     region: 'Kanta-Häme',
     population: 16015,
+    description: 'Punaisessa kentässä edestäpäin kultainen ilveksenpää, jonka kieli sininen ja korvatöyhdöt mustat; yläpuolella sakarakoroinen kultalakio, jossa Mantovan risti ja sen molemmin puolin sitä kohti suuntautuva nuolenkärki; kaikki mustia.',
   },
   {
     name: 'Jokioinen',
@@ -530,6 +606,7 @@ export const municipalities: Municipality[] = [
     lng: 23.46,
     region: 'Kanta-Häme',
     population: 4848,
+    description: 'Punaisessa kentässä aaltokoroinen hirsi, jonka yläpuolella kaksi vehnätähkää ristissä ja alapuolella alasin; kaikki kultaa.',
   },
   {
     name: 'Loppi',
@@ -537,6 +614,7 @@ export const municipalities: Municipality[] = [
     lng: 24.42,
     region: 'Kanta-Häme',
     population: 7657,
+    description: 'Kilpi aaltokoroisesti puna-hopeakatkoinen; siinä vuorovärinen raudanmerkki.',
   },
   {
     name: 'Riihimäki',
@@ -544,6 +622,7 @@ export const municipalities: Municipality[] = [
     lng: 24.73,
     region: 'Kanta-Häme',
     population: 28643,
+    description: 'Kultaisen vyön jakama kilpi, jonka hopeisessa yläkentässä on seitsemän ylöspäin nousevaa punaista tulenliekkiä ja punaisessa alakentässä kultainen lyhde.',
   },
   {
     name: 'Tammela',
@@ -551,6 +630,7 @@ export const municipalities: Municipality[] = [
     lng: 23.83,
     region: 'Kanta-Häme',
     population: 5832,
+    description: 'Punaisessa kentässä kolme tammenlehteä, joiden varret yhtyvät haaruristiksi, varsien yhtymäkohdasta versoaa kummallekin sivulle terho; kaikki hopeaa.',
   },
   {
     name: 'Ypäjä',
@@ -558,6 +638,7 @@ export const municipalities: Municipality[] = [
     lng: 23.25,
     region: 'Kanta-Häme',
     population: 2193,
+    description: 'Halkoisen kilven oikeassa sinisessä kentässä hopeinen maalaiskirkon kellotapuli, vasemmassa hopeisessa kentässä punainen tähkä.',
   },
   // Pirkanmaa
   {
@@ -566,6 +647,7 @@ export const municipalities: Municipality[] = [
     lng: 23.75,
     region: 'Pirkanmaa',
     population: 16387,
+    description: 'Sakarakoroisesti punaiseen ja hopeaan halkoisella kilvellä hopeinen muuriankkuri.',
   },
   {
     name: 'Hämeenkyrö',
@@ -573,6 +655,7 @@ export const municipalities: Municipality[] = [
     lng: 23.18,
     region: 'Pirkanmaa',
     population: 10348,
+    description: 'Kultakentässä puna-sinikatkoinen juomasarvi, jalka ja heloitus hopeaa, suu oikealle, sarven yläpuolella sininen, liekkikoroinen lakio, jossa kuusisakarainen kultatähti.',
   },
   {
     name: 'Ikaalinen',
@@ -580,6 +663,7 @@ export const municipalities: Municipality[] = [
     lng: 23.08,
     region: 'Pirkanmaa',
     population: 6758,
+    description: 'Kultaisten pielten rajoittamassa sinisessä kentässä kolme hopeista airoa lavat ylöspäin.',
   },
   {
     name: 'Juupajoki',
@@ -587,6 +671,7 @@ export const municipalities: Municipality[] = [
     lng: 24.47,
     region: 'Pirkanmaa',
     population: 1668,
+    description: 'Hopeakentässä punainen vuota, jossa kultainen havunoksa.',
   },
   {
     name: 'Kangasala',
@@ -594,6 +679,7 @@ export const municipalities: Municipality[] = [
     lng: 24.5,
     region: 'Pirkanmaa',
     population: 33951,
+    description: 'Hopeakentässä harppu, jonka yhdyspuu ja kaula muodostavat kotkakuvion, saatteena seitsemän pisaraa, asetettuina 2 + 2 + 2 + 1, kaikki punaisia. Hopeisessa, punaisilla pisaroina sirotellussa kentässä punainen, kotkakoristeinen harppu.',
   },
   {
     name: 'Kihniö',
@@ -601,6 +687,7 @@ export const municipalities: Municipality[] = [
     lng: 23.25,
     region: 'Pirkanmaa',
     population: 1703,
+    description: 'Sinisessä kentässä kaksi kultaista alapuolelta sahakoroista palkkia.',
   },
   {
     name: 'Kuhmoinen',
@@ -608,6 +695,7 @@ export const municipalities: Municipality[] = [
     lng: 25.2,
     region: 'Pirkanmaa',
     population: 2038,
+    description: 'Hopeakentässä kolme punaista, yläreunaltaan aaltokoroista hirttä.',
   },
   {
     name: 'Lempäälä',
@@ -615,6 +703,7 @@ export const municipalities: Municipality[] = [
     lng: 23.77,
     region: 'Pirkanmaa',
     population: 24854,
+    description: 'Punaisessa kentässä aaltokoroinen kultapaalu, jonka päällikkeenä on musta, viritetty jalkajousi, mustakärkisine kultanuolineen; tyvessä, paalun kummallakin puolella saatteena kultainen aurakärki.',
   },
   {
     name: 'Mänttä-Vilppula',
@@ -622,6 +711,7 @@ export const municipalities: Municipality[] = [
     lng: 24.41,
     region: 'Pirkanmaa',
     population: 9270,
+    description: 'Punaisessa kentässä alareunaltaan kaareva hirsi, josta kasvaa kolme havunoksaa; kokonaan hopeaa.',
   },
   {
     name: 'Nokia',
@@ -629,6 +719,7 @@ export const municipalities: Municipality[] = [
     lng: 23.37,
     region: 'Pirkanmaa',
     population: 36176,
+    description: 'Kultakentässä sininen, alainen aaltokoroinen palkki, jonka yläpuolella musta punavaruksinen näätä pystyasennossa.',
   },
   {
     name: 'Orivesi',
@@ -636,6 +727,7 @@ export const municipalities: Municipality[] = [
     lng: 24.55,
     region: 'Pirkanmaa',
     population: 8869,
+    description: 'Hopeisessa kilvessä punainen pystyyn kavahtanut ori, joka nousee esiin kilven tyveen ulottuvasta sinisestä vedestä.',
   },
   {
     name: 'Parkano',
@@ -643,6 +735,7 @@ export const municipalities: Municipality[] = [
     lng: 22.99,
     region: 'Pirkanmaa',
     population: 6069,
+    description: 'Sinisessä kentässä aaltokoroinen kultahirsi ja sen päällikkeenä pystyssä kultainen mänty, jonka kuoritut kyljet ovat hopeiset; saatteena männyn latvan kummallakin puolella seitsensakarainen hopeatähti.',
   },
   {
     name: 'Pirkkala',
@@ -650,6 +743,7 @@ export const municipalities: Municipality[] = [
     lng: 23.62,
     region: 'Pirkanmaa',
     population: 21042,
+    description: 'Kilpi halkoinen ja turkiskorokatkoinen hopea-punainen.',
   },
   {
     name: 'Punkalaidun',
@@ -657,6 +751,7 @@ export const municipalities: Municipality[] = [
     lng: 23.15,
     region: 'Pirkanmaa',
     population: 2607,
+    description: 'Sinisessä kentässä tyviö, jolla kilven reunasta toiseen ulottuva riukuaita; molemmat kultaa.',
   },
   {
     name: 'Pälkäne',
@@ -664,6 +759,7 @@ export const municipalities: Municipality[] = [
     lng: 24.56,
     region: 'Pirkanmaa',
     population: 6238,
+    description: 'Sinisessä kentässä hopeinen, kultaemiöinen lumpeenkukka.',
   },
   {
     name: 'Ruovesi',
@@ -671,6 +767,7 @@ export const municipalities: Municipality[] = [
     lng: 24.05,
     region: 'Pirkanmaa',
     population: 4039,
+    description: 'Punaisessa kentässä kolme hopeista lahnaa asennossa 2 + 1, hopeisessa lakiossa punainen kirkkovene.',
   },
   {
     name: 'Sastamala',
@@ -678,6 +775,7 @@ export const municipalities: Municipality[] = [
     lng: 22.88,
     region: 'Pirkanmaa',
     population: 23464,
+    description: 'Sinisessä kentässä kultainen, ulkoreunaltaan ristikoroinen vihkiristi.',
   },
   {
     name: 'Tampere',
@@ -685,6 +783,7 @@ export const municipalities: Municipality[] = [
     lng: 23.82,
     region: 'Pirkanmaa',
     population: 260180,
+    description: 'Punaisessa kentässä aaltokoroinen vastapalkki, jonka yläpuolella saatteena paaluttainen vasara ja alapuolella paaluttainen Merkuriuksen sauva; kaikki kultaa.',
   },
   {
     name: 'Urjala',
@@ -692,6 +791,7 @@ export const municipalities: Municipality[] = [
     lng: 23.52,
     region: 'Pirkanmaa',
     population: 4493,
+    description: 'Punaisessa kentässä hopeinen apilaristi, jonka kustakin kulmasta lähtee kultainen liekki.',
   },
   {
     name: 'Valkeakoski',
@@ -699,6 +799,7 @@ export const municipalities: Municipality[] = [
     lng: 24.06,
     region: 'Pirkanmaa',
     population: 20847,
+    description: 'Punaisessa kilvessä on vastaviistoon kulkeva hopeinen virta, jonka yläkentässä on kultainen kuusi ja alakentässä kultainen hammasratas.',
   },
   {
     name: 'Vesilahti',
@@ -706,6 +807,7 @@ export const municipalities: Municipality[] = [
     lng: 23.45,
     region: 'Pirkanmaa',
     population: 4511,
+    description: 'Hopea-punahalkoisen kilven oikeassa kentässä punainen avain, sen vasemmassa kentässä hopeinen kultavaruksinen kurki, jonka päälaki on punainen ja pyrstön sulat mustapäiset.',
   },
   {
     name: 'Virrat',
@@ -713,6 +815,7 @@ export const municipalities: Municipality[] = [
     lng: 23.76,
     region: 'Pirkanmaa',
     population: 6190,
+    description: 'Sinisessä kentässä aaltokoroiset kolmoisjänteet, saatteena kummallakin puolella palkeittainen karhukeihäänkärki; kaikki hopeaa.',
   },
   {
     name: 'Ylöjärvi',
@@ -720,6 +823,7 @@ export const municipalities: Municipality[] = [
     lng: 23.5,
     region: 'Pirkanmaa',
     population: 33704,
+    description: 'Punaisessa kentässä haaruristi, jonka yläkulmassa saatteena risti; molemmat kultaa.',
   },
   // Päijät-Häme
   {
@@ -728,6 +832,7 @@ export const municipalities: Municipality[] = [
     lng: 25.59,
     region: 'Päijät-Häme',
     population: 7889,
+    description: 'Kilpi nelilohkoinen, hopea-punainen; kussakin kentässä vuorovärinen, kultaemiöinen viisilehtinen kukka.',
   },
   {
     name: 'Hartola',
@@ -735,6 +840,7 @@ export const municipalities: Municipality[] = [
     lng: 26.06,
     region: 'Päijät-Häme',
     population: 2482,
+    description: 'Punaisessa kentässä ristikkäin kaksi palavaa soihtua ja niiden yläpuolella kruunu; kaikki kultaa paitsi soihtujen liekit hopeaa.',
   },
   {
     name: 'Heinola',
@@ -742,6 +848,7 @@ export const municipalities: Municipality[] = [
     lng: 26.14,
     region: 'Päijät-Häme',
     population: 17829,
+    description: 'Punaisessa kentässä alainen, alapuoleltaan kaarikoroinen hopeahirsi, jonka päällä kävelee kultainen ilves, varukset siniset, korvatöyhdöt mustat.',
   },
   {
     name: 'Hollola',
@@ -749,6 +856,7 @@ export const municipalities: Municipality[] = [
     lng: 25.43,
     region: 'Päijät-Häme',
     population: 22849,
+    description: 'Punaisessa kentässä kohtikatsova hirvenpää ja sen alapuolella ruiskuhilas; molemmat kultaa, saatteena viisi hopeista naularistiä, joista yksi hirvenpään yläpuolella ja kaksi päätunnuskuvien molemmin puolin.',
   },
   {
     name: 'Iitti',
@@ -756,6 +864,7 @@ export const municipalities: Municipality[] = [
     lng: 26.24,
     region: 'Päijät-Häme',
     population: 6401,
+    description: 'Mustassa kentässä aaltokoroinen hopeahirsi, päällikkeenä paaluittainen kaksilehtinen kulta-avain.',
   },
   {
     name: 'Kärkölä',
@@ -763,6 +872,7 @@ export const municipalities: Municipality[] = [
     lng: 25.28,
     region: 'Päijät-Häme',
     population: 4093,
+    description: 'Punaisessa kentässä kolme hopeista, hirsittäistä havukirvestä alatusten.',
   },
   {
     name: 'Lahti',
@@ -770,6 +880,7 @@ export const municipalities: Municipality[] = [
     lng: 25.89,
     region: 'Päijät-Häme',
     population: 121337,
+    description: 'Hopeakentässä musta, seitsenpuolainen rautatievaunun pyörä; pyörän kehältä nousee jokaisen puolapuun kohdalta punainen liekki.',
   },
   {
     name: 'Orimattila',
@@ -777,6 +888,7 @@ export const municipalities: Municipality[] = [
     lng: 25.88,
     region: 'Päijät-Häme',
     population: 15651,
+    description: 'Punaisessa kentässä nouseva hevonen pidellen viikatetta; kaikki hopeaa.',
   },
   {
     name: 'Padasjoki',
@@ -784,6 +896,7 @@ export const municipalities: Municipality[] = [
     lng: 25.25,
     region: 'Päijät-Häme',
     population: 2676,
+    description: 'Punaisessa kentässä pata, jonka alapuolella aaltokoroinen hirsi; kumpikin hopeaa.',
   },
   {
     name: 'Sysmä',
@@ -791,6 +904,7 @@ export const municipalities: Municipality[] = [
     lng: 25.75,
     region: 'Päijät-Häme',
     population: 3428,
+    description: 'Mustassa kentässä nuolikotelo, jossa kolme nuolta; kaikki hopeaa; nuolikotelon keskellä punainen pienoiskilpi ja siinä pystyssä hopeapiilu.',
   },
   // Kymenlaakso
   {
@@ -799,6 +913,7 @@ export const municipalities: Municipality[] = [
     lng: 27.22,
     region: 'Kymenlaakso',
     population: 19311,
+    description: 'Sinisessä kentässä hopeinen, alainen, aaltokoroinen hirsi, jolla ui kultainen vene, sen yläpuolella kultainen, purppuravuorinen kuninkaankruunu.',
   },
   {
     name: 'Kotka',
@@ -806,6 +921,7 @@ export const municipalities: Municipality[] = [
     lng: 27.02,
     region: 'Kymenlaakso',
     population: 50210,
+    description: 'Halkoisen kilven yläkenttä on sininen, alakenttä hopeanvärinen. Kilven keskiosassa luonnonvärinen kivi. Kiven päällä kullanvärinen kotka. Alakentässä ankkuri ja Merkuriuksen sauva vinoon ristissä, molemmat sinisiä.',
   },
   {
     name: 'Kouvola',
@@ -813,6 +929,7 @@ export const municipalities: Municipality[] = [
     lng: 26.71,
     region: 'Kymenlaakso',
     population: 78386,
+    description: 'Mustalla kilvellä hopeinen aaltokoroinen tyviö ja kultainen liljapäinen, kuusipuolainen sideruusuke.',
   },
   {
     name: 'Miehikkälä',
@@ -820,6 +937,7 @@ export const municipalities: Municipality[] = [
     lng: 27.7,
     region: 'Kymenlaakso',
     population: 1703,
+    description: 'Punaisessa kentässä hopeinen kaksoispolviorsi.',
   },
   {
     name: 'Pyhtää',
@@ -827,6 +945,7 @@ export const municipalities: Municipality[] = [
     lng: 26.67,
     region: 'Kymenlaakso',
     population: 5001,
+    description: 'Mustassa kentässä kaksi hopeista punavaruksista lohta ristikkäin, saatteena kussakin kulmassa hopeinen kreikkalainen risti.',
   },
   {
     name: 'Virolahti',
@@ -834,6 +953,7 @@ export const municipalities: Municipality[] = [
     lng: 27.62,
     region: 'Kymenlaakso',
     population: 2831,
+    description: 'Kulta-apilakylvöisessä punaisessa kentässä paaluittainen hopea-ankkuri.',
   },
   // Etelä-Karjala
   {
@@ -842,6 +962,7 @@ export const municipalities: Municipality[] = [
     lng: 28.86,
     region: 'Etelä-Karjala',
     population: 24724,
+    description: 'Punaisessa kentässä kolme pystyasentoon asetettua kahtaalle suuntautuvaa yksipolvekkeista nuolenmuotoista kultakärkistä hopeasalamaa.',
   },
   {
     name: 'Lappeenranta',
@@ -849,6 +970,7 @@ export const municipalities: Municipality[] = [
     lng: 28.21,
     region: 'Etelä-Karjala',
     population: 73327,
+    description: 'Hopeakentässä luonnonvärinen metsäläinen, pidellen maahan laskettua nuijaa, seisomassa vihreällä maalla. Otsan ja vyötäisten ympärillä vihreä seppele.',
   },
   {
     name: 'Lemi',
@@ -856,6 +978,7 @@ export const municipalities: Municipality[] = [
     lng: 27.82,
     region: 'Etelä-Karjala',
     population: 2849,
+    description: 'Kilpi aaltokoroisesti vastalohkoinen, punahopeinen; punaisessa kentässä hopeinen, kultaemiöinen perunankukka.',
   },
   {
     name: 'Luumäki',
@@ -863,6 +986,7 @@ export const municipalities: Municipality[] = [
     lng: 27.51,
     region: 'Etelä-Karjala',
     population: 4358,
+    description: 'Kultakentässä honka, jonka rungon oikealla puolella punavaruksinen karjunpää, vasemmalla puolella viisisakarainen vallitus; kaikki mustaa.',
   },
   {
     name: 'Parikkala',
@@ -870,6 +994,7 @@ export const municipalities: Municipality[] = [
     lng: 29.63,
     region: 'Etelä-Karjala',
     population: 4300,
+    description: 'Hopeisella kilvellä musta linnakekoroinen vastapieli ja kolme punaista pykäläristiä paaluttain.',
   },
   {
     name: 'Rautjärvi',
@@ -877,6 +1002,7 @@ export const municipalities: Municipality[] = [
     lng: 29.22,
     region: 'Etelä-Karjala',
     population: 3008,
+    description: 'Sinisessä kentässä hopeinen raudanmerkki, jonka yläpuolella hopeinen, kuusikoroinen lakio.',
   },
   {
     name: 'Ruokolahti',
@@ -884,6 +1010,7 @@ export const municipalities: Municipality[] = [
     lng: 28.86,
     region: 'Etelä-Karjala',
     population: 4733,
+    description: 'Sinisessä kentässä aaltokoroinen tyviö, josta nousee kolme järviruokoa; kaikki hopeaa.',
   },
   {
     name: 'Savitaipale',
@@ -891,6 +1018,7 @@ export const municipalities: Municipality[] = [
     lng: 27.62,
     region: 'Etelä-Karjala',
     population: 3188,
+    description: 'Mustassa kentässä sorkka-aura ja sen yläpuolella vallikoroinen lakio, kaikki kultaa.',
   },
   {
     name: 'Taipalsaari',
@@ -898,6 +1026,7 @@ export const municipalities: Municipality[] = [
     lng: 28.06,
     region: 'Etelä-Karjala',
     population: 4596,
+    description: 'Punaisessa kentässä aaltokoroisen tyviön yläpuolella tervahöyry; kaikki hopeaa.',
   },
   // Etelä-Savo
   {
@@ -906,6 +1035,7 @@ export const municipalities: Municipality[] = [
     lng: 28.87,
     region: 'Etelä-Savo',
     population: 1288,
+    description: 'Mustassa kentässä kaksi hopea-airoa vinoristikkäin, saatteena neljä kulta-apilaa.',
   },
   {
     name: 'Hirvensalmi',
@@ -913,6 +1043,7 @@ export const municipalities: Municipality[] = [
     lng: 26.7,
     region: 'Etelä-Savo',
     population: 2059,
+    description: 'Kultakentässä musta, kävelevä hirvi, kaviot punaiset.',
   },
   {
     name: 'Juva',
@@ -920,6 +1051,7 @@ export const municipalities: Municipality[] = [
     lng: 27.87,
     region: 'Etelä-Savo',
     population: 5674,
+    description: 'Mustassa kentässä risti, saatteena oikeassa ylänurkassa apilan lehti; kaikki kultaa.',
   },
   {
     name: 'Kangasniemi',
@@ -927,6 +1059,7 @@ export const municipalities: Municipality[] = [
     lng: 26.64,
     region: 'Etelä-Savo',
     population: 5062,
+    description: 'Mustassa kentässä paaluttainen kultainen rukinlyhty, jossa lanka hopeaa.',
   },
   {
     name: 'Mikkeli',
@@ -934,6 +1067,7 @@ export const municipalities: Municipality[] = [
     lng: 27.3,
     region: 'Etelä-Savo',
     population: 51890,
+    description: 'Poikittain jaettu kilpi, jossa kuvataan sen yläkentässä kultaisella pohjalla Suomen marsalkan, vapaaherra [[Carl Gustaf Emil Mannerheim|C. G. E. Mannerheimin]] marsalkansauvaa kaksin kappalein vinoristisuunnassa sekä alakentässä mustalla pohjalla ylöspäin suunnattu Savon maakunnan kultainen jousi, jossa jänne, nuolenkärki ja sulitettu pyrstö ovat hopeaa. Vaakunakilven yläpuolella on ruotsalaismallinen kreivin kruunu ja kilven alapuolella vapaudenristi nauhasommitelmineen.',
   },
   {
     name: 'Mäntyharju',
@@ -941,6 +1075,7 @@ export const municipalities: Municipality[] = [
     lng: 26.8,
     region: 'Etelä-Savo',
     population: 7057,
+    description: 'Mustassa kentässä kaksi kaarityviöstä kasvavaa mäntyä, kaikki kultaa.',
   },
   {
     name: 'Pieksämäki',
@@ -948,6 +1083,7 @@ export const municipalities: Municipality[] = [
     lng: 27.15,
     region: 'Etelä-Savo',
     population: 17178,
+    description: 'Mustassa kentässä kolme hirsittäistä, hopeasulkaista kultavasamaa alatusten.',
   },
   {
     name: 'Puumala',
@@ -955,6 +1091,7 @@ export const municipalities: Municipality[] = [
     lng: 28.21,
     region: 'Etelä-Savo',
     population: 2101,
+    description: 'Mustassa kilvessä kolme kilventyvestä kohoavaa hopeista sudenhammasta, joissa mustat, punaliekkiset kranaatit.',
   },
   {
     name: 'Rantasalmi',
@@ -962,6 +1099,7 @@ export const municipalities: Municipality[] = [
     lng: 28.27,
     region: 'Etelä-Savo',
     population: 3246,
+    description: 'Kultakentässä musta, aaltokorkoinen palkki.',
   },
   {
     name: 'Savonlinna',
@@ -969,6 +1107,7 @@ export const municipalities: Municipality[] = [
     lng: 28.95,
     region: 'Etelä-Savo',
     population: 31460,
+    description: 'Sinisessä kentässä kultainen kolmitorninen linna, sen alapuolella hopeinen, alainen, aaltokoroinen hirsi, jonka alapuolelle jää musta tyviö, jossa pystyssä viritetty kultainen jousi; jousen jänne, nuolen kärki ja sulitettu pyrstö hopeaa.',
   },
   {
     name: 'Sulkava',
@@ -976,6 +1115,7 @@ export const municipalities: Municipality[] = [
     lng: 28.44,
     region: 'Etelä-Savo',
     population: 2361,
+    description: 'Mustassa kentässä reunasta toiseen ulottuva, hopeinen yksikaarinen kivisilta, jonka saatteena kultaiset männynkävyt, kolme yläpuolella, yksi alapuolella, kannat ylöspäin.',
   },
   // Pohjois-Savo
   {
@@ -984,6 +1124,7 @@ export const municipalities: Municipality[] = [
     lng: 27.21,
     region: 'Pohjois-Savo',
     population: 20463,
+    description: 'Aaltokoroisesti musta-kultakatkoinen kilpi, jonka yläkentässä pystyssä jännitetty käsijousi, kokonaan kultaa, ja alakentässä kaksi piilukirvestä ristikkäin ja niiden varsien ympärillä saatteena neljä ruusua asetettuina 1 + 2 + 1, kaikki mustia.',
   },
   {
     name: 'Joroinen',
@@ -991,6 +1132,7 @@ export const municipalities: Municipality[] = [
     lng: 27.8,
     region: 'Pohjois-Savo',
     population: 4552,
+    description: 'Kultakentässä musta, punavaruksinen häränpää edestäpäin, saatteena kolme mustaa kuulaa, joista pään yläpuolella yksi ja kummallakin sivulla yksi.',
   },
   {
     name: 'Kaavi',
@@ -998,6 +1140,7 @@ export const municipalities: Municipality[] = [
     lng: 28.79,
     region: 'Pohjois-Savo',
     population: 2589,
+    description: 'Punaisessa kentässä hopeinen, aaltokoroinen kärki.',
   },
   {
     name: 'Keitele',
@@ -1005,6 +1148,7 @@ export const municipalities: Municipality[] = [
     lng: 26.35,
     region: 'Pohjois-Savo',
     population: 1985,
+    description: 'Mustassa kentässä kolme kultaista nuottavenettä alatusten.',
   },
   {
     name: 'Kiuruvesi',
@@ -1012,6 +1156,7 @@ export const municipalities: Municipality[] = [
     lng: 26.62,
     region: 'Pohjois-Savo',
     population: 7354,
+    description: 'Mustassa kentässä kultainen kiuru siivet levitettyinä, alapuolella saatteena kolme hopeista vesilehvää asetettuina 2 + 1.',
   },
   {
     name: 'Kuopio',
@@ -1019,6 +1164,7 @@ export const municipalities: Municipality[] = [
     lng: 27.85,
     region: 'Pohjois-Savo',
     population: 125666,
+    description: 'Katkoisen kilven mustassa yläkentässä pystyssä viritetty jousi ja sen yläpuolella kruunu, kaikki kultaa, paitsi nuolen kärki ja sulitettu pyrstö hopeaa; hopeisessa alakentässä punainen yksitorninen kirkko, jonka ovi- ja ikkuna-aukot mustat.',
   },
   {
     name: 'Lapinlahti',
@@ -1026,6 +1172,7 @@ export const municipalities: Municipality[] = [
     lng: 27.63,
     region: 'Pohjois-Savo',
     population: 8865,
+    description: 'Mustassa kentässä kaskenviertäjä työvälineenään viertokanki; miehen molemmin puolin saatteena kuusikärkinen tähti; kaikki kultaa, paitsi miehen kasvot ja kädet luonnonväriset sekä virsut ja viertokangen tyvi punaiset.',
   },
   {
     name: 'Leppävirta',
@@ -1033,6 +1180,7 @@ export const municipalities: Municipality[] = [
     lng: 28.01,
     region: 'Pohjois-Savo',
     population: 8971,
+    description: 'Mustan kentän tyvessä aaltokoroinen kultahirsi, jonka yläpuolella kultainen, punanorkkoinen ja -silmuinen leppä.',
   },
   {
     name: 'Pielavesi',
@@ -1040,6 +1188,7 @@ export const municipalities: Municipality[] = [
     lng: 26.72,
     region: 'Pohjois-Savo',
     population: 3980,
+    description: 'Mustassa kentässä kaksi paaluittaista hopeista tuohitorvea selätysten, saatteena niiden yläkulmassa ja kummallakin sivulla kultainen naulakantainen apilaristi.',
   },
   {
     name: 'Rautalampi',
@@ -1047,6 +1196,7 @@ export const municipalities: Municipality[] = [
     lng: 26.72,
     region: 'Pohjois-Savo',
     population: 2935,
+    description: 'Aaltokoroisesti kahdesti lohkoinen musta-, hopea- ja punakenttäinen kilpi; kummassakin värikentässä hopeinen raudanmerkki.',
   },
   {
     name: 'Rautavaara',
@@ -1054,6 +1204,7 @@ export const municipalities: Municipality[] = [
     lng: 28.43,
     region: 'Pohjois-Savo',
     population: 1413,
+    description: 'Mustassa kentässä kolmoisvuori, jonka yläpuolella kaksi kirvestä vinoristikkäin, kaikki hopeaa; vuoressa punainen raudanmerkki.',
   },
   {
     name: 'Siilinjärvi',
@@ -1061,6 +1212,7 @@ export const municipalities: Municipality[] = [
     lng: 27.67,
     region: 'Pohjois-Savo',
     population: 21269,
+    description: 'Mustassa kentässä kaksi kassaraa (vesuria) vinoristikkäin, niiden alapuolella saatteena vesilehvä; kaikki kultaa.',
   },
   {
     name: 'Sonkajärvi',
@@ -1068,6 +1220,7 @@ export const municipalities: Municipality[] = [
     lng: 27.57,
     region: 'Pohjois-Savo',
     population: 3570,
+    description: 'Mustassa kentässä kultainen myllynratas, josta nousee viisi kultapunaista liekkiä.',
   },
   {
     name: 'Suonenjoki',
@@ -1075,6 +1228,7 @@ export const municipalities: Municipality[] = [
     lng: 27.17,
     region: 'Pohjois-Savo',
     population: 6632,
+    description: 'Mustassa kentässä renkaan ympäröimä mansikanlehti, molemmat kultaa.',
   },
   {
     name: 'Tervo',
@@ -1082,6 +1236,7 @@ export const municipalities: Municipality[] = [
     lng: 26.81,
     region: 'Pohjois-Savo',
     population: 1388,
+    description: 'Sinisessä kentässä kultakyljet ja viisi kultaista irtoriukua asetettuina 2:1:2.',
   },
   {
     name: 'Tuusniemi',
@@ -1089,6 +1244,7 @@ export const municipalities: Municipality[] = [
     lng: 28.46,
     region: 'Pohjois-Savo',
     population: 2311,
+    description: 'Kultakentässä musta kaarityviö, jolla seisoo musta, punahelttainen teeri, tyviössä kolme kultakruunua.',
   },
   {
     name: 'Varkaus',
@@ -1096,6 +1252,7 @@ export const municipalities: Municipality[] = [
     lng: 28.19,
     region: 'Pohjois-Savo',
     population: 19669,
+    description: 'Mustassa kentässä esiintyöntyvä koukistettu käsivarsi pidellen hirsittäistä ankkuria; kaikki kultaa.',
   },
   {
     name: 'Vesanto',
@@ -1103,6 +1260,7 @@ export const municipalities: Municipality[] = [
     lng: 26.35,
     region: 'Pohjois-Savo',
     population: 1851,
+    description: 'Mustassa kentässä kultaiset viitosjänteet.',
   },
   {
     name: 'Vieremä',
@@ -1110,6 +1268,7 @@ export const municipalities: Municipality[] = [
     lng: 27.02,
     region: 'Pohjois-Savo',
     population: 3352,
+    description: 'Mustassa kentässä kaateinen polviorsi, jossa kasvaa havun oksa; molemmat kultaisia.',
   },
   // Pohjois-Karjala
   {
@@ -1118,6 +1277,7 @@ export const municipalities: Municipality[] = [
     lng: 28.71,
     region: 'Pohjois-Karjala',
     population: 2929,
+    description: 'Vihreässä kentässä aaltokoroinen hopeinen vastapalkki, jossa alatusten kolme kultaisilla ketjuilla sidottua vihreätä tukkilauttaa; vastapalkin yläpuolella kultainen ruoriratas.',
   },
   {
     name: 'Ilomantsi',
@@ -1125,6 +1285,7 @@ export const municipalities: Municipality[] = [
     lng: 31.04,
     region: 'Pohjois-Karjala',
     population: 4382,
+    description: 'Puna-mustahalkoisessa kilvessä kolme hopeista viisikielistä kannelta vieretysten; kielet mustia.',
   },
   {
     name: 'Joensuu',
@@ -1132,6 +1293,7 @@ export const municipalities: Municipality[] = [
     lng: 30.44,
     region: 'Pohjois-Karjala',
     population: 78741,
+    description: 'Kilpi kahdesti lohkoinen, ylempänä vallikoro, alempana aaltokoro; kentät punainen, hopeinen ja musta.',
   },
   {
     name: 'Juuka',
@@ -1139,6 +1301,7 @@ export const municipalities: Municipality[] = [
     lng: 29.26,
     region: 'Pohjois-Karjala',
     population: 4160,
+    description: 'Punaisessa kentässä hopeinen koivu, jonka norkot kultaiset.',
   },
   {
     name: 'Kitee',
@@ -1146,6 +1309,7 @@ export const municipalities: Municipality[] = [
     lng: 30.03,
     region: 'Pohjois-Karjala',
     population: 9566,
+    description: 'Puna-mustakatkoisessa kilvessä hopeinen ruoriratas.',
   },
   {
     name: 'Kontiolahti',
@@ -1153,6 +1317,7 @@ export const municipalities: Municipality[] = [
     lng: 29.85,
     region: 'Pohjois-Karjala',
     population: 15071,
+    description: 'Hopeisessa kentässä pystyssä karhu olallaan uittohaka, kaikki mustaa, paitsi karhun varukset ja uittohaan varsi punaiset.',
   },
   {
     name: 'Lieksa',
@@ -1160,6 +1325,7 @@ export const municipalities: Municipality[] = [
     lng: 30.24,
     region: 'Pohjois-Karjala',
     population: 10049,
+    description: 'Punaisessa kentässä tyvestä nouseva käsijousella ampuva mies, karvalakki päässä, kirves vyöllä; kaikki hopeaa.',
   },
   {
     name: 'Liperi',
@@ -1167,6 +1333,7 @@ export const municipalities: Municipality[] = [
     lng: 29.35,
     region: 'Pohjois-Karjala',
     population: 11913,
+    description: 'Hopeakentässä punainen toistoristi.',
   },
   {
     name: 'Nurmes',
@@ -1174,6 +1341,7 @@ export const municipalities: Municipality[] = [
     lng: 29.09,
     region: 'Pohjois-Karjala',
     population: 8980,
+    description: 'Punaisessa kentässä kolme hopeista karhukeihäänkärkeä pystyssä vierekkäin.',
   },
   {
     name: 'Outokumpu',
@@ -1181,6 +1349,7 @@ export const municipalities: Municipality[] = [
     lng: 28.96,
     region: 'Pohjois-Karjala',
     population: 6444,
+    description: 'Punaisessa kentässä on kuusikoroinen lakio, jonka alapuolella kuparinmerkki; kaikki kultaa.',
   },
   {
     name: 'Polvijärvi',
@@ -1188,6 +1357,7 @@ export const municipalities: Municipality[] = [
     lng: 29.39,
     region: 'Pohjois-Karjala',
     population: 3999,
+    description: 'Hopeakentässä punainen polviorsi, jossa kolme hopeista, lentävää hanhea hirsittäin.',
   },
   {
     name: 'Rääkkylä',
@@ -1195,6 +1365,7 @@ export const municipalities: Municipality[] = [
     lng: 29.76,
     region: 'Pohjois-Karjala',
     population: 1881,
+    description: 'Punaisessa kentässä kaksi mustaa kekälettä ristikkäin, liekit hopeaa.',
   },
   {
     name: 'Tohmajärvi',
@@ -1202,6 +1373,7 @@ export const municipalities: Municipality[] = [
     lng: 30.39,
     region: 'Pohjois-Karjala',
     population: 3976,
+    description: 'Hopeakentässä musta alasin, josta nousee punainen lieska.',
   },
   // Keski-Suomi
   {
@@ -1210,6 +1382,7 @@ export const municipalities: Municipality[] = [
     lng: 26.48,
     region: 'Keski-Suomi',
     population: 4509,
+    description: 'Mustassa kentässä aaltokoroinen hopeahirsi, jossa punainen vitsahankain.',
   },
   {
     name: 'Joutsa',
@@ -1217,6 +1390,7 @@ export const municipalities: Municipality[] = [
     lng: 26.2,
     region: 'Keski-Suomi',
     population: 4099,
+    description: 'Punaisessa kentässä kuusikoroinen tyviö sekä hirsittäinen jousi, jonka päällikkeenä paaluittainen nuoli, jousen jänne ja nuolen kärki ja sulat kultaa, muu hopeaa.',
   },
   {
     name: 'Jyväskylä',
@@ -1224,6 +1398,7 @@ export const municipalities: Municipality[] = [
     lng: 25.67,
     region: 'Keski-Suomi',
     population: 149194,
+    description: 'Jaettu kilpi, jonka yläkentässä on hopeanvärinen merkurion sauva sinisellä pohjalla ja alakentässä hopeanvärisellä pohjalla luonnonvärisenä sisäjärviveneen keula suoraan edestä katsottuna sekä sen alla kolme sinistä aaltoviivaa.',
   },
   {
     name: 'Jämsä',
@@ -1231,6 +1406,7 @@ export const municipalities: Municipality[] = [
     lng: 25.06,
     region: 'Keski-Suomi',
     population: 19116,
+    description: 'Punaisessa kentässä siilinrauta, jota ympäröi reunuksittain ketju, molemmat hopeaa.',
   },
   {
     name: 'Kannonkoski',
@@ -1238,6 +1414,7 @@ export const municipalities: Municipality[] = [
     lng: 25.4,
     region: 'Keski-Suomi',
     population: 1186,
+    description: 'Punaisessa kentässä aaltokoroinen tyviö ja sen yläpuolella kanto; kaikki hopeaa.',
   },
   {
     name: 'Karstula',
@@ -1245,6 +1422,7 @@ export const municipalities: Municipality[] = [
     lng: 24.8,
     region: 'Keski-Suomi',
     population: 3573,
+    description: 'Punaisessa kentässä hopeinen, ankkuriristin muotoinen lukonhela, keskellä avaimenreikä.',
   },
   {
     name: 'Keuruu',
@@ -1252,6 +1430,7 @@ export const municipalities: Municipality[] = [
     lng: 24.6,
     region: 'Keski-Suomi',
     population: 9128,
+    description: 'Hopeanväriseen ylälakioon sijoitettu musta kirkkovene ja punaisessa alakentässä ristikkäin olevat puintivarstat.',
   },
   {
     name: 'Kinnula',
@@ -1259,6 +1438,7 @@ export const municipalities: Municipality[] = [
     lng: 25.04,
     region: 'Keski-Suomi',
     population: 1492,
+    description: 'Hopeakentässä kolme oksakoroista, musta-punakatkoista vastapalkkia.',
   },
   {
     name: 'Kivijärvi',
@@ -1266,6 +1446,7 @@ export const municipalities: Municipality[] = [
     lng: 25.05,
     region: 'Keski-Suomi',
     population: 1011,
+    description: 'Hopeakentässä punainen, alapuoleltaan aaltokoroinen irtohirsi, jolla seisoo musta, punavaruksinen kukko.',
   },
   {
     name: 'Konnevesi',
@@ -1273,6 +1454,7 @@ export const municipalities: Municipality[] = [
     lng: 26.25,
     region: 'Keski-Suomi',
     population: 2441,
+    description: 'Punaisessa kentässä hopeiset tukkisakset.',
   },
   {
     name: 'Kyyjärvi',
@@ -1280,6 +1462,7 @@ export const municipalities: Municipality[] = [
     lng: 24.54,
     region: 'Keski-Suomi',
     population: 1155,
+    description: 'Sinisessä kentässä aaltokoroinen vasen pieli ja luikerteleva käärme, kaikki hopeaa.',
   },
   {
     name: 'Laukaa',
@@ -1287,6 +1470,7 @@ export const municipalities: Municipality[] = [
     lng: 26.03,
     region: 'Keski-Suomi',
     population: 18878,
+    description: 'Hopeakentässä punainen sydän, josta kasvaa kolmihaarainen vihreä havunoksa.',
   },
   {
     name: 'Luhanka',
@@ -1294,6 +1478,7 @@ export const municipalities: Municipality[] = [
     lng: 25.73,
     region: 'Keski-Suomi',
     population: 711,
+    description: 'Vihreässä kentässä kävelevä, hopeinen, kultavaruksinen mäyrä, jonka saatteena kolme kultaista, naulakantaista kaarisakararistiä, kaksi yläpuolella, yksi alapuolella.',
   },
   {
     name: 'Multia',
@@ -1301,6 +1486,7 @@ export const municipalities: Municipality[] = [
     lng: 24.87,
     region: 'Keski-Suomi',
     population: 1393,
+    description: 'Mustassa kentässä kultainen muurahainen.',
   },
   {
     name: 'Muurame',
@@ -1308,6 +1494,7 @@ export const municipalities: Municipality[] = [
     lng: 25.65,
     region: 'Keski-Suomi',
     population: 10614,
+    description: 'Punaisessa kentässä hopeinen suomuurain, jonka marja kultaa.',
   },
   {
     name: 'Petäjävesi',
@@ -1315,6 +1502,7 @@ export const municipalities: Municipality[] = [
     lng: 25.2,
     region: 'Keski-Suomi',
     population: 3552,
+    description: 'Hopeakentässä punaisen aaltokoroisen tyviön yläpuolella musta petäjä.',
   },
   {
     name: 'Pihtipudas',
@@ -1322,6 +1510,7 @@ export const municipalities: Municipality[] = [
     lng: 25.71,
     region: 'Keski-Suomi',
     population: 3692,
+    description: 'Hopeaan ja mustaan nelitahkoisen kilven toisessa ja kolmannessa kentässä hopeiset nuolenkärjet.',
   },
   {
     name: 'Saarijärvi',
@@ -1329,6 +1518,7 @@ export const municipalities: Municipality[] = [
     lng: 25.13,
     region: 'Keski-Suomi',
     population: 8858,
+    description: 'Hopeakentässä kolme yläreunoiltaan sahakoroista hirttä, joista keskimmäinen punainen, toiset mustia.',
   },
   {
     name: 'Toivakka',
@@ -1336,6 +1526,7 @@ export const municipalities: Municipality[] = [
     lng: 26.06,
     region: 'Keski-Suomi',
     population: 2349,
+    description: 'Vihreässä kentässä kylväjä hopeavaatteissa; kylvövakka hihnoineen ja virsut kultaa.',
   },
   {
     name: 'Uurainen',
@@ -1343,6 +1534,7 @@ export const municipalities: Municipality[] = [
     lng: 25.44,
     region: 'Keski-Suomi',
     population: 3657,
+    description: 'Vihreässä kentässä kultainen kaarikoroinen kärki, jossa vihreä suksisauvan sompa.',
   },
   {
     name: 'Viitasaari',
@@ -1350,6 +1542,7 @@ export const municipalities: Municipality[] = [
     lng: 25.88,
     region: 'Keski-Suomi',
     population: 5764,
+    description: 'Punaisessa kentässä seitsemän kokonaan hopeista uivaa muikkua asetettuina 1 + 2 + 1 + 2 + 1.',
   },
   {
     name: 'Äänekoski',
@@ -1357,6 +1550,7 @@ export const municipalities: Municipality[] = [
     lng: 25.91,
     region: 'Keski-Suomi',
     population: 17740,
+    description: 'Sinisessä kentässä kolme lentävää hopeakurkea, keskenään järjestettyinä oikealle suunnatun kärjen tapaan.',
   },
   // Etelä-Pohjanmaa
   {
@@ -1365,6 +1559,7 @@ export const municipalities: Municipality[] = [
     lng: 23.98,
     region: 'Etelä-Pohjanmaa',
     population: 9078,
+    description: 'Sinisessä kentässä hopeinen aaltokoroinen tyviö.',
   },
   {
     name: 'Alavus',
@@ -1372,6 +1567,7 @@ export const municipalities: Municipality[] = [
     lng: 23.56,
     region: 'Etelä-Pohjanmaa',
     population: 10780,
+    description: 'Sinisessä kentässä nyhäkoroinen kärki, josta nousee kaarisakarainen risti; molemmat hopeaa.',
   },
   {
     name: 'Evijärvi',
@@ -1379,6 +1575,7 @@ export const municipalities: Municipality[] = [
     lng: 23.48,
     region: 'Etelä-Pohjanmaa',
     population: 2272,
+    description: 'Sinisessä kentässä hopeisen aaltokoroisen tyviön yläpuolella selätysten kaksi tyviöstä nousevaa hopeista kalaa, joiden varukset ovat punaiset.',
   },
   {
     name: 'Ilmajoki',
@@ -1386,6 +1583,7 @@ export const municipalities: Municipality[] = [
     lng: 22.58,
     region: 'Etelä-Pohjanmaa',
     population: 12429,
+    description: 'Katkoisen kilven hopeisessa yläkentässä musta karhunpää edestäpäin. Sinisessä alakentässä kaksi hopeista puunuijaa ristissä, niiden alakulmassa jalkajousen muotoinen hopeinen puumerkki; jousen kaksikaarteinen virittäjä vastapalkeittain tukin päällä, yläpää kiinni jänteessä.',
   },
   {
     name: 'Isojoki',
@@ -1393,6 +1591,7 @@ export const municipalities: Municipality[] = [
     lng: 21.9,
     region: 'Etelä-Pohjanmaa',
     population: 1794,
+    description: 'Mustassa kentässä hopeinen paalu, jossa punainen tähkä.',
   },
   {
     name: 'Isokyrö',
@@ -1400,6 +1599,7 @@ export const municipalities: Municipality[] = [
     lng: 22.41,
     region: 'Etelä-Pohjanmaa',
     population: 4319,
+    description: 'Kultakilvessä pystyssä musta karhu, jonka varukset (kieli, hampaat, kynnet) ovat punaiset, pidellen kämmenissään kuusentyveä.',
   },
   {
     name: 'Karijoki',
@@ -1407,6 +1607,7 @@ export const municipalities: Municipality[] = [
     lng: 21.76,
     region: 'Etelä-Pohjanmaa',
     population: 1159,
+    description: 'Kynsikoroisesti katkoinen sini-hopeakilpi.',
   },
   {
     name: 'Kauhajoki',
@@ -1414,6 +1615,7 @@ export const municipalities: Municipality[] = [
     lng: 22.35,
     region: 'Etelä-Pohjanmaa',
     population: 12518,
+    description: 'Aaltokorokatkoisen kilven sinisessä yläkentässä kaksi hopeista puhemiehen nuijaa ristikkäin, hopeisessa alakentässä kohti katsova musta karhunpää, jonka kieli punainen.',
   },
   {
     name: 'Kauhava',
@@ -1421,6 +1623,7 @@ export const municipalities: Municipality[] = [
     lng: 23,
     region: 'Etelä-Pohjanmaa',
     population: 15050,
+    description: 'Sinisellä kilvellä kultainen irtonainen mantovanristi alapuolellaan kilven reunasta reunaan ulottuva punainen neliherttainen helavyö; helat ja hertat kultaa.',
   },
   {
     name: 'Kuortane',
@@ -1428,6 +1631,7 @@ export const municipalities: Municipality[] = [
     lng: 23.56,
     region: 'Etelä-Pohjanmaa',
     population: 3335,
+    description: 'Aaltokoroisesti katkoinen hopea-sininen kilpi, jonka yläkentässä kolme nousevaa punaista liekkiä ja alakentässä uiva hopeinen kuha.',
   },
   {
     name: 'Kurikka',
@@ -1435,6 +1639,7 @@ export const municipalities: Municipality[] = [
     lng: 22.3,
     region: 'Etelä-Pohjanmaa',
     population: 19509,
+    description: 'Siniseen ja hopeaan lohenpyrstökoroilla halkaistu kilpi.',
   },
   {
     name: 'Lappajärvi',
@@ -1442,6 +1647,7 @@ export const municipalities: Municipality[] = [
     lng: 23.6,
     region: 'Etelä-Pohjanmaa',
     population: 2758,
+    description: 'Sinisessä kentässä hopeinen raakapurjeella ja peräsimellä varustettu vene. Alla liekkikoroinen kultatyviö.',
   },
   {
     name: 'Lapua',
@@ -1449,6 +1655,7 @@ export const municipalities: Municipality[] = [
     lng: 23.22,
     region: 'Etelä-Pohjanmaa',
     population: 14028,
+    description: 'Kultakentässä musta, kävelevä, punavaruksinen karhu, jolla ratsastaa siniseen vyötettyyn mekkoon, housuihin ja paulakenkiin pukeutunut mies, pidellen oikeassa kädessään iskuun kohotettua mustaa nuijaa.',
   },
   {
     name: 'Seinäjoki',
@@ -1456,6 +1663,7 @@ export const municipalities: Municipality[] = [
     lng: 22.94,
     region: 'Etelä-Pohjanmaa',
     population: 66611,
+    description: 'Hopeisessa kilvessä sininen reunasta reunaan ulottuva sakaraharjainen ja juurestaan aaltokoroinen muuri.',
   },
   {
     name: 'Soini',
@@ -1463,6 +1671,7 @@ export const municipalities: Municipality[] = [
     lng: 24.26,
     region: 'Etelä-Pohjanmaa',
     population: 1800,
+    description: 'Punaisessa kentässä alainen, aaltokoroinen hirsi, jonka yläpuolella kruunu; kaikki kultaa.',
   },
   {
     name: 'Teuva',
@@ -1470,6 +1679,7 @@ export const municipalities: Municipality[] = [
     lng: 21.83,
     region: 'Etelä-Pohjanmaa',
     population: 4662,
+    description: 'Sinisessä kentässä kaksi hopeista varstaa ristikkäin.',
   },
   {
     name: 'Vimpeli',
@@ -1477,6 +1687,7 @@ export const municipalities: Municipality[] = [
     lng: 23.93,
     region: 'Etelä-Pohjanmaa',
     population: 2607,
+    description: 'Sinisessä kentässä kaksi hopeista suksea selätysten kaateisen polviorren tapaan asetettuna, saatteena niiden välissä kultainen liekki.',
   },
   {
     name: 'Ähtäri',
@@ -1484,6 +1695,7 @@ export const municipalities: Municipality[] = [
     lng: 24.22,
     region: 'Etelä-Pohjanmaa',
     population: 5220,
+    description: 'Sinisessä kentässä kaksi nuolta ristikkäin ja päällikkeenä paaluittain kolmas nuoli; kaikki hopeaa; saatteena kummassakin sivukulmassa kultainen viisilehtinen kukka.',
   },
   // Pohjanmaa
   {
@@ -1492,6 +1704,7 @@ export const municipalities: Municipality[] = [
     lng: 21.25,
     region: 'Pohjanmaa',
     population: 1241,
+    description: 'Halkoisen kilven oikeassa sinisessä kentässä hopeinen perämela, vasemmassa hopeisessa kentässä vihreä laakerinlehvä.',
   },
   {
     name: 'Korsnäs',
@@ -1499,6 +1712,7 @@ export const municipalities: Municipality[] = [
     lng: 21.16,
     region: 'Pohjanmaa',
     population: 1986,
+    description: 'Sinisessä kentässä ristikkäin kaksi ylös työntyvää harppuunaa, joiden kärjet hopeaa ja varret kultaa; yläkulmassa saatteena kultainen Mantovan risti.',
   },
   {
     name: 'Kristiinankaupunki',
@@ -1506,6 +1720,7 @@ export const municipalities: Municipality[] = [
     lng: 21.42,
     region: 'Pohjanmaa',
     population: 6121,
+    description: 'Aaltokoroisen hopea-sinihalkoisen kilven oikeassa kentässä yksitoista kentästä kasvavaa vihreää kuusta asetettuina 3 + 3 + 3 + 2.',
   },
   {
     name: 'Kruunupyy',
@@ -1513,6 +1728,7 @@ export const municipalities: Municipality[] = [
     lng: 23.39,
     region: 'Pohjanmaa',
     population: 6342,
+    description: 'Punaisessa kentässä kruunattu apilaristi, jonka alasakara muodostaa kaateisen aurankärjen, kaikki kultaa.',
   },
   {
     name: 'Laihia',
@@ -1520,6 +1736,7 @@ export const municipalities: Municipality[] = [
     lng: 22.04,
     region: 'Pohjanmaa',
     population: 7656,
+    description: 'Vihreässä kentässä kultaisella oksalla istuva, etukäpälissään kultakäpyä pitelevä hopeinen orava.',
   },
   {
     name: 'Luoto',
@@ -1527,6 +1744,7 @@ export const municipalities: Municipality[] = [
     lng: 22.69,
     region: 'Pohjanmaa',
     population: 5884,
+    description: 'Sinisessä kentässä hopeinen kaksimastoinen verkkovene.',
   },
   {
     name: 'Maalahti',
@@ -1534,6 +1752,7 @@ export const municipalities: Municipality[] = [
     lng: 21.25,
     region: 'Pohjanmaa',
     population: 5415,
+    description: 'Sinisessä kentässä aaltokoroinen tyviö ja kolme lukkopeltiä asetettuina 2:1, kaikki hopeaa.',
   },
   {
     name: 'Mustasaari',
@@ -1541,6 +1760,7 @@ export const municipalities: Municipality[] = [
     lng: 21.46,
     region: 'Pohjanmaa',
     population: 19738,
+    description: 'Punaisessa kentässä reunoihin ulottuva kolmoisriu’un ja kaksoisvartaan muodostama risti, jonka risteyskohtaa ympäröi rengas, kaikki kultaa; kuviot ovat toisiinsa punottuina.',
   },
   {
     name: 'Närpiö',
@@ -1548,6 +1768,7 @@ export const municipalities: Municipality[] = [
     lng: 21.25,
     region: 'Pohjanmaa',
     population: 9554,
+    description: 'Punaisessa kentässä kaateinen, kultainen vesilehvä, jolla on hopeasiivet.',
   },
   {
     name: 'Pedersören kunta',
@@ -1555,6 +1776,7 @@ export const municipalities: Municipality[] = [
     lng: 22.99,
     region: 'Pohjanmaa',
     population: 11226,
+    description: 'Punaisessa kentässä kolmen naularistin ympäröimä ohrantähkä; kaikki kultaa.',
   },
   {
     name: 'Pietarsaari',
@@ -1562,6 +1784,7 @@ export const municipalities: Municipality[] = [
     lng: 22.6,
     region: 'Pohjanmaa',
     population: 19576,
+    description: 'Kultakentässä sininen, aaltokoroinen tyviö, josta nousee punainen torni; tornista nousee sininen, punavaruksinen leijona, päässään punainen kruunu, häntä kaksihaarainen; leijona pitää oikeassa kämmenessään sinistä, punakahvaista iskuun kohotettua miekkaa.',
   },
   {
     name: 'Uusikaarlepyy',
@@ -1569,6 +1792,7 @@ export const municipalities: Municipality[] = [
     lng: 22.46,
     region: 'Pohjanmaa',
     population: 7439,
+    description: 'Sinisessä kilvessä pystyyn asetettu kultainen tervatynnyri, jonka kannesta ja molemmista sivuista kultaiset, punakielekkeiset tulenlieskat lähtevät.',
   },
   {
     name: 'Vaasa',
@@ -1576,6 +1800,7 @@ export const municipalities: Municipality[] = [
     lng: 21.62,
     region: 'Pohjanmaa',
     population: 70361,
+    description: 'Punaisessa kentässä kultainen Vaasain tunnus, sen alapuolella kulta-valkoinen vapaudenristi kultaisine laakeriseppeleineen ja miekkoineen riippumassa kultaisessa, kahdella punaisella viivalla kirjatussa nauhassa, joka ympäröi kilven alaosaa.',
   },
   {
     name: 'Vöyri',
@@ -1583,6 +1808,7 @@ export const municipalities: Municipality[] = [
     lng: 22.12,
     region: 'Pohjanmaa',
     population: 6210,
+    description: 'Sinisessä kentässä vedenhaltia pitäen oikeassa kädessään kalaa ja vasemmassa apilanlehteä; kaikki hopeaa.',
   },
   // Keski-Pohjanmaa
   {
@@ -1591,6 +1817,7 @@ export const municipalities: Municipality[] = [
     lng: 24.3,
     region: 'Keski-Pohjanmaa',
     population: 985,
+    description: 'Punaisessa kentässä kaksi vastakkain asetettua pyöreäperäistä hopeakannelta, joitten kielet siniset.',
   },
   {
     name: 'Kannus',
@@ -1598,6 +1825,7 @@ export const municipalities: Municipality[] = [
     lng: 23.98,
     region: 'Keski-Pohjanmaa',
     population: 5264,
+    description: 'Sinisessä kentässä paaluittainen noitarummun (kannuksen) vasara, sen varren kummallakin puolella kuusisakarainen kannustähti; kaikki hopeaa.',
   },
   {
     name: 'Kaustinen',
@@ -1605,6 +1833,7 @@ export const municipalities: Municipality[] = [
     lng: 23.75,
     region: 'Keski-Pohjanmaa',
     population: 4118,
+    description: 'Sinisessä kultaisin naularistein sirotellussa kentässä vastapalkeittain asetettu kultainen viulu.',
   },
   {
     name: 'Kokkola',
@@ -1612,6 +1841,7 @@ export const municipalities: Municipality[] = [
     lng: 23.42,
     region: 'Keski-Pohjanmaa',
     population: 48367,
+    description: 'Kultakentässä kyljellään musta tervatynnyri, jonka tapinreiästä ja pohjista lyövät punaiset tulenlieskat.',
   },
   {
     name: 'Lestijärvi',
@@ -1619,6 +1849,7 @@ export const municipalities: Municipality[] = [
     lng: 24.7,
     region: 'Keski-Pohjanmaa',
     population: 665,
+    description: 'Hopeakentässä sininen teerenpyrstö.',
   },
   {
     name: 'Perho',
@@ -1626,6 +1857,7 @@ export const municipalities: Municipality[] = [
     lng: 24.48,
     region: 'Keski-Pohjanmaa',
     population: 2594,
+    description: 'Mustassa kentässä kultainen perhonen, jonka yläpuolella saatteena hopeinen naularisti.',
   },
   {
     name: 'Toholampi',
@@ -1633,6 +1865,7 @@ export const municipalities: Municipality[] = [
     lng: 24.3,
     region: 'Keski-Pohjanmaa',
     population: 2799,
+    description: 'Hopeakentässä alainen, musta, yläpuoleltaan oksakoroinen polviorsi; kustakin sakarasta nousee punainen tulenlieska.',
   },
   {
     name: 'Veteli',
@@ -1640,6 +1873,7 @@ export const municipalities: Municipality[] = [
     lng: 23.96,
     region: 'Keski-Pohjanmaa',
     population: 2931,
+    description: 'Hopeakentässä sininen paalu, jossa seitsenkielinen kultakantele; kielet punaiset.',
   },
   // Pohjois-Pohjanmaa
   {
@@ -1648,6 +1882,7 @@ export const municipalities: Municipality[] = [
     lng: 24.35,
     region: 'Pohjois-Pohjanmaa',
     population: 2410,
+    description: 'Vihreässä kentässä ristikkäin kaksi hopeaviikatetta, joiden terät kultaa.',
   },
   {
     name: 'Haapajärvi',
@@ -1655,6 +1890,7 @@ export const municipalities: Municipality[] = [
     lng: 25.3,
     region: 'Pohjois-Pohjanmaa',
     population: 6492,
+    description: 'Sinisessä kentässä palkeittain hopeinen, siivekäs nuoli, jonka kärki ja sulat kultaa.',
   },
   {
     name: 'Haapavesi',
@@ -1662,6 +1898,7 @@ export const municipalities: Municipality[] = [
     lng: 25.35,
     region: 'Pohjois-Pohjanmaa',
     population: 6365,
+    description: 'Sinisessä kentässä hopeinen haapa, sen alapuolella aaltokoroinen hopeatyviö, jossa sininen, kultanastainen suksisauvan sompa.',
   },
   {
     name: 'Hailuoto',
@@ -1669,6 +1906,7 @@ export const municipalities: Municipality[] = [
     lng: 24.82,
     region: 'Pohjois-Pohjanmaa',
     population: 927,
+    description: 'Sinisessä kentässä hopeinen merihankain.',
   },
   {
     name: 'Ii',
@@ -1676,6 +1914,7 @@ export const municipalities: Municipality[] = [
     lng: 25.44,
     region: 'Pohjois-Pohjanmaa',
     population: 9806,
+    description: 'Hopea kentässä aaltokoroinen vasen pieli ja hylje; molemmat sinisiä.',
   },
   {
     name: 'Kalajoki',
@@ -1683,6 +1922,7 @@ export const municipalities: Municipality[] = [
     lng: 23.82,
     region: 'Pohjois-Pohjanmaa',
     population: 12271,
+    description: 'Kultakentässä sininen, kaksimastoinen kaljaasi.',
   },
   {
     name: 'Kempele',
@@ -1690,6 +1930,7 @@ export const municipalities: Municipality[] = [
     lng: 25.58,
     region: 'Pohjois-Pohjanmaa',
     population: 19657,
+    description: 'Sinisessä kentässä aaltokoroinen vasen pieli ja kaksi alakkain, yläviistoon lentävää sorsaa; kaikki hopeaa.',
   },
   {
     name: 'Kuusamo',
@@ -1697,6 +1938,7 @@ export const municipalities: Municipality[] = [
     lng: 29.2,
     region: 'Pohjois-Pohjanmaa',
     population: 14876,
+    description: 'Punakentässä hopeinen juokseva poro, jonka yläpuolella kultainen revontuli.',
   },
   {
     name: 'Kärsämäki',
@@ -1704,6 +1946,7 @@ export const municipalities: Municipality[] = [
     lng: 25.83,
     region: 'Pohjois-Pohjanmaa',
     population: 2373,
+    description: 'Hopeakentässä tyviö ja vene, molemmat siniset, veneestä nousee seitsemän punaista tulikielekettä.',
   },
   {
     name: 'Liminka',
@@ -1711,6 +1954,7 @@ export const municipalities: Municipality[] = [
     lng: 25.64,
     region: 'Pohjois-Pohjanmaa',
     population: 10190,
+    description: 'Sinisessä kentässä aaltokoroinen oikea pieli ja kolme kävelevää kärppää alatusten; kaikki muu on hopeaa paitsi kärppien hännänpäät ovat mustat.',
   },
   {
     name: 'Lumijoki',
@@ -1718,6 +1962,7 @@ export const municipalities: Municipality[] = [
     lng: 25.15,
     region: 'Pohjois-Pohjanmaa',
     population: 2008,
+    description: 'Sinisessä kentässä alainen aaltokoroinen hirsi, jonka yläpuolella lumikide; molemmat hopeaa.',
   },
   {
     name: 'Merijärvi',
@@ -1725,6 +1970,7 @@ export const municipalities: Municipality[] = [
     lng: 24.55,
     region: 'Pohjois-Pohjanmaa',
     population: 1059,
+    description: 'Sinisessä kentässä kaarikoroisesta tyviöstä nousevaan sinkilään kiinnitetty rengas, kaikki hopeaa.',
   },
   {
     name: 'Muhos',
@@ -1732,6 +1978,7 @@ export const municipalities: Municipality[] = [
     lng: 26.21,
     region: 'Pohjois-Pohjanmaa',
     population: 8749,
+    description: 'Aaltokorokatkoisen kilven sinisessä yläkentässä hopeinen lohi ja hopeisessa alakentässä kolme sinistä yksipolvekkeista salamaa vierekkäin.',
   },
   {
     name: 'Nivala',
@@ -1739,6 +1986,7 @@ export const municipalities: Municipality[] = [
     lng: 25.04,
     region: 'Pohjois-Pohjanmaa',
     population: 10378,
+    description: 'Vihreässä kentässä yksipuolinen kultainen puuportti.',
   },
   {
     name: 'Oulainen',
@@ -1746,6 +1994,7 @@ export const municipalities: Municipality[] = [
     lng: 24.92,
     region: 'Pohjois-Pohjanmaa',
     population: 6912,
+    description: 'Vihreässä kentässä pystyssä kultainen rapu.',
   },
   {
     name: 'Oulu',
@@ -1753,6 +2002,7 @@ export const municipalities: Municipality[] = [
     lng: 25.6,
     region: 'Pohjois-Pohjanmaa',
     population: 216152,
+    description: 'Punaisessa kentässä hopeisesta tyviöstä nouseva kultainen, sinisin portti- ja ikkuna-aukoin varustettu linna, jossa neljä viirein koristettua kupukattoista tornia; tyviössä sininen, punavaruksinen lohi.',
   },
   {
     name: 'Pudasjärvi',
@@ -1760,6 +2010,7 @@ export const municipalities: Municipality[] = [
     lng: 27.3,
     region: 'Pohjois-Pohjanmaa',
     population: 7304,
+    description: 'Kultakentässä musta, kävelevä, punavaruksinen karhu, jonka yläpuolella musta, kuusikoroinen lakio, jossa Otavan seitsentähtinen tähtikuvio; kukin tähti kultaa, viisisakarainen.',
   },
   {
     name: 'Pyhäjoki',
@@ -1767,6 +2018,7 @@ export const municipalities: Municipality[] = [
     lng: 24.42,
     region: 'Pohjois-Pohjanmaa',
     population: 2976,
+    description: 'Sinisessä kentässä hopeinen kultavaruksinen hanhi, jonka alapuolella kultainen kruunu ja risti alakkain.',
   },
   {
     name: 'Pyhäjärvi',
@@ -1774,6 +2026,7 @@ export const municipalities: Municipality[] = [
     lng: 25.91,
     region: 'Pohjois-Pohjanmaa',
     population: 4702,
+    description: 'Sinisessä kentässä nouseva kärjestä teroitettu rajapaalu, jonka saatteena kummallakin puolella naularisti; kaikki hopeaa.',
   },
   {
     name: 'Pyhäntä',
@@ -1781,6 +2034,7 @@ export const municipalities: Municipality[] = [
     lng: 26.45,
     region: 'Pohjois-Pohjanmaa',
     population: 1641,
+    description: 'Punaisessa kentässä on kolme alaista hirttä, joiden päällikkeenä on viisi tyvestä nousevaa suippokärkistä paalua; kaikki hopeaa.',
   },
   {
     name: 'Raahe',
@@ -1788,6 +2042,7 @@ export const municipalities: Municipality[] = [
     lng: 24.71,
     region: 'Pohjois-Pohjanmaa',
     population: 23571,
+    description: 'Punaisessa kentässä alaisen aaltokoroisen hopeatyviön - josta nousee kultainen kummeli (merimerkki) - yläpuolella ryntäävän hevosen selässä istuva haarniskoitu ratsumies, jolla oikeassa kädessään viirillä varustettu peitsi, kaikki muut hopeaa paitsi kypärän kruunu ja silmikko sekä viiri, suitset, satulaloimi ja kannukset kultaa.',
   },
   {
     name: 'Reisjärvi',
@@ -1795,6 +2050,7 @@ export const municipalities: Municipality[] = [
     lng: 24.99,
     region: 'Pohjois-Pohjanmaa',
     population: 2556,
+    description: 'Sinisessä kentässä hopeinen, viisihaarainen atraimen terä.',
   },
   {
     name: 'Sievi',
@@ -1802,6 +2058,7 @@ export const municipalities: Municipality[] = [
     lng: 24.63,
     region: 'Pohjois-Pohjanmaa',
     population: 4603,
+    description: 'Vihreässä kentässä apilakoroinen lakio (yliskenttä) ja aaltokoroinen hirsi; molemmat kultaa.',
   },
   {
     name: 'Siikajoki',
@@ -1809,6 +2066,7 @@ export const municipalities: Municipality[] = [
     lng: 24.93,
     region: 'Pohjois-Pohjanmaa',
     population: 4804,
+    description: 'Sinisellä kilvellä yläreunaltaan sahakoroinen ja alareunaltaan aaltokoroinen hirsi, jonka yläpuolella kolme kuusisakaraista tähteä rinnakkain ja alapuolella siika, kaikki hopeaa.',
   },
   {
     name: 'Siikalatva',
@@ -1816,6 +2074,7 @@ export const municipalities: Municipality[] = [
     lng: 26.06,
     region: 'Pohjois-Pohjanmaa',
     population: 4938,
+    description: 'Sinisellä kilvellä aaltokoroinen tyviö ja neljä lentävää joutsenta palkittain; kaikki hopeaa.',
   },
   {
     name: 'Taivalkoski',
@@ -1823,6 +2082,7 @@ export const municipalities: Municipality[] = [
     lng: 28.47,
     region: 'Pohjois-Pohjanmaa',
     population: 3657,
+    description: 'Punaisessa kentässä justeerisaha, tämän yläpuolella kuusikoroinen lakio; kaikki hopeaa.',
   },
   {
     name: 'Tyrnävä',
@@ -1830,6 +2090,7 @@ export const municipalities: Municipality[] = [
     lng: 25.76,
     region: 'Pohjois-Pohjanmaa',
     population: 6501,
+    description: 'Sinisessä kentässä kolme hopeista punaovista latoa asetettuina 2 + 1.',
   },
   {
     name: 'Utajärvi',
@@ -1837,6 +2098,7 @@ export const municipalities: Municipality[] = [
     lng: 26.72,
     region: 'Pohjois-Pohjanmaa',
     population: 2466,
+    description: 'Vihreässä kentässä hopeinen aaltokoroinen vastapalkki, jossa musta tervavene.',
   },
   {
     name: 'Vaala',
@@ -1844,6 +2106,7 @@ export const municipalities: Municipality[] = [
     lng: 26.93,
     region: 'Pohjois-Pohjanmaa',
     population: 2581,
+    description: 'Punaisessa kentässä alainen, kaateinen polviorsi, josta nousee kolmisakarainen torni; molemmat hopeaa.',
   },
   {
     name: 'Ylivieska',
@@ -1851,6 +2114,7 @@ export const municipalities: Municipality[] = [
     lng: 24.67,
     region: 'Pohjois-Pohjanmaa',
     population: 15406,
+    description: 'Hopeakentässä sininen, apilapäinen haaruristi.',
   },
   // Kainuu
   {
@@ -1859,6 +2123,7 @@ export const municipalities: Municipality[] = [
     lng: 28.73,
     region: 'Kainuu',
     population: 2002,
+    description: 'Hopeisessa kentässä sininen aaltokoroinen paalu, jossa kultainen tervatynnyri.',
   },
   {
     name: 'Kajaani',
@@ -1866,14 +2131,18 @@ export const municipalities: Municipality[] = [
     lng: 27.39,
     region: 'Kainuu',
     population: 36433,
+    description: 'Sinisessä kentässä alaisesta aaltokoroisesta hopeahirrestä nouseva kultainen kaksitorninen linna, jonka ikkuna- ja oviaukot punaiset.',
   },
-  { name: 'Kuhmo', lat: 64.24, lng: 29.77, region: 'Kainuu', population: 7483 },
+  { name: 'Kuhmo', lat: 64.24, lng: 29.77, region: 'Kainuu', population: 7483,
+    description: 'Mustassa kentässä kolme kultaista kuusta asetettuna 2 + 1.',
+  },
   {
     name: 'Paltamo',
     lat: 64.44,
     lng: 27.75,
     region: 'Kainuu',
     population: 2990,
+    description: 'Kultakentässä hirsittäin, alatusten, kolme mustaa tervavenettä tynnyreineen.',
   },
   {
     name: 'Puolanka',
@@ -1881,6 +2150,7 @@ export const municipalities: Municipality[] = [
     lng: 27.73,
     region: 'Kainuu',
     population: 2345,
+    description: 'Mustassa kentässä kolme karjankelloa asetettuina 2:1, yläpuolella kuusikoroinen lakio; kaikki kultaa.',
   },
   {
     name: 'Ristijärvi',
@@ -1888,6 +2158,7 @@ export const municipalities: Municipality[] = [
     lng: 28.44,
     region: 'Kainuu',
     population: 1163,
+    description: 'Sinisessä kentässä aaltokuvioinen hopeatyviö ja sen yläpuolella hopeinen havuristi.',
   },
   {
     name: 'Sotkamo',
@@ -1895,6 +2166,7 @@ export const municipalities: Municipality[] = [
     lng: 28.54,
     region: 'Kainuu',
     population: 10185,
+    description: 'Hopeakentässä sininen, yläreunaltaan kaarikoroinen hirsi.',
   },
   {
     name: 'Suomussalmi',
@@ -1902,6 +2174,7 @@ export const municipalities: Municipality[] = [
     lng: 29.46,
     region: 'Kainuu',
     population: 7038,
+    description: 'Mustassa kentässä neljä hopealipuketta ryhmitettyinä 1 + 2 + 1, kustakin nousee kultainen liekki.',
   },
   // Lappi
   {
@@ -1910,15 +2183,21 @@ export const municipalities: Municipality[] = [
     lng: 22.62,
     region: 'Lappi',
     population: 1762,
+    description: 'Sinisessä kentässä hopeinen punavaruksinen riekko.',
   },
-  { name: 'Inari', lat: 68.92, lng: 27.03, region: 'Lappi', population: 7224 },
-  { name: 'Kemi', lat: 65.71, lng: 24.59, region: 'Lappi', population: 19402 },
+  { name: 'Inari', lat: 68.92, lng: 27.03, region: 'Lappi', population: 7224,
+    description: 'Mustassa kentässä uiva hopeinen siika päässään kultaiset sarvet.',
+  },
+  { name: 'Kemi', lat: 65.71, lng: 24.59, region: 'Lappi', population: 19402,
+    description: 'Katkoisen kilven punaisessa yläkentässä hopeinen ankkuri, sinisessä alakentässä hopealohi.',
+  },
   {
     name: 'Kemijärvi',
     lat: 66.65,
     lng: 27.59,
     region: 'Lappi',
     population: 6954,
+    description: 'Mustassa kentässä kanto, jonka yläpää teroitettu kolmikärkiseksi ja sen molemmin puolin saatteena kuusisakarainen tähti, kaikki hopeaa.',
   },
   {
     name: 'Keminmaa',
@@ -1926,6 +2205,7 @@ export const municipalities: Municipality[] = [
     lng: 24.82,
     region: 'Lappi',
     population: 7604,
+    description: 'Punaisessa kentässä hyppäävä lohi, jonka leuassa riippulukko; kaikki hopeaa, paitsi lukossa musta avaimenreikä.',
   },
   {
     name: 'Kittilä',
@@ -1933,41 +2213,60 @@ export const municipalities: Municipality[] = [
     lng: 24.93,
     region: 'Lappi',
     population: 6837,
+    description: 'Hopeakentässä kävelevä ahma ja yläpuolella kaarilakio; kaikki mustaa paitsi ahman varukset punaiset.',
   },
-  { name: 'Kolari', lat: 67.27, lng: 23.91, region: 'Lappi', population: 3987 },
-  { name: 'Muonio', lat: 67.87, lng: 23.72, region: 'Lappi', population: 2313 },
+  { name: 'Kolari', lat: 67.27, lng: 23.91, region: 'Lappi', population: 3987,
+    description: 'Kilpi alaisen harjakoron jakama hopeiseen ja mustaan kenttään; yläkentässä viisi nousevaa punaista tulikielekettä vieretysten.',
+  },
+  { name: 'Muonio', lat: 67.87, lng: 23.72, region: 'Lappi', population: 2313,
+    description: 'Punaisessa kentässä harjakoroisen tyviön yläpuolella kuusisakarainen tähti; kaikki hopeaa.',
+  },
   {
     name: 'Pelkosenniemi',
     lat: 67.12,
     lng: 27.57,
     region: 'Lappi',
     population: 910,
+    description: 'Hopeakentässä sininen naularisti ja sen alapuolella sini-hopeakatkoinen kolmoisvuori.',
   },
-  { name: 'Pello', lat: 66.72, lng: 24.17, region: 'Lappi', population: 3191 },
-  { name: 'Posio', lat: 66.15, lng: 28.11, region: 'Lappi', population: 2878 },
-  { name: 'Ranua', lat: 66.06, lng: 26.67, region: 'Lappi', population: 3570 },
+  { name: 'Pello', lat: 66.72, lng: 24.17, region: 'Lappi', population: 3191,
+    description: 'Sinisessä kentässä kolmoisvuori ja sen yläpuolella kolme kuusisakaraista tähteä asetettuina 1 + 2; kaikki hopeaa.',
+  },
+  { name: 'Posio', lat: 66.15, lng: 28.11, region: 'Lappi', population: 2878,
+    description: 'Mustassa kentässä kolme hopeista kotaa ryhmitettyinä 2 + 1; oviaukot punaiset.',
+  },
+  { name: 'Ranua', lat: 66.06, lng: 26.67, region: 'Lappi', population: 3570,
+    description: 'Vihreässä kentässä alainen aaltokoroinen hirsi, jonka yläpuolella justeerisaha; kaikki hopeaa.',
+  },
   {
     name: 'Rovaniemi',
     lat: 66.58,
     lng: 26.13,
     region: 'Lappi',
     population: 65722,
+    description: 'Vihreässä kentässä hopeinen haaruristi, jonka ylähaarat salamakoroiset, saatteena yläkulmassa kultainen liekki.',
   },
-  { name: 'Salla', lat: 67, lng: 29.06, region: 'Lappi', population: 3285 },
+  { name: 'Salla', lat: 67, lng: 29.06, region: 'Lappi', population: 3285,
+    description: 'Sinisessä kentässä hopeinen kaarihirsi.',
+  },
   {
     name: 'Savukoski',
     lat: 67.51,
     lng: 28.62,
     region: 'Lappi',
     population: 964,
+    description: 'Mustassa kentässä kultainen patsasaitta.',
   },
-  { name: 'Simo', lat: 65.78, lng: 25.18, region: 'Lappi', population: 2778 },
+  { name: 'Simo', lat: 65.78, lng: 25.18, region: 'Lappi', population: 2778,
+    description: 'Sinisessä kentässä neljä hopeista lohenpyrstöä asetettuina ristin tapaan.',
+  },
   {
     name: 'Sodankylä',
     lat: 67.62,
     lng: 26.77,
     region: 'Lappi',
     population: 8127,
+    description: 'Mustassa kentässä alainen hopeinen hirsi, jossa yläreunastaan liekkikoroinen punainen varras, hirren yläpuolella hopeinen 6-sakarainen tähti.',
   },
   {
     name: 'Tervola',
@@ -1975,6 +2274,7 @@ export const municipalities: Municipality[] = [
     lng: 25.29,
     region: 'Lappi',
     population: 2826,
+    description: 'Punaisessa kentässä kokonaan hopeinen kävelevä kurki, nokassaan hirsittäinen kultasipuli.',
   },
   {
     name: 'Tornio',
@@ -1982,6 +2282,7 @@ export const municipalities: Municipality[] = [
     lng: 24.18,
     region: 'Lappi',
     population: 20959,
+    description: 'Hopeakentässä punainen kirkontorni, jonka katto keski- ja kulmahuippuineen sekä ovi-, ikkuna- ja ampuma-aukot ovat siniset.',
   },
   {
     name: 'Utsjoki',
@@ -1989,6 +2290,7 @@ export const municipalities: Municipality[] = [
     lng: 26.76,
     region: 'Lappi',
     population: 1137,
+    description: 'Mustassa kentässä revontuli, jonka yläpuolella saatteena nelisakarainen tähti; molemmat hopeaa.',
   },
   {
     name: 'Ylitornio',
@@ -1996,6 +2298,7 @@ export const municipalities: Municipality[] = [
     lng: 24.17,
     region: 'Lappi',
     population: 3721,
+    description: 'Hopeakentässä kolmoisvuoren yläpuolella aurinko, kumpikin punainen.',
   },
   // Ahvenanmaa
   {
@@ -2004,6 +2307,7 @@ export const municipalities: Municipality[] = [
     lng: 21.03,
     region: 'Ahvenanmaa',
     population: 430,
+    description: 'Aaltokoroisen kilven punaisessa yläkentässä lentävä hopeinen lokki, hopeisessa alakentässä kala.',
   },
   {
     name: 'Eckerö',
@@ -2011,6 +2315,7 @@ export const municipalities: Municipality[] = [
     lng: 19.57,
     region: 'Ahvenanmaa',
     population: 956,
+    description: 'Hopeakentässä punainen rahtivene, jonka raakapurjekin on punainen.',
   },
   {
     name: 'Finström',
@@ -2018,6 +2323,7 @@ export const municipalities: Municipality[] = [
     lng: 19.92,
     region: 'Ahvenanmaa',
     population: 2617,
+    description: 'Punaisessa kentässä kultatammi alaisen, aaltokoroisen hopeahirren yläpuolella.',
   },
   {
     name: 'Föglö',
@@ -2025,6 +2331,7 @@ export const municipalities: Municipality[] = [
     lng: 20.48,
     region: 'Ahvenanmaa',
     population: 502,
+    description: 'Sinisessä kentässä kolme yläviistoon lentävää kultaista sorsaa asetettuina 2 + 1.',
   },
   {
     name: 'Geta',
@@ -2032,6 +2339,7 @@ export const municipalities: Municipality[] = [
     lng: 19.85,
     region: 'Ahvenanmaa',
     population: 514,
+    description: 'Sinisessä kentässä pystyyn kavahtanut kultapukki.',
   },
   {
     name: 'Hammarland',
@@ -2039,6 +2347,7 @@ export const municipalities: Municipality[] = [
     lng: 19.73,
     region: 'Ahvenanmaa',
     population: 1636,
+    description: 'Sinisessä kentässä kohti kääntynyt kultainen viikinkilaiva; kultatyviössä punainen kolmoisvuori.',
   },
   {
     name: 'Jomala',
@@ -2046,6 +2355,7 @@ export const municipalities: Municipality[] = [
     lng: 19.91,
     region: 'Ahvenanmaa',
     population: 5789,
+    description: 'Sinisessä kentässä Pyhä Olavi istumassa valtaistuimella pidellen valtakunnanomenaa ja sotakirvestä, kaikki kultaa.',
   },
   {
     name: 'Kumlinge',
@@ -2053,6 +2363,7 @@ export const municipalities: Municipality[] = [
     lng: 20.79,
     region: 'Ahvenanmaa',
     population: 273,
+    description: 'Punaisessa kentässä kultainen kotka siivet levällään seisomassa hopeakivien muodostamalla merimerkillä.',
   },
   {
     name: 'Kökar',
@@ -2060,6 +2371,7 @@ export const municipalities: Municipality[] = [
     lng: 20.93,
     region: 'Ahvenanmaa',
     population: 227,
+    description: 'Sinisessä kentässä hyppäävä hopeakala, jonka varukset punaiset.',
   },
   {
     name: 'Lemland',
@@ -2067,6 +2379,7 @@ export const municipalities: Municipality[] = [
     lng: 20.12,
     region: 'Ahvenanmaa',
     population: 2134,
+    description: 'Mustassa kentässä kultainen kappeli, jossa kaksi punaista ikkunaa: katon harjalla kaksi kultaristiä, joiden sakarat päättyvät punaisiin kolmioihin.',
   },
   {
     name: 'Lumparland',
@@ -2074,6 +2387,7 @@ export const municipalities: Municipality[] = [
     lng: 20.26,
     region: 'Ahvenanmaa',
     population: 371,
+    description: 'Sinisessä kentässä kultalyhde, molemmin puolin sitä kohti kaartuva hopeinen, punavaruksinen kala.',
   },
   {
     name: 'Maarianhamina',
@@ -2081,6 +2395,7 @@ export const municipalities: Municipality[] = [
     lng: 19.94,
     region: 'Ahvenanmaa',
     population: 11866,
+    description: 'Sinisellä kilvellä pysty kulta-ankkuri, sen yläpuolella lakio, jossa kolme vihreää lehmuksen lehteä.',
   },
   {
     name: 'Saltvik',
@@ -2088,6 +2403,7 @@ export const municipalities: Municipality[] = [
     lng: 20.07,
     region: 'Ahvenanmaa',
     population: 1778,
+    description: 'Kilpi alaisen harjakoron jakama punaiseen ja kultaan, punaisessa kentässä kaksi kultaliljaa vieretysten.',
   },
   {
     name: 'Sottunga',
@@ -2095,6 +2411,7 @@ export const municipalities: Municipality[] = [
     lng: 20.68,
     region: 'Ahvenanmaa',
     population: 101,
+    description: 'Sinisessä kentässä vene kahden aaltonauhan yläpuolella; kaikki kultaa paitsi maston huipussa punainen, kolmikielekkeinen lippu.',
   },
   {
     name: 'Sund',
@@ -2102,6 +2419,7 @@ export const municipalities: Municipality[] = [
     lng: 20.15,
     region: 'Ahvenanmaa',
     population: 1001,
+    description: 'Punaisessa kentässä sakarainen, tornilla varustettu kultainen harjamuuri; harjalla kultainen viiri.',
   },
   {
     name: 'Vårdö',
@@ -2109,5 +2427,6 @@ export const municipalities: Municipality[] = [
     lng: 20.38,
     region: 'Ahvenanmaa',
     population: 459,
+    description: 'Sinisessä kentässä hopeinen kartio, jossa kulta-punainen liekki.',
   },
 ];

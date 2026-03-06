@@ -4,6 +4,7 @@ export interface Municipality {
   lng: number;
   region: string;
   population: number;
+  description: string; // heraldic coat of arms description
 }
 
 export interface GuessResult {
@@ -16,7 +17,11 @@ export interface GuessResult {
 }
 
 export type GameMode = 'daily' | 'casual' | 'career';
-export type ClueType = 'shape' | 'coatOfArms' | 'coatOfArmsHard';
+export type ClueType =
+  | 'shape'
+  | 'coatOfArms'
+  | 'coatOfArmsHard'
+  | 'coatOfArmsImpossible';
 
 export interface CareerProgress {
   completed: string[];

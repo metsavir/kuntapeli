@@ -29,7 +29,9 @@ export function CareerStats({
           <div className="career-progress-fill" style={{ width: `${pct}%` }} />
         </div>
         <div className="career-toggle-group">
-          {(clueType === 'coatOfArms' || clueType === 'coatOfArmsHard') && (
+          {(clueType === 'coatOfArms' ||
+            clueType === 'coatOfArmsHard' ||
+            clueType === 'coatOfArmsImpossible') && (
             <button
               className={`career-map-toggle${view === 'collection' ? ' career-map-toggle--active' : ''}`}
               onClick={onToggleCollection}

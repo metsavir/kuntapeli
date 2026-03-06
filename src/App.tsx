@@ -8,6 +8,7 @@ import { GamePanel } from './components/game/GamePanel';
 import { CareerPanel } from './components/career/CareerPanel';
 import { MunicipalityShape } from './components/career/MunicipalityShape';
 import { CoatOfArms } from './components/career/CoatOfArms';
+import { DescriptionClue } from './components/game/DescriptionClue';
 import { LandingPage } from './components/LandingPage';
 import { StatsModal } from './components/stats/StatsModal';
 import { BadgeModal } from './components/stats/BadgeModal';
@@ -67,7 +68,7 @@ function App() {
 
   // Sync body background for hard mode theme
   useEffect(() => {
-    if (clueType === 'coatOfArmsHard') {
+    if (clueType === 'coatOfArmsHard' || clueType === 'coatOfArmsImpossible') {
       const isLight = document.documentElement.dataset.theme === 'light';
       document.body.style.transition = 'background-color 2s ease-out';
       document.body.style.backgroundColor = isLight ? '#fdf0f0' : '#1e1a20';
@@ -145,15 +146,19 @@ function App() {
     );
   }
 
-  const renderClue = (name: string) =>
+  const renderClue = (game: ReturnType<typeof useGame>) =>
     clueType === 'shape' ? (
-      <MunicipalityShape name={name} />
+      <MunicipalityShape name={game.answer.name} />
+    ) : clueType === 'coatOfArmsImpossible' ? (
+      <DescriptionClue description={game.answer.description} />
     ) : (
-      <CoatOfArms name={name} />
+      <CoatOfArms name={game.answer.name} />
     );
 
   return (
-    <div className={`app${clueType === 'coatOfArmsHard' ? ' app--hard' : ''}`}>
+    <div
+      className={`app${clueType === 'coatOfArmsHard' || clueType === 'coatOfArmsImpossible' ? ' app--hard' : ''}`}
+    >
       <Header
         mode={mode}
         onModeChange={(m) => {
@@ -190,7 +195,7 @@ function App() {
         <main className="app-body">
           <GamePanel
             game={daily}
-            clue={renderClue(daily.answer.name)}
+            clue={renderClue(daily)}
             mode="daily"
             clueType={clueType}
             onNewGame={daily.newGame}
@@ -201,7 +206,7 @@ function App() {
         <main className="app-body">
           <GamePanel
             game={casual}
-            clue={renderClue(casual.answer.name)}
+            clue={renderClue(casual)}
             mode="casual"
             clueType={clueType}
             onNewGame={casual.newGame}
@@ -216,7 +221,7 @@ function App() {
           clueType={clueType}
           careerComplete={careerComplete}
           onNext={handleCareerNext}
-          clue={renderClue(careerGame.answer.name)}
+          clue={renderClue(careerGame)}
           careerView={careerView}
           onViewChange={setCareerView}
         />

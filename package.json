@@ -10,7 +10,8 @@
     "format": "prettier --write src/",
     "preview": "vite preview",
     "fetch-geodata": "node scripts/fetch-geodata.mjs",
-    "fetch-coats": "node scripts/fetch-coats.mjs"
+    "fetch-coats": "node scripts/fetch-coats.mjs",
+    "fetch-descriptions": "node scripts/fetch-descriptions.mjs"
   },
   "dependencies": {
     "idb-keyval": "^6.2.2",
