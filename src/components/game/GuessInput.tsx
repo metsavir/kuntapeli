@@ -184,6 +184,7 @@ export function GuessInput({
           </button>
         </div>
       )}
+      {suggestions.length > 0 && <div className="suggestions-spacer" />}
       {showGiveUpModal && (
         <GiveUpModal
           onConfirm={() => {

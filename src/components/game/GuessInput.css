@@ -91,6 +91,10 @@
   }
 }
 
+.suggestions-spacer {
+  height: min(15rem, 40vh);
+}
+
 .suggestion-name {
   font-weight: 500;
 }
