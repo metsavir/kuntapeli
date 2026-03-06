@@ -147,15 +147,6 @@ function App() {
 
   const { initRef, scrollTo: scrollToMode } = useScrollSnap(MODES, setMode);
 
-  // Re-assert scroll position when career data loads (content change can shift scroll-snap)
-  const prevCareerComplete = useRef(careerComplete);
-  useEffect(() => {
-    if (prevCareerComplete.current !== careerComplete) {
-      prevCareerComplete.current = careerComplete;
-      scrollToMode(mode);
-    }
-  }, [careerComplete, scrollToMode, mode]);
-
   if (!clueType) {
     return (
       <>
