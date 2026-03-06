@@ -186,62 +186,59 @@ function App() {
           import.meta.env.DEV ? () => setDebug((d) => !d) : undefined
         }
       />
-      {timedMode ? (
-        <TimedMode />
-      ) : (
-        <>
-          {debug && (
-            <div
-              style={{
-                background: '#ff000030',
-                color: '#ff8888',
-                textAlign: 'center',
-                padding: '0.25rem',
-                fontSize: '0.75rem',
-                fontFamily: 'monospace',
-              }}
-            >
-              DEBUG: {games[mode].answer.name} ({games[mode].answer.region})
-            </div>
-          )}
-          <div className="mode-scroller" ref={initRef}>
-            {/* Daily panel */}
-            <main className="app-body">
-              <GamePanel
-                game={daily}
-                clue={renderClue(daily)}
-                mode="daily"
-                clueType={clueType}
-                onNewGame={daily.newGame}
-              />
-            </main>
-
-            {/* Casual panel */}
-            <main className="app-body">
-              <GamePanel
-                game={casual}
-                clue={renderClue(casual)}
-                mode="casual"
-                clueType={clueType}
-                onNewGame={casual.newGame}
-              />
-            </main>
-
-            {/* Career panel */}
-            <CareerPanel
-              mode={mode}
-              career={career}
-              careerGame={careerGame}
-              clueType={clueType}
-              careerComplete={careerComplete}
-              onNext={handleCareerNext}
-              clue={renderClue(careerGame)}
-              careerView={careerView}
-              onViewChange={setCareerView}
-            />
+      {timedMode && <TimedMode />}
+      <div style={timedMode ? { display: 'none' } : undefined}>
+        {debug && (
+          <div
+            style={{
+              background: '#ff000030',
+              color: '#ff8888',
+              textAlign: 'center',
+              padding: '0.25rem',
+              fontSize: '0.75rem',
+              fontFamily: 'monospace',
+            }}
+          >
+            DEBUG: {games[mode].answer.name} ({games[mode].answer.region})
           </div>
-        </>
-      )}
+        )}
+        <div className="mode-scroller" ref={initRef}>
+          {/* Daily panel */}
+          <main className="app-body">
+            <GamePanel
+              game={daily}
+              clue={renderClue(daily)}
+              mode="daily"
+              clueType={clueType}
+              onNewGame={daily.newGame}
+            />
+          </main>
+
+          {/* Casual panel */}
+          <main className="app-body">
+            <GamePanel
+              game={casual}
+              clue={renderClue(casual)}
+              mode="casual"
+              clueType={clueType}
+              onNewGame={casual.newGame}
+            />
+          </main>
+
+          {/* Career panel */}
+          <CareerPanel
+            mode={mode}
+            career={career}
+            careerGame={careerGame}
+            clueType={clueType}
+            careerComplete={careerComplete}
+            onNext={handleCareerNext}
+            clue={renderClue(careerGame)}
+            careerView={careerView}
+            onViewChange={setCareerView}
+          />
+        </div>
+      </div>
       {showStatsModal && (
         <StatsModal
           stats={stats}
