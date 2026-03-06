@@ -26,8 +26,11 @@ export function useScrollSnap<T extends string>(
       scrollerRef.current = el;
       if (!el) return;
 
-      // Start at first item
+      // Start at first item (rAF to override browser scroll restoration)
       el.scrollLeft = 0;
+      requestAnimationFrame(() => {
+        el.scrollLeft = 0;
+      });
 
       let scrollTimer: ReturnType<typeof setTimeout>;
       const onScroll = () => {

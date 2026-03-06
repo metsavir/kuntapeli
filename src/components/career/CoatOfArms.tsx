@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback } from 'react';
 import './CoatOfArms.css';
 
 interface CoatOfArmsProps {
@@ -8,16 +8,14 @@ interface CoatOfArmsProps {
 export function CoatOfArms({ name }: CoatOfArmsProps) {
   const [error, setError] = useState(false);
   const [loaded, setLoaded] = useState(false);
-  const prevName = useRef(name);
+  const [prevName, setPrevName] = useState(name);
 
-  // Reset state when name changes
-  useEffect(() => {
-    if (name !== prevName.current) {
-      prevName.current = name;
-      setError(false);
-      setLoaded(false);
-    }
-  }, [name]);
+  // Reset state synchronously during render (avoids race condition with onLoad)
+  if (name !== prevName) {
+    setPrevName(name);
+    setError(false);
+    setLoaded(false);
+  }
 
   // Handle cached images that are already complete
   const imgRef = useCallback((img: HTMLImageElement | null) => {
