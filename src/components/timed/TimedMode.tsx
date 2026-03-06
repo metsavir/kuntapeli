@@ -315,6 +315,7 @@ export function TimedMode({
 
       {gameType === 'speed' ? (
         <GuessInput
+          key={index}
           onSubmit={handleSubmit}
           onGiveUp={() => {}}
           onHint={() => {}}
