@@ -20,6 +20,8 @@ Players see a visual clue and type their guess. Each guess shows distance, direc
 
 Career mode includes a **Finland map** view with region zoom and a **coat collection** with sorting by region, date, or number of tries.
 
+Game data can be exported/imported as JSON backup via Settings (⋯ menu → Asetukset). Dark and light themes available.
+
 ## Development
 
 ```sh
@@ -46,7 +48,7 @@ Installable as a standalone app ("add to home screen"). Works offline after firs
 
 ## Tech
 
-React 19 + TypeScript 5.9 + Vite 7. No router or state library — React state with localStorage persistence. PWA via vite-plugin-pwa.
+React 19 + TypeScript 5.9 + Vite 7. No router or state library — React state with IndexedDB persistence (localStorage write-through fallback). PWA via vite-plugin-pwa. Dark/light theme support.
 
 ## Data Sources
 
