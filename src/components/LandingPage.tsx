@@ -1,6 +1,13 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import type { ClueType } from '../data/types';
+import { getDailyAnswer, getTodayString } from '../utils/game';
 import './LandingPage.css';
+
+const COAT_CLUE_TYPES = [
+  'coatOfArms',
+  'coatOfArmsHard',
+  'coatOfArmsImpossible',
+] as const;
 
 interface LandingPageProps {
   onSelect: (clueType: ClueType) => void;
@@ -17,6 +24,16 @@ export function LandingPage({ onSelect }: LandingPageProps) {
 
   const impossibleTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const impossibleTriggered = useRef(false);
+
+  // Prefetch daily coat images while user is on landing page
+  useEffect(() => {
+    const dateStr = getTodayString();
+    for (const ct of COAT_CLUE_TYPES) {
+      const name = getDailyAnswer(dateStr, ct).name;
+      const img = new Image();
+      img.src = `${import.meta.env.BASE_URL}coats/${name}.png`;
+    }
+  }, []);
 
   const handleSelect = (type: ClueType) => {
     if (longPressTriggered.current) return;
