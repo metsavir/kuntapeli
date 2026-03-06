@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef, useTransition } from 'react';
 import type { GameMode, ClueType, Municipality } from './data/types';
 import { useGame } from './hooks/useGame';
 import { useCareer } from './hooks/useCareer';
@@ -27,6 +27,7 @@ const MODES: GameMode[] = ['daily', 'casual', 'career'];
 function App() {
   const [mode, setMode] = useState<GameMode>('daily');
   const [clueType, setClueType] = useState<ClueType | null>(null);
+  const [, startTransition] = useTransition();
   const career = useCareer(clueType ?? 'shape');
   const [careerAnswers, setCareerAnswers] = useState<
     Record<string, Municipality | null>
@@ -158,7 +159,9 @@ function App() {
   if (!clueType) {
     return (
       <>
-        <LandingPage onSelect={setClueType} />
+        <LandingPage
+          onSelect={(ct) => startTransition(() => setClueType(ct))}
+        />
         <UpdateBanner />
       </>
     );
