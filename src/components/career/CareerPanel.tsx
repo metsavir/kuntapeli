@@ -1,7 +1,15 @@
-import { useMemo, useEffect, useRef, type ReactNode } from 'react';
+import {
+  useState,
+  useMemo,
+  useEffect,
+  useRef,
+  useCallback,
+  type ReactNode,
+} from 'react';
 import type { GameMode, ClueType } from '../../data/types';
 import type { useGame } from '../../hooks/useGame';
 import type { useCareer } from '../../hooks/useCareer';
+import { Confetti } from '../Confetti';
 import { GuessInput } from '../game/GuessInput';
 import { GuessList } from '../game/GuessList';
 import { GameOver } from '../game/GameOver';
@@ -32,6 +40,12 @@ export function CareerPanel({
   onViewChange,
   careerView,
 }: CareerPanelProps) {
+  const [showConfetti, setShowConfetti] = useState(false);
+  const handleCelebrate = useCallback(() => {
+    setShowConfetti(false);
+    requestAnimationFrame(() => setShowConfetti(true));
+  }, []);
+
   const failCount = useMemo(() => {
     const total = career.progress.failures.filter(
       (f) => f.name === careerGame.answer.name,
@@ -78,41 +92,75 @@ export function CareerPanel({
         className={`career-flip${careerView !== 'game' ? ` career-flip--${careerView}` : ''}`}
       >
         <div className="career-flip-face career-flip-front">
-          <div
-            className="clue-wrapper"
-            data-guesses={careerGame.guesses.length}
-          >
-            {clue}
-          </div>
-          <GuessInput
-            onSubmit={careerGame.submitGuess}
-            onGiveUp={careerGame.giveUp}
-            onHint={careerGame.showHint}
-            hints={careerGame.hints}
-            maxHints={careerGame.maxHints}
-            disabled={careerGame.status !== 'playing'}
-            attemptsLeft={careerGame.attemptsLeft}
-          />
-          <GuessList
-            guesses={careerGame.guesses}
-            minimal={
-              clueType === 'coatOfArmsHard' ||
-              clueType === 'coatOfArmsImpossible'
-            }
-          />
-          {careerGame.status !== 'playing' && (
-            <GameOver
-              status={careerGame.status}
-              guesses={careerGame.guesses}
-              answer={careerGame.answer}
-              dateStr={careerGame.dateStr}
-              mode="career"
-              clueType={clueType}
-              hintsUsed={careerGame.hints.length}
-              failCount={failCount}
-              careerComplete={careerComplete}
-              onNewGame={onNext}
-            />
+          {careerComplete && careerGame.status === 'playing' ? (
+            <div className="career-complete">
+              {showConfetti && <Confetti />}
+              <p className="career-complete-title">
+                Kaikki {career.totalCount} kuntaa suoritettu!
+              </p>
+              <p className="career-complete-sub">
+                Onneksi olkoon! Olet tunnistanut jokaisen Suomen kunnan.
+              </p>
+              <button
+                className="career-complete-celebrate"
+                onClick={handleCelebrate}
+              >
+                Juhli!
+              </button>
+              <div className="career-complete-links">
+                <button
+                  className="career-complete-link"
+                  onClick={() => onViewChange('map')}
+                >
+                  Kartta
+                </button>
+                <button
+                  className="career-complete-link"
+                  onClick={() => onViewChange('collection')}
+                >
+                  Kokoelma
+                </button>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div
+                className="clue-wrapper"
+                data-guesses={careerGame.guesses.length}
+              >
+                {clue}
+              </div>
+              <GuessInput
+                onSubmit={careerGame.submitGuess}
+                onGiveUp={careerGame.giveUp}
+                onHint={careerGame.showHint}
+                hints={careerGame.hints}
+                maxHints={careerGame.maxHints}
+                disabled={careerGame.status !== 'playing'}
+                attemptsLeft={careerGame.attemptsLeft}
+              />
+              <GuessList
+                guesses={careerGame.guesses}
+                minimal={
+                  clueType === 'coatOfArmsHard' ||
+                  clueType === 'coatOfArmsImpossible'
+                }
+              />
+              {careerGame.status !== 'playing' && (
+                <GameOver
+                  status={careerGame.status}
+                  guesses={careerGame.guesses}
+                  answer={careerGame.answer}
+                  dateStr={careerGame.dateStr}
+                  mode="career"
+                  clueType={clueType}
+                  hintsUsed={careerGame.hints.length}
+                  failCount={failCount}
+                  careerComplete={careerComplete}
+                  onNewGame={onNext}
+                />
+              )}
+            </>
           )}
         </div>
         <div className="career-flip-face career-flip-back">

@@ -1,50 +1,6 @@
-import { useMemo } from 'react';
 import type { TimedScore } from '../../hooks/useTimedScores';
+import { Confetti } from '../Confetti';
 import './TimedMode.css';
-
-const CONFETTI_COLORS = [
-  '#4a6cf7',
-  '#538d4e',
-  '#e74c3c',
-  '#f39c12',
-  '#9b59b6',
-  '#1abc9c',
-];
-
-function Confetti() {
-  const pieces = useMemo(
-    () =>
-      Array.from({ length: 40 }, (_, i) => ({
-        id: i,
-        left: `${Math.random() * 100}%`,
-        color:
-          CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
-        delay: `${Math.random() * 0.8}s`,
-        duration: `${1.5 + Math.random() * 1.5}s`,
-        size: 6 + Math.random() * 6,
-      })),
-    [],
-  );
-
-  return (
-    <div className="timed-confetti">
-      {pieces.map((p) => (
-        <div
-          key={p.id}
-          className="timed-confetti-piece"
-          style={{
-            left: p.left,
-            backgroundColor: p.color,
-            width: p.size,
-            height: p.size,
-            animationDelay: p.delay,
-            animationDuration: p.duration,
-          }}
-        />
-      ))}
-    </div>
-  );
-}
 
 interface TimedResult {
   name: string;
