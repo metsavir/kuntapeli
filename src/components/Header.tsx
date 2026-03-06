@@ -16,15 +16,19 @@ interface HeaderProps {
   onStats: () => void;
   onBadges: () => void;
   onSettings: () => void;
+  onTimedMode?: () => void;
   onDebugToggle?: () => void;
+  minimal?: boolean;
 }
 
 function MoreMenu({
   onBadges,
   onSettings,
+  onTimedMode,
 }: {
   onBadges: () => void;
   onSettings: () => void;
+  onTimedMode?: () => void;
 }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -82,6 +86,39 @@ function MoreMenu({
             </svg>
             Saavutukset
           </button>
+          {onTimedMode && (
+            <button
+              className="header-dropdown-item"
+              onClick={() => {
+                close();
+                onTimedMode();
+              }}
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  cx="8"
+                  cy="8"
+                  r="6.5"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                />
+                <path
+                  d="M8 4V8.5L11 10"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              Aikakisa
+            </button>
+          )}
           <button
             className="header-dropdown-item"
             onClick={() => {
@@ -160,7 +197,9 @@ export function Header({
   onStats,
   onBadges,
   onSettings,
+  onTimedMode,
   onDebugToggle,
+  minimal,
 }: HeaderProps) {
   const tapRef = useRef<{
     count: number;
@@ -190,53 +229,68 @@ export function Header({
           Kuntapeli
         </h1>
         <div className="header-actions">
-          <button
-            className="header-icon-btn"
-            onClick={onStats}
-            aria-label="Tilastot"
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+          {!minimal && (
+            <button
+              className="header-icon-btn"
+              onClick={onStats}
+              aria-label="Tilastot"
             >
-              <rect
-                x="1"
-                y="9"
-                width="3"
-                height="6"
-                rx="0.5"
-                fill="currentColor"
-              />
-              <rect
-                x="6.5"
-                y="4"
-                width="3"
-                height="11"
-                rx="0.5"
-                fill="currentColor"
-              />
-              <rect
-                x="12"
-                y="1"
-                width="3"
-                height="14"
-                rx="0.5"
-                fill="currentColor"
-              />
-            </svg>
-          </button>
-          <MoreMenu onBadges={onBadges} onSettings={onSettings} />
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect
+                  x="1"
+                  y="9"
+                  width="3"
+                  height="6"
+                  rx="0.5"
+                  fill="currentColor"
+                />
+                <rect
+                  x="6.5"
+                  y="4"
+                  width="3"
+                  height="11"
+                  rx="0.5"
+                  fill="currentColor"
+                />
+                <rect
+                  x="12"
+                  y="1"
+                  width="3"
+                  height="14"
+                  rx="0.5"
+                  fill="currentColor"
+                />
+              </svg>
+            </button>
+          )}
+          <MoreMenu
+            onBadges={onBadges}
+            onSettings={onSettings}
+            onTimedMode={onTimedMode}
+          />
         </div>
       </div>
-      <PillTabs
-        options={MODE_OPTIONS}
-        value={mode}
-        onChange={onModeChange}
-        className="mode-toggle"
-      />
+      {minimal ? (
+        <PillTabs
+          options={[{ key: 'timed' as GameMode, label: 'Aikakisa' }]}
+          value={'timed' as GameMode}
+          onChange={() => {}}
+          className="mode-toggle"
+        />
+      ) : (
+        <PillTabs
+          options={MODE_OPTIONS}
+          value={mode}
+          onChange={onModeChange}
+          className="mode-toggle"
+        />
+      )}
     </header>
   );
 }

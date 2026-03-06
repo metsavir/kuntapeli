@@ -10,6 +10,7 @@ import { MunicipalityShape } from './components/career/MunicipalityShape';
 import { CoatOfArms } from './components/career/CoatOfArms';
 import { DescriptionClue } from './components/game/DescriptionClue';
 import { LandingPage } from './components/LandingPage';
+import { TimedMode } from './components/timed/TimedMode';
 import { StatsModal } from './components/stats/StatsModal';
 import { BadgeModal } from './components/stats/BadgeModal';
 import { SettingsModal } from './components/SettingsModal';
@@ -61,6 +62,7 @@ function App() {
   const [showBadgesModal, setShowBadgesModal] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [debug, setDebug] = useState(false);
+  const [timedMode, setTimedMode] = useState(false);
   const mapTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const [careerView, setCareerView] = useState<'game' | 'map' | 'collection'>(
     'game',
@@ -160,72 +162,86 @@ function App() {
       className={`app${clueType === 'coatOfArmsHard' || clueType === 'coatOfArmsImpossible' ? ' app--hard' : ''}`}
     >
       <Header
+        minimal={timedMode}
         mode={mode}
         onModeChange={(m) => {
           setMode(m);
           scrollToMode(m);
         }}
         onBack={() => {
-          setClueType(null);
-          setMode('daily');
+          if (timedMode) {
+            setTimedMode(false);
+          } else {
+            setClueType(null);
+            setMode('daily');
+          }
         }}
         onStats={() => setShowStatsModal(true)}
         onBadges={() => setShowBadgesModal(true)}
         onSettings={() => setShowSettingsModal(true)}
+        onTimedMode={
+          clueType !== 'shape' ? () => setTimedMode(true) : undefined
+        }
         onDebugToggle={
           import.meta.env.DEV ? () => setDebug((d) => !d) : undefined
         }
       />
-      {debug && (
-        <div
-          style={{
-            background: '#ff000030',
-            color: '#ff8888',
-            textAlign: 'center',
-            padding: '0.25rem',
-            fontSize: '0.75rem',
-            fontFamily: 'monospace',
-          }}
-        >
-          DEBUG: {games[mode].answer.name} ({games[mode].answer.region})
-        </div>
+      {timedMode ? (
+        <TimedMode />
+      ) : (
+        <>
+          {debug && (
+            <div
+              style={{
+                background: '#ff000030',
+                color: '#ff8888',
+                textAlign: 'center',
+                padding: '0.25rem',
+                fontSize: '0.75rem',
+                fontFamily: 'monospace',
+              }}
+            >
+              DEBUG: {games[mode].answer.name} ({games[mode].answer.region})
+            </div>
+          )}
+          <div className="mode-scroller" ref={initRef}>
+            {/* Daily panel */}
+            <main className="app-body">
+              <GamePanel
+                game={daily}
+                clue={renderClue(daily)}
+                mode="daily"
+                clueType={clueType}
+                onNewGame={daily.newGame}
+              />
+            </main>
+
+            {/* Casual panel */}
+            <main className="app-body">
+              <GamePanel
+                game={casual}
+                clue={renderClue(casual)}
+                mode="casual"
+                clueType={clueType}
+                onNewGame={casual.newGame}
+              />
+            </main>
+
+            {/* Career panel */}
+            <CareerPanel
+              mode={mode}
+              career={career}
+              careerGame={careerGame}
+              clueType={clueType}
+              careerComplete={careerComplete}
+              onNext={handleCareerNext}
+              clue={renderClue(careerGame)}
+              careerView={careerView}
+              onViewChange={setCareerView}
+            />
+          </div>
+        </>
       )}
-      <div className="mode-scroller" ref={initRef}>
-        {/* Daily panel */}
-        <main className="app-body">
-          <GamePanel
-            game={daily}
-            clue={renderClue(daily)}
-            mode="daily"
-            clueType={clueType}
-            onNewGame={daily.newGame}
-          />
-        </main>
-
-        {/* Casual panel */}
-        <main className="app-body">
-          <GamePanel
-            game={casual}
-            clue={renderClue(casual)}
-            mode="casual"
-            clueType={clueType}
-            onNewGame={casual.newGame}
-          />
-        </main>
-
-        {/* Career panel */}
-        <CareerPanel
-          mode={mode}
-          career={career}
-          careerGame={careerGame}
-          clueType={clueType}
-          careerComplete={careerComplete}
-          onNext={handleCareerNext}
-          clue={renderClue(careerGame)}
-          careerView={careerView}
-          onViewChange={setCareerView}
-        />
-      </div>
       {showStatsModal && (
         <StatsModal
           stats={stats}

@@ -126,6 +126,7 @@ export function GuessInput({
             onChange={handleChange}
             onKeyDown={handleKeyDown}
             placeholder={`Arvaa kunta... (${attemptsLeft} jäljellä)`}
+            autoFocus
             autoComplete="off"
             autoCorrect="off"
             autoCapitalize="off"
