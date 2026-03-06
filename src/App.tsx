@@ -11,6 +11,7 @@ import { CoatOfArms } from './components/career/CoatOfArms';
 import { DescriptionClue } from './components/game/DescriptionClue';
 import { LandingPage } from './components/LandingPage';
 import { TimedMode } from './components/timed/TimedMode';
+import { TimedScoresModal } from './components/timed/TimedScoresModal';
 import { StatsModal } from './components/stats/StatsModal';
 import { BadgeModal } from './components/stats/BadgeModal';
 import { SettingsModal } from './components/SettingsModal';
@@ -18,6 +19,7 @@ import { UpdateBanner } from './components/UpdateBanner';
 import { BadgeToast } from './components/BadgeToast';
 import { useStats } from './hooks/useStats';
 import { useBadges } from './hooks/useBadges';
+import { useTimedScores } from './hooks/useTimedScores';
 import './App.css';
 
 const MODES: GameMode[] = ['daily', 'casual', 'career'];
@@ -58,11 +60,15 @@ function App() {
       checkBadges(stats, career.progress);
     }
   }, [stats, career.progress, checkBadges]);
+  const { getScores: getTimedScores } = useTimedScores();
   const [showStatsModal, setShowStatsModal] = useState(false);
+  const [showTimedScores, setShowTimedScores] = useState(false);
   const [showBadgesModal, setShowBadgesModal] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [debug, setDebug] = useState(false);
   const [timedMode, setTimedMode] = useState(false);
+  const [timedGameType, setTimedGameType] = useState<'speed' | 'quiz'>('speed');
+  const [timedPlaying, setTimedPlaying] = useState(false);
   const mapTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const [careerView, setCareerView] = useState<'game' | 'map' | 'collection'>(
     'game',
@@ -163,6 +169,9 @@ function App() {
     >
       <Header
         minimal={timedMode}
+        timedGameType={timedGameType}
+        onTimedGameTypeChange={setTimedGameType}
+        timedPlaying={timedPlaying}
         mode={mode}
         onModeChange={(m) => {
           setMode(m);
@@ -177,6 +186,7 @@ function App() {
           }
         }}
         onStats={() => setShowStatsModal(true)}
+        onTimedStats={() => setShowTimedScores(true)}
         onBadges={() => setShowBadgesModal(true)}
         onSettings={() => setShowSettingsModal(true)}
         onTimedMode={
@@ -186,7 +196,12 @@ function App() {
           import.meta.env.DEV ? () => setDebug((d) => !d) : undefined
         }
       />
-      {timedMode && <TimedMode />}
+      {timedMode && (
+        <TimedMode
+          gameType={timedGameType}
+          onPhaseChange={(p) => setTimedPlaying(p === 'playing')}
+        />
+      )}
       <div style={timedMode ? { display: 'none' } : undefined}>
         {debug && (
           <div
@@ -246,6 +261,12 @@ function App() {
           clueType={clueType}
           initialTab={mode}
           onClose={() => setShowStatsModal(false)}
+        />
+      )}
+      {showTimedScores && (
+        <TimedScoresModal
+          getScores={getTimedScores}
+          onClose={() => setShowTimedScores(false)}
         />
       )}
       {showBadgesModal && (

@@ -2,10 +2,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 100dvh;
   padding: 2rem 1rem;
+  padding-bottom: 4rem;
   gap: 1.5rem;
   animation: fade-in 150ms ease;
+  overflow-y: auto;
+  flex: 1;
 }
 
 .timed-title {
@@ -88,6 +90,32 @@
   color: var(--color-text);
 }
 
+/* Scores modal */
+.timed-scores-modal {
+  max-width: 22rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.timed-scores-modal .pill-tabs-btn {
+  flex: 1;
+}
+
+.timed-scores-modal-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.timed-scores-empty {
+  margin: 0.5rem 0;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
 /* Playing phase */
 .timed-playing {
   padding-top: 0;
@@ -133,6 +161,7 @@
   text-align: center;
 }
 
+
 .timed-timer-bar {
   flex: 1;
   height: 6px;
@@ -162,25 +191,10 @@
   text-align: center;
 }
 
-/* Clue area */
-.timed-clue {
-  position: relative;
-  width: 100%;
-  max-width: 500px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: min(200px, 30vh);
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-/* Feedback flash — below the coat of arms */
 .timed-feedback {
   text-align: center;
   padding: 0.5rem 1rem;
   border-radius: 8px;
-  margin-top: 0.5rem;
   width: 100%;
   animation: fade-in 150ms ease;
 }
@@ -288,39 +302,117 @@
   max-width: 400px;
 }
 
-.timed-results-title {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: var(--color-text);
-}
-
-.timed-results-stats {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+/* Shared card style */
+.timed-result-card {
   width: 100%;
-}
-
-.timed-stat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0.75rem;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: 0.75rem;
+  padding: 1rem;
 }
 
-.timed-stat-value {
-  font-size: 1.5rem;
+/* Hero card */
+.timed-hero-card {
+  padding: 1.5rem 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.timed-hero-card--best {
+  border-color: var(--color-primary);
+}
+
+.timed-hero-score {
+  font-size: 2.5rem;
   font-weight: 800;
   color: var(--color-text);
+  line-height: 1;
 }
 
-.timed-stat-label {
+.timed-hero-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.timed-hero-details {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin-top: 0.5rem;
+}
+
+.timed-best-badge {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.2rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--color-primary);
+  border-radius: 1rem;
+}
+
+/* High scores */
+.timed-highscores {
+  width: 100%;
+}
+
+.timed-highscore-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--color-border);
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.timed-highscore-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--color-surface);
+}
+
+.timed-highscore-row--current {
+  background: rgba(74, 108, 247, 0.1);
+}
+
+.timed-highscore-row--separator {
+  justify-content: center;
+  padding: 0.125rem 0.75rem;
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+}
+
+.timed-highscore-rank {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  width: 1.25rem;
+}
+
+.timed-highscore-score {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--color-correct);
+  width: 2rem;
+  text-align: center;
+}
+
+.timed-highscore-detail {
+  flex: 1;
   font-size: 0.75rem;
   color: var(--color-text-muted);
+}
+
+.timed-highscore-date {
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
 }
 
 /* Answer list */
@@ -341,11 +433,9 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  max-height: 280px;
-  overflow-y: auto;
-  border-radius: 0.75rem;
-  border: 1px solid var(--color-border);
   background: var(--color-border);
+  border-radius: 0.5rem;
+  overflow: hidden;
 }
 
 .timed-answer {

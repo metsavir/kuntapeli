@@ -7,6 +7,7 @@ interface PillTabsProps<K extends string> {
   onChange: (key: K) => void;
   className?: string;
   stopPropagation?: boolean;
+  disabled?: boolean;
 }
 
 export function PillTabs<K extends string>({
@@ -15,6 +16,7 @@ export function PillTabs<K extends string>({
   onChange,
   className,
   stopPropagation,
+  disabled,
 }: PillTabsProps<K>) {
   const containerRef = useRef<HTMLDivElement>(null);
   const indicatorRef = useRef<HTMLDivElement>(null);
@@ -44,7 +46,7 @@ export function PillTabs<K extends string>({
 
   return (
     <div
-      className={`pill-tabs${className ? ` ${className}` : ''}`}
+      className={`pill-tabs${className ? ` ${className}` : ''}${disabled ? ' pill-tabs--disabled' : ''}`}
       ref={containerRef}
     >
       <div

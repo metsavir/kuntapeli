@@ -5,6 +5,7 @@ import { findMunicipality } from '../../utils/game';
 import { CoatOfArms } from '../career/CoatOfArms';
 import { GuessInput } from '../game/GuessInput';
 import { TimedResults } from './TimedResults';
+import { useTimedScores } from '../../hooks/useTimedScores';
 import './TimedMode.css';
 
 type GameType = 'speed' | 'quiz';
@@ -70,9 +71,26 @@ function QuizOptions({
   );
 }
 
-export function TimedMode() {
+interface TimedModeProps {
+  gameType: GameType;
+  onPhaseChange?: (phase: 'pick' | 'playing' | 'done') => void;
+}
+
+export function TimedMode({ gameType, onPhaseChange }: TimedModeProps) {
+  const { addScore, getScores } = useTimedScores();
   const [phase, setPhase] = useState<'pick' | 'playing' | 'done'>('pick');
-  const [gameType, setGameType] = useState<GameType>('speed');
+
+  useEffect(() => {
+    onPhaseChange?.(phase);
+  }, [phase, onPhaseChange]);
+
+  // Reset to pick when game type changes (e.g. from results screen)
+  useEffect(() => {
+    if (phase !== 'playing') {
+      setPhase('pick');
+    }
+  }, [gameType]);
+
   const [durationSec, setDurationSec] = useState(60);
   const [timeLeft, setTimeLeft] = useState(0);
   const [index, setIndex] = useState(0);
@@ -121,6 +139,23 @@ export function TimedMode() {
       }
     }, 100);
     return () => clearInterval(timerRef.current);
+  }, [phase]);
+
+  // Save score when game ends
+  useEffect(() => {
+    if (phase !== 'done' || results.length === 0) return;
+    const correct = results.filter((r) => r.correct);
+    const avgTimeMs =
+      correct.length > 0
+        ? correct.reduce((a, b) => a + b.timeMs, 0) / correct.length
+        : 0;
+    addScore(gameType, durationSec, {
+      correct: correct.length,
+      total: results.length,
+      accuracy: Math.round((correct.length / results.length) * 100),
+      avgTimeMs,
+      date: new Date().toISOString().slice(0, 10),
+    });
   }, [phase]);
 
   const advanceToNext = useCallback(() => {
@@ -192,22 +227,10 @@ export function TimedMode() {
     return (
       <div className="timed-container">
         <p className="timed-subtitle">
-          Tunnista mahdollisimman monta vaakunaa aikarajan puitteissa.
+          {gameType === 'speed'
+            ? 'Kirjoita kunnan nimi mahdollisimman nopeasti. Jokainen oikea vastaus tuo pisteen.'
+            : 'Valitse oikea kunta neljästä vaihtoehdosta. Nopeus ja tarkkuus ratkaisevat.'}
         </p>
-        <div className="timed-game-type">
-          <button
-            className={`timed-type-btn${gameType === 'speed' ? ' timed-type-btn--active' : ''}`}
-            onClick={() => setGameType('speed')}
-          >
-            Nopea
-          </button>
-          <button
-            className={`timed-type-btn${gameType === 'quiz' ? ' timed-type-btn--active' : ''}`}
-            onClick={() => setGameType('quiz')}
-          >
-            Tietovisa
-          </button>
-        </div>
         <div className="timed-duration-pick">
           {DURATIONS.map((sec) => (
             <button
@@ -229,6 +252,7 @@ export function TimedMode() {
         <TimedResults
           results={results}
           durationSec={durationSec}
+          highScores={getScores(gameType, durationSec)}
           onPlayAgain={() => setPhase('pick')}
         />
       </div>
@@ -267,14 +291,14 @@ export function TimedMode() {
         </div>
       </div>
 
-      <div className="timed-clue">
+      <div className="clue-wrapper">
         <CoatOfArms name={current.name} />
-        {feedback && gameType === 'speed' && (
-          <div className={`timed-feedback timed-feedback--${feedback.type}`}>
-            <p className="timed-feedback-text">{feedback.answer}</p>
-          </div>
-        )}
       </div>
+      {feedback && gameType === 'speed' && (
+        <div className={`timed-feedback timed-feedback--${feedback.type}`}>
+          <p className="timed-feedback-text">{feedback.answer}</p>
+        </div>
+      )}
 
       {gameType === 'speed' ? (
         <GuessInput

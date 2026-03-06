@@ -45,3 +45,8 @@
 .pill-tabs-btn--active {
   color: var(--color-text);
 }
+
+.pill-tabs--disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}

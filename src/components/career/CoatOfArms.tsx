@@ -1,17 +1,25 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import './CoatOfArms.css';
 
 interface CoatOfArmsProps {
   name: string;
 }
 
-// key={name} on the container forces a full remount when name changes,
-// so state always starts fresh (false, false) for each municipality.
-function CoatOfArmsInner({ name }: CoatOfArmsProps) {
+export function CoatOfArms({ name }: CoatOfArmsProps) {
   const [error, setError] = useState(false);
   const [loaded, setLoaded] = useState(false);
+  const prevName = useRef(name);
 
-  // Handle cached images that are already complete on mount
+  // Reset state when name changes
+  useEffect(() => {
+    if (name !== prevName.current) {
+      prevName.current = name;
+      setError(false);
+      setLoaded(false);
+    }
+  }, [name]);
+
+  // Handle cached images that are already complete
   const imgRef = useCallback((img: HTMLImageElement | null) => {
     if (img?.complete && img.naturalWidth > 0) {
       setLoaded(true);
@@ -40,8 +48,4 @@ function CoatOfArmsInner({ name }: CoatOfArmsProps) {
       />
     </div>
   );
-}
-
-export function CoatOfArms({ name }: CoatOfArmsProps) {
-  return <CoatOfArmsInner key={name} name={name} />;
 }

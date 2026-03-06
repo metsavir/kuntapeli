@@ -9,6 +9,13 @@ const MODE_OPTIONS: { key: GameMode; label: string }[] = [
   { key: 'career', label: 'Ura' },
 ];
 
+type TimedGameType = 'speed' | 'quiz';
+
+const TIMED_GAME_TYPE_OPTIONS: { key: TimedGameType; label: string }[] = [
+  { key: 'speed', label: 'Nopea' },
+  { key: 'quiz', label: 'Tietovisa' },
+];
+
 interface HeaderProps {
   mode: GameMode;
   onModeChange: (mode: GameMode) => void;
@@ -17,8 +24,12 @@ interface HeaderProps {
   onBadges: () => void;
   onSettings: () => void;
   onTimedMode?: () => void;
+  onTimedStats?: () => void;
   onDebugToggle?: () => void;
   minimal?: boolean;
+  timedGameType?: TimedGameType;
+  onTimedGameTypeChange?: (type: TimedGameType) => void;
+  timedPlaying?: boolean;
 }
 
 function MoreMenu({
@@ -198,8 +209,12 @@ export function Header({
   onBadges,
   onSettings,
   onTimedMode,
+  onTimedStats,
   onDebugToggle,
   minimal,
+  timedGameType,
+  onTimedGameTypeChange,
+  timedPlaying,
 }: HeaderProps) {
   const tapRef = useRef<{
     count: number;
@@ -229,10 +244,10 @@ export function Header({
           Kuntapeli
         </h1>
         <div className="header-actions">
-          {!minimal && (
+          {(!minimal || onTimedStats) && (
             <button
               className="header-icon-btn"
-              onClick={onStats}
+              onClick={minimal ? onTimedStats : onStats}
               aria-label="Tilastot"
             >
               <svg
@@ -278,10 +293,11 @@ export function Header({
       </div>
       {minimal ? (
         <PillTabs
-          options={[{ key: 'timed' as GameMode, label: 'Aikakisa' }]}
-          value={'timed' as GameMode}
-          onChange={() => {}}
+          options={TIMED_GAME_TYPE_OPTIONS}
+          value={timedGameType ?? 'speed'}
+          onChange={(t) => onTimedGameTypeChange?.(t)}
           className="mode-toggle"
+          disabled={timedPlaying}
         />
       ) : (
         <PillTabs

@@ -1,3 +1,4 @@
+import type { TimedScore } from '../../hooks/useTimedScores';
 import './TimedMode.css';
 
 interface TimedResult {
@@ -10,10 +11,15 @@ interface TimedResult {
 interface TimedResultsProps {
   results: TimedResult[];
   durationSec: number;
+  highScores: TimedScore[];
   onPlayAgain: () => void;
 }
 
-export function TimedResults({ results, onPlayAgain }: TimedResultsProps) {
+export function TimedResults({
+  results,
+  highScores,
+  onPlayAgain,
+}: TimedResultsProps) {
   const correct = results.filter((r) => r.correct).length;
   const total = results.length;
   const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
@@ -22,42 +28,95 @@ export function TimedResults({ results, onPlayAgain }: TimedResultsProps) {
     correctTimes.length > 0
       ? correctTimes.reduce((a, b) => a + b, 0) / correctTimes.length
       : 0;
-  const fastest = correctTimes.length > 0 ? Math.min(...correctTimes) : 0;
   const maxTime =
     results.length > 0 ? Math.max(...results.map((r) => r.timeMs)) : 1;
 
+  const isBest =
+    highScores.length <= 1 || correct > (highScores[1]?.correct ?? 0);
+
   return (
     <div className="timed-results">
-      <h2 className="timed-results-title">Aika loppui!</h2>
-      <div className="timed-results-stats">
-        <div className="timed-stat">
-          <span className="timed-stat-value">{correct}</span>
-          <span className="timed-stat-label">/ {total} oikein</span>
-        </div>
-        <div className="timed-stat">
-          <span className="timed-stat-value">{accuracy}%</span>
-          <span className="timed-stat-label">tarkkuus</span>
-        </div>
-        {correctTimes.length > 0 && (
-          <div className="timed-stat">
-            <span className="timed-stat-value">
-              {(avgTime / 1000).toFixed(1)}s
-            </span>
-            <span className="timed-stat-label">keskiarvo</span>
-          </div>
-        )}
-        {correctTimes.length > 0 && (
-          <div className="timed-stat">
-            <span className="timed-stat-value">
-              {(fastest / 1000).toFixed(1)}s
-            </span>
-            <span className="timed-stat-label">nopein</span>
-          </div>
+      {/* Hero card */}
+      <div
+        className={`timed-result-card timed-hero-card${isBest && correct > 0 ? ' timed-hero-card--best' : ''}`}
+      >
+        <span className="timed-hero-score">{correct}</span>
+        <span className="timed-hero-label">
+          / {total} oikein
+        </span>
+        <span className="timed-hero-details">
+          {accuracy}%{correctTimes.length > 0 && ` · ${(avgTime / 1000).toFixed(1)}s ka.`}
+        </span>
+        {isBest && correct > 0 && (
+          <span className="timed-best-badge">Uusi ennätys!</span>
         )}
       </div>
 
+      {/* CTA */}
+      <div className="timed-results-actions">
+        <button className="timed-btn timed-btn--primary" onClick={onPlayAgain}>
+          Uusi peli
+        </button>
+      </div>
+
+      {/* High scores card */}
+      {highScores.length > 0 &&
+        (() => {
+          const currentIdx = highScores.findIndex(
+            (s) => s.correct === correct && s.accuracy === accuracy,
+          );
+          const top3 = highScores.slice(0, 3);
+          const showCurrent = currentIdx >= 3;
+          const showSeparator = currentIdx > 3;
+          return (
+            <div className="timed-result-card timed-highscores">
+              <h3 className="timed-answer-list-title">Parhaat tulokset</h3>
+              <div className="timed-highscore-list">
+                {top3.map((s, i) => (
+                  <div
+                    key={i}
+                    className={`timed-highscore-row${i === currentIdx ? ' timed-highscore-row--current' : ''}`}
+                  >
+                    <span className="timed-highscore-rank">{i + 1}.</span>
+                    <span className="timed-highscore-score">{s.correct}</span>
+                    <span className="timed-highscore-detail">
+                      {s.accuracy}% · {(s.avgTimeMs / 1000).toFixed(1)}s
+                    </span>
+                    <span className="timed-highscore-date">{s.date}</span>
+                  </div>
+                ))}
+                {showCurrent && (
+                  <>
+                    {showSeparator && (
+                      <div className="timed-highscore-row timed-highscore-row--separator">
+                        <span className="timed-highscore-rank">···</span>
+                      </div>
+                    )}
+                    <div className="timed-highscore-row timed-highscore-row--current">
+                      <span className="timed-highscore-rank">
+                        {currentIdx + 1}.
+                      </span>
+                      <span className="timed-highscore-score">
+                        {highScores[currentIdx].correct}
+                      </span>
+                      <span className="timed-highscore-detail">
+                        {highScores[currentIdx].accuracy}% ·{' '}
+                        {(highScores[currentIdx].avgTimeMs / 1000).toFixed(1)}s
+                      </span>
+                      <span className="timed-highscore-date">
+                        {highScores[currentIdx].date}
+                      </span>
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          );
+        })()}
+
+      {/* Answers card */}
       {results.length > 0 && (
-        <div className="timed-answer-list">
+        <div className="timed-result-card timed-answer-list">
           <h3 className="timed-answer-list-title">Vastaukset</h3>
           <div className="timed-answers">
             {results.map((r, i) => (
@@ -88,12 +147,6 @@ export function TimedResults({ results, onPlayAgain }: TimedResultsProps) {
           </div>
         </div>
       )}
-
-      <div className="timed-results-actions">
-        <button className="timed-btn timed-btn--primary" onClick={onPlayAgain}>
-          Uusi peli
-        </button>
-      </div>
     </div>
   );
 }
