@@ -77,6 +77,7 @@ export function CareerPanel({
 
   return (
     <main className="app-body">
+      {showConfetti && <Confetti />}
       <CareerStats
         completed={career.completedCount}
         total={career.totalCount}
@@ -94,7 +95,6 @@ export function CareerPanel({
         <div className="career-flip-face career-flip-front">
           {careerComplete && careerGame.status === 'playing' ? (
             <div className="career-complete">
-              {showConfetti && <Confetti />}
               <p className="career-complete-title">
                 Kaikki {career.totalCount} kuntaa suoritettu!
               </p>

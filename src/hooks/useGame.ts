@@ -62,8 +62,6 @@ interface UseGameOptions {
 export function useGame(mode: GameMode, options?: UseGameOptions) {
   const dateStr = getTodayString();
   const clueType = options?.clueType ?? 'shape';
-  const prevMode = useRef(mode);
-  const prevClueType = useRef(clueType);
   const prevAnswer = useRef(options?.initialAnswer);
   const [ready, setReady] = useState(mode !== 'daily');
 
@@ -77,6 +75,22 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
     }
     return createFreshState(dateStr, getAnswer());
   });
+  const [hints, setHints] = useState<string[]>([]);
+
+  // Synchronous state reset when clueType changes (avoids stale answers for one render)
+  const [prevClueType, setPrevClueType] = useState(clueType);
+  if (clueType !== prevClueType) {
+    setPrevClueType(clueType);
+    if (mode === 'daily') {
+      setState(createDailyState(dateStr, clueType));
+      setReady(false);
+    } else if (mode === 'career') {
+      setState(createFreshState(dateStr, getAnswer()));
+    } else {
+      setState(createFreshState(dateStr, getRandomAnswer()));
+    }
+    setHints([]);
+  }
 
   // Async load daily state from storage on mount and when clueType changes
   useEffect(() => {
@@ -87,32 +101,6 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
       if (loaded) setState(loaded);
       setReady(true);
     });
-  }, [mode, clueType, dateStr]);
-
-  // Handle mode or clue type switches
-  useEffect(() => {
-    const modeChanged = prevMode.current !== mode;
-    const clueTypeChanged = prevClueType.current !== clueType;
-    prevMode.current = mode;
-    prevClueType.current = clueType;
-
-    if (!modeChanged && !clueTypeChanged) return;
-
-    if (mode === 'daily') {
-      // Start with fresh daily state; async load will update if saved state exists
-      setReady(false);
-      setState(createDailyState(dateStr, clueType));
-      getItem(dailyStorageKey(clueType)).then((raw) => {
-        const loaded = parseDailyState(raw, dateStr);
-        if (loaded) setState(loaded);
-        setReady(true);
-      });
-    } else if (mode === 'career') {
-      setState(createFreshState(dateStr, getAnswer()));
-    } else {
-      setState(createFreshState(dateStr, getRandomAnswer()));
-    }
-    setHints([]);
   }, [mode, clueType, dateStr]);
 
   // Handle career answer changes (when moving to next municipality)
@@ -177,8 +165,6 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
     },
     [state],
   );
-
-  const [hints, setHints] = useState<string[]>([]);
 
   const showHint = useCallback(() => {
     if (state.status !== 'playing') return;
