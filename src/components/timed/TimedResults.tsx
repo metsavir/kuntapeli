@@ -1,5 +1,50 @@
+import { useMemo } from 'react';
 import type { TimedScore } from '../../hooks/useTimedScores';
 import './TimedMode.css';
+
+const CONFETTI_COLORS = [
+  '#4a6cf7',
+  '#538d4e',
+  '#e74c3c',
+  '#f39c12',
+  '#9b59b6',
+  '#1abc9c',
+];
+
+function Confetti() {
+  const pieces = useMemo(
+    () =>
+      Array.from({ length: 40 }, (_, i) => ({
+        id: i,
+        left: `${Math.random() * 100}%`,
+        color:
+          CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
+        delay: `${Math.random() * 0.8}s`,
+        duration: `${1.5 + Math.random() * 1.5}s`,
+        size: 6 + Math.random() * 6,
+      })),
+    [],
+  );
+
+  return (
+    <div className="timed-confetti">
+      {pieces.map((p) => (
+        <div
+          key={p.id}
+          className="timed-confetti-piece"
+          style={{
+            left: p.left,
+            backgroundColor: p.color,
+            width: p.size,
+            height: p.size,
+            animationDelay: p.delay,
+            animationDuration: p.duration,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
 
 interface TimedResult {
   name: string;
@@ -24,28 +69,27 @@ export function TimedResults({
   const total = results.length;
   const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
   const correctTimes = results.filter((r) => r.correct).map((r) => r.timeMs);
-  const avgTime =
-    correctTimes.length > 0
-      ? correctTimes.reduce((a, b) => a + b, 0) / correctTimes.length
-      : 0;
   const maxTime =
     results.length > 0 ? Math.max(...results.map((r) => r.timeMs)) : 1;
 
   const isBest =
     highScores.length <= 1 || correct > (highScores[1]?.correct ?? 0);
+  const tier = accuracy >= 80 ? 'great' : accuracy >= 50 ? 'good' : 'poor';
 
   return (
     <div className="timed-results">
-      {/* Hero card */}
+      {isBest && correct > 0 && <Confetti />}
+      {/* Hero */}
       <div
-        className={`timed-result-card timed-hero-card${isBest && correct > 0 ? ' timed-hero-card--best' : ''}`}
+        className={`timed-result-card timed-hero timed-hero--${isBest && correct > 0 ? 'best' : tier}`}
       >
-        <span className="timed-hero-score">{correct}</span>
-        <span className="timed-hero-label">
-          / {total} oikein
+        <span className="timed-hero-score">
+          {correct} <span className="timed-hero-label">oikein</span>
         </span>
-        <span className="timed-hero-details">
-          {accuracy}%{correctTimes.length > 0 && ` · ${(avgTime / 1000).toFixed(1)}s ka.`}
+        <span className="timed-hero-sub">
+          {accuracy}%
+          {correctTimes.length > 0 &&
+            ` · ${(correctTimes.reduce((a, b) => a + b, 0) / correctTimes.length / 1000).toFixed(1)}s ka. · ${(Math.min(...correctTimes) / 1000).toFixed(1)}s nopein`}
         </span>
         {isBest && correct > 0 && (
           <span className="timed-best-badge">Uusi ennätys!</span>

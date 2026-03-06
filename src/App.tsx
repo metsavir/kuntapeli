@@ -60,7 +60,8 @@ function App() {
       checkBadges(stats, career.progress);
     }
   }, [stats, career.progress, checkBadges]);
-  const { getScores: getTimedScores } = useTimedScores();
+  const { addScore: addTimedScore, getScores: getTimedScores } =
+    useTimedScores();
   const [showStatsModal, setShowStatsModal] = useState(false);
   const [showTimedScores, setShowTimedScores] = useState(false);
   const [showBadgesModal, setShowBadgesModal] = useState(false);
@@ -200,6 +201,8 @@ function App() {
         <TimedMode
           gameType={timedGameType}
           onPhaseChange={(p) => setTimedPlaying(p === 'playing')}
+          addScore={addTimedScore}
+          getScores={getTimedScores}
         />
       )}
       <div style={timedMode ? { display: 'none' } : undefined}>

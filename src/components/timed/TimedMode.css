@@ -3,10 +3,10 @@
   flex-direction: column;
   align-items: center;
   padding: 2rem 1rem;
-  padding-bottom: 4rem;
   gap: 1.5rem;
   animation: fade-in 150ms ease;
   overflow-y: auto;
+  scrollbar-width: none;
   flex: 1;
 }
 
@@ -161,7 +161,6 @@
   text-align: center;
 }
 
-
 .timed-timer-bar {
   flex: 1;
   height: 6px;
@@ -311,41 +310,55 @@
   padding: 1rem;
 }
 
-/* Hero card */
-.timed-hero-card {
-  padding: 1.5rem 1rem;
-  text-align: center;
+/* Hero */
+.timed-hero {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.25rem;
+  padding: 1.25rem 1rem;
 }
 
-.timed-hero-card--best {
-  border-color: var(--color-primary);
+.timed-hero--great {
+  background: rgba(83, 141, 78, 0.08);
+  border-color: rgba(83, 141, 78, 0.25);
+}
+
+.timed-hero--good {
+  background: rgba(234, 179, 8, 0.08);
+  border-color: rgba(234, 179, 8, 0.25);
+}
+
+.timed-hero--poor {
+  background: rgba(239, 68, 68, 0.06);
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+.timed-hero--best {
+  background: rgba(74, 108, 247, 0.1);
+  border-color: rgba(74, 108, 247, 0.3);
 }
 
 .timed-hero-score {
   font-size: 2.5rem;
   font-weight: 800;
-  color: var(--color-text);
   line-height: 1;
+  color: var(--color-text);
 }
 
 .timed-hero-label {
-  font-size: 0.875rem;
+  font-size: 1.25rem;
   font-weight: 600;
   color: var(--color-text-muted);
 }
 
-.timed-hero-details {
-  font-size: 0.8rem;
+.timed-hero-sub {
+  font-size: 0.875rem;
   color: var(--color-text-muted);
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
 }
 
 .timed-best-badge {
-  display: inline-block;
   margin-top: 0.5rem;
   padding: 0.2rem 0.75rem;
   font-size: 0.75rem;
@@ -353,6 +366,38 @@
   color: #fff;
   background: var(--color-primary);
   border-radius: 1rem;
+}
+
+/* Confetti */
+.timed-confetti {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.timed-confetti-piece {
+  position: absolute;
+  top: -10px;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  animation: confetti-fall linear forwards;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
 }
 
 /* High scores */
@@ -432,30 +477,18 @@
 .timed-answers {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  background: var(--color-border);
-  border-radius: 0.5rem;
-  overflow: hidden;
 }
 
 .timed-answer {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  background: var(--color-surface);
-}
-
-.timed-answer:first-child {
-  border-radius: 0.75rem 0.75rem 0 0;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .timed-answer:last-child {
-  border-radius: 0 0 0.75rem 0.75rem;
-}
-
-.timed-answer:only-child {
-  border-radius: 0.75rem;
+  border-bottom: none;
 }
 
 .timed-answer-icon {

@@ -5,7 +5,7 @@ import { findMunicipality } from '../../utils/game';
 import { CoatOfArms } from '../career/CoatOfArms';
 import { GuessInput } from '../game/GuessInput';
 import { TimedResults } from './TimedResults';
-import { useTimedScores } from '../../hooks/useTimedScores';
+import type { TimedScore } from '../../hooks/useTimedScores';
 import './TimedMode.css';
 
 type GameType = 'speed' | 'quiz';
@@ -74,10 +74,20 @@ function QuizOptions({
 interface TimedModeProps {
   gameType: GameType;
   onPhaseChange?: (phase: 'pick' | 'playing' | 'done') => void;
+  addScore: (
+    gameType: 'speed' | 'quiz',
+    durationSec: number,
+    score: TimedScore,
+  ) => void;
+  getScores: (gameType: 'speed' | 'quiz', durationSec: number) => TimedScore[];
 }
 
-export function TimedMode({ gameType, onPhaseChange }: TimedModeProps) {
-  const { addScore, getScores } = useTimedScores();
+export function TimedMode({
+  gameType,
+  onPhaseChange,
+  addScore,
+  getScores,
+}: TimedModeProps) {
   const [phase, setPhase] = useState<'pick' | 'playing' | 'done'>('pick');
 
   useEffect(() => {
@@ -116,6 +126,7 @@ export function TimedMode({ gameType, onPhaseChange }: TimedModeProps) {
     setIndex(0);
     setResults([]);
     setFeedback(null);
+    scoreSaved.current = false;
     queue.current = shuffleArray(municipalities);
     roundStart.current = Date.now();
     endTimeRef.current = Date.now() + seconds * 1000;
@@ -142,8 +153,10 @@ export function TimedMode({ gameType, onPhaseChange }: TimedModeProps) {
   }, [phase]);
 
   // Save score when game ends
+  const scoreSaved = useRef(false);
   useEffect(() => {
-    if (phase !== 'done' || results.length === 0) return;
+    if (phase !== 'done' || results.length === 0 || scoreSaved.current) return;
+    scoreSaved.current = true;
     const correct = results.filter((r) => r.correct);
     const avgTimeMs =
       correct.length > 0
