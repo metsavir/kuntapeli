@@ -87,6 +87,8 @@ function App() {
   }, [clueType]);
 
   // On game end for any mode: record stats, handle career logic
+  // Wait until daily game has loaded from async storage to avoid
+  // treating the async status transition as a real game end.
   const prevStatuses = useRef({
     daily: daily.status,
     casual: casual.status,
@@ -99,6 +101,9 @@ function App() {
       prevStatuses.current[m] = g.status;
 
       if (g.status === 'playing' || prev !== 'playing') continue;
+
+      // Skip async-loaded daily games (status changed due to IndexedDB load, not gameplay)
+      if (m === 'daily' && !daily.ready) continue;
 
       recordGame({
         mode: m,
@@ -119,7 +124,7 @@ function App() {
         }
       }
     }
-  }, [daily.status, casual.status, careerGame.status]);
+  }, [daily.status, daily.ready, casual.status, careerGame.status]);
 
   const handleCareerNext = useCallback(() => {
     clearTimeout(mapTimerRef.current);
@@ -187,7 +192,6 @@ function App() {
             game={daily}
             clue={renderClue(daily.answer.name)}
             mode="daily"
-            stats={stats}
             clueType={clueType}
             onNewGame={daily.newGame}
           />
@@ -199,7 +203,6 @@ function App() {
             game={casual}
             clue={renderClue(casual.answer.name)}
             mode="casual"
-            stats={stats}
             clueType={clueType}
             onNewGame={casual.newGame}
           />
@@ -210,7 +213,6 @@ function App() {
           mode={mode}
           career={career}
           careerGame={careerGame}
-          stats={stats}
           clueType={clueType}
           careerComplete={careerComplete}
           onNext={handleCareerNext}

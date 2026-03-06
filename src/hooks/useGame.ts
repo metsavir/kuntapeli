@@ -65,6 +65,7 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
   const prevMode = useRef(mode);
   const prevClueType = useRef(clueType);
   const prevAnswer = useRef(options?.initialAnswer);
+  const [ready, setReady] = useState(mode !== 'daily');
 
   function getAnswer(): Municipality {
     return options?.initialAnswer ?? getRandomAnswer();
@@ -80,9 +81,11 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
   // Async load daily state from storage on mount and when clueType changes
   useEffect(() => {
     if (mode !== 'daily') return;
+    setReady(false);
     getItem(dailyStorageKey(clueType)).then((raw) => {
       const loaded = parseDailyState(raw, dateStr);
       if (loaded) setState(loaded);
+      setReady(true);
     });
   }, [mode, clueType, dateStr]);
 
@@ -97,10 +100,12 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
 
     if (mode === 'daily') {
       // Start with fresh daily state; async load will update if saved state exists
+      setReady(false);
       setState(createDailyState(dateStr, clueType));
       getItem(dailyStorageKey(clueType)).then((raw) => {
         const loaded = parseDailyState(raw, dateStr);
         if (loaded) setState(loaded);
+        setReady(true);
       });
     } else if (mode === 'career') {
       setState(createFreshState(dateStr, getAnswer()));
@@ -203,6 +208,7 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
     answer: state.answer,
     attemptsLeft: maxGuesses - state.guesses.length,
     dateStr,
+    ready,
     submitGuess,
     showHint,
     hints,

@@ -3,7 +3,6 @@ import type {
   GuessResult,
   Municipality,
   GameMode,
-  PlayerStats,
   ClueType,
 } from '../../data/types';
 import { generateShareText, getGameNumber } from '../../utils/game';
@@ -16,9 +15,9 @@ interface GameOverProps {
   answer: Municipality;
   dateStr: string;
   mode: GameMode;
-  stats: PlayerStats;
   clueType: ClueType;
   hintsUsed: number;
+  failCount?: number;
   careerComplete?: boolean;
   onNewGame: () => void;
 }
@@ -29,9 +28,9 @@ export function GameOver({
   answer,
   dateStr,
   mode,
-  stats,
   clueType,
   hintsUsed,
+  failCount,
   careerComplete,
   onNewGame,
 }: GameOverProps) {
@@ -67,12 +66,8 @@ export function GameOver({
         </p>
       )}
       <PersonalComparison
-        municipality={answer.name}
         population={answer.population}
-        stats={stats}
-        mode={mode}
-        clueType={clueType}
-        showHistory={mode === 'career'}
+        failCount={mode === 'career' ? failCount : undefined}
       />
       <div className="game-over-actions">
         {mode === 'daily' && (

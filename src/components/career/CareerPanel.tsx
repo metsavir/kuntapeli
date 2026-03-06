@@ -1,5 +1,5 @@
-import { useEffect, useRef, type ReactNode } from 'react';
-import type { GameMode, ClueType, PlayerStats } from '../../data/types';
+import { useMemo, useEffect, useRef, type ReactNode } from 'react';
+import type { GameMode, ClueType } from '../../data/types';
 import type { useGame } from '../../hooks/useGame';
 import type { useCareer } from '../../hooks/useCareer';
 import { GuessInput } from '../game/GuessInput';
@@ -13,7 +13,6 @@ interface CareerPanelProps {
   mode: GameMode;
   career: ReturnType<typeof useCareer>;
   careerGame: ReturnType<typeof useGame>;
-  stats: PlayerStats;
   clueType: ClueType;
   careerComplete: boolean;
   onNext: () => void;
@@ -26,7 +25,6 @@ export function CareerPanel({
   mode,
   career,
   careerGame,
-  stats,
   clueType,
   careerComplete,
   onNext,
@@ -34,6 +32,12 @@ export function CareerPanel({
   onViewChange,
   careerView,
 }: CareerPanelProps) {
+  const failCount = useMemo(
+    () =>
+      career.progress.failures.filter((f) => f.name === careerGame.answer.name)
+        .length,
+    [career.progress.failures, careerGame.answer.name],
+  );
   const flipRef = useRef<HTMLDivElement>(null);
 
   // Reset flip animation instantly when switching modes
@@ -99,9 +103,9 @@ export function CareerPanel({
               answer={careerGame.answer}
               dateStr={careerGame.dateStr}
               mode="career"
-              stats={stats}
               clueType={clueType}
               hintsUsed={careerGame.hints.length}
+              failCount={failCount}
               careerComplete={careerComplete}
               onNewGame={onNext}
             />
@@ -127,9 +131,9 @@ export function CareerPanel({
               answer={careerGame.answer}
               dateStr={careerGame.dateStr}
               mode="career"
-              stats={stats}
               clueType={clueType}
               hintsUsed={careerGame.hints.length}
+              failCount={failCount}
               careerComplete={careerComplete}
               onNewGame={onNext}
             />
