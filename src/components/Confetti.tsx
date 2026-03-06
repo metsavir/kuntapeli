@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import './Confetti.css';
 
 const COLORS = [
@@ -24,7 +25,7 @@ export function Confetti() {
     [],
   );
 
-  return (
+  return createPortal(
     <div className="confetti">
       {pieces.map((p) => (
         <div
@@ -40,6 +41,7 @@ export function Confetti() {
           }}
         />
       ))}
-    </div>
+    </div>,
+    document.body,
   );
 }
