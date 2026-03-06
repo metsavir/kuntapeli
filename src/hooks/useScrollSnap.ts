@@ -26,11 +26,11 @@ export function useScrollSnap<T extends string>(
       scrollerRef.current = el;
       if (!el) return;
 
-      // Start at first item (rAF to override browser scroll restoration)
+      // Disable browser scroll restoration and start at first item
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+      }
       el.scrollLeft = 0;
-      requestAnimationFrame(() => {
-        el.scrollLeft = 0;
-      });
 
       let scrollTimer: ReturnType<typeof setTimeout>;
       const onScroll = () => {
