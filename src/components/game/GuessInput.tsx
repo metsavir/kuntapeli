@@ -112,6 +112,15 @@ export function GuessInput({
     }
   }, [selectedIndex]);
 
+  // Focus when input appears, without scrolling (autoFocus would scroll off-screen panels into view)
+  const didFocus = useRef(false);
+  useEffect(() => {
+    if (!disabled && !didFocus.current) {
+      didFocus.current = true;
+      inputRef.current?.focus({ preventScroll: true });
+    }
+  }, [disabled]);
+
   if (disabled) return null;
 
   return (
@@ -126,7 +135,6 @@ export function GuessInput({
             onChange={handleChange}
             onKeyDown={handleKeyDown}
             placeholder={`Arvaa kunta... (${attemptsLeft} jäljellä)`}
-            autoFocus
             autoComplete="off"
             autoCorrect="off"
             autoCapitalize="off"
