@@ -13,10 +13,14 @@ Finnish municipality guessing game. Identify all 308 municipalities from visual 
 - **Rajat** (Shapes) — Identify municipalities from their border outlines
 - **Vaakunat** (Coats of arms) — Identify municipalities from their coat of arms
 - **Vaakunat Hard** — Hidden mode (long-press Vaakunat card): one guess, no hints
+- **Vaakunat Impossible** — Hidden mode (long-press Hard "Pelaan"): one guess, no hints, only heraldic text description
+- **Aikakisa** (Timed) — Speed round from header menu (⋯): identify coats of arms against a timer (1/3/5 min). Two sub-modes:
+  - **Nopea** — Type your guess (text input)
+  - **Tietovisa** — Pick from 4 multiple-choice options
 
 ## How It Works
 
-Players see a visual clue and type their guess. Each guess shows distance, direction, and proximity feedback with temperature-colored bars. Three progressive hints are available: region, population category, and nearest neighbors. Six attempts per round (except hard mode: one attempt).
+Players see a visual clue and type their guess. Each guess shows distance, direction, and proximity feedback with temperature-colored bars. Three progressive hints are available: region, population category, and nearest neighbors. Six attempts per round (except hard/impossible mode: one attempt).
 
 Career mode includes a **Finland map** view with region zoom and a **coat collection** with sorting by region, date, or number of tries.
 
@@ -33,7 +37,8 @@ npm run dev
 
 ```sh
 npm run fetch-geodata   # Fetch municipality boundaries → public/shapes/
-npm run fetch-coats     # Fetch coat of arms PNGs → public/coats/
+npm run fetch-coats          # Fetch coat of arms PNGs → public/coats/
+npm run fetch-descriptions   # Fetch heraldic descriptions from Wikipedia
 ```
 
 ### Build
@@ -54,3 +59,4 @@ React 19 + TypeScript 5.9 + Vite 7. No router or state library — React state w
 
 - Municipality boundaries: [Finnish Statistics Center WFS API](https://geo.stat.fi/)
 - Coats of arms: [Wikimedia Commons](https://commons.wikimedia.org/) via [Suomen kunnanvaakunat](https://fi.wikipedia.org/wiki/Suomen_kunnanvaakunat)
+- Heraldic descriptions: [Suomen kunnanvaakunat](https://fi.wikipedia.org/wiki/Suomen_kunnanvaakunat) (Wikipedia)
