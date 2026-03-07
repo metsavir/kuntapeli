@@ -88,15 +88,18 @@ export function TimedMode({
   addScore,
   getScores,
 }: TimedModeProps) {
-  const [phase, setPhase] = useState<'pick' | 'playing' | 'done'>('pick');
+  const [phase, setPhase] = useState<'pick' | 'countdown' | 'playing' | 'done'>(
+    'pick',
+  );
+  const [countdown, setCountdown] = useState(5);
 
   useEffect(() => {
-    onPhaseChange?.(phase);
+    onPhaseChange?.(phase === 'countdown' ? 'playing' : phase);
   }, [phase, onPhaseChange]);
 
   // Reset to pick when game type changes (e.g. from results screen)
   useEffect(() => {
-    if (phase !== 'playing') {
+    if (phase !== 'playing' && phase !== 'countdown') {
       setPhase('pick');
     }
   }, [gameType]);
@@ -128,10 +131,22 @@ export function TimedMode({
     setFeedback(null);
     scoreSaved.current = false;
     queue.current = shuffleArray(municipalities);
-    roundStart.current = Date.now();
-    endTimeRef.current = Date.now() + seconds * 1000;
-    setPhase('playing');
+    setCountdown(3);
+    setPhase('countdown');
   }, []);
+
+  // Countdown effect
+  useEffect(() => {
+    if (phase !== 'countdown') return;
+    if (countdown <= 0) {
+      roundStart.current = Date.now();
+      endTimeRef.current = Date.now() + durationSec * 1000;
+      setPhase('playing');
+      return;
+    }
+    const timer = setTimeout(() => setCountdown((c) => c - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [phase, countdown, durationSec]);
 
   // Timer interval
   useEffect(() => {
@@ -272,6 +287,7 @@ export function TimedMode({
     );
   }
 
+  const isCountdown = phase === 'countdown';
   const correct = results.filter((r) => r.correct).length;
   const pct = (timeLeft / durationSec) * 100;
   const minutes = Math.floor(timeLeft / 60);
@@ -279,6 +295,13 @@ export function TimedMode({
 
   return (
     <div className="timed-container timed-playing">
+      {isCountdown && (
+        <div className="timed-countdown-overlay">
+          <div className="timed-countdown" key={countdown}>
+            {countdown}
+          </div>
+        </div>
+      )}
       <div className="timed-hud">
         <button
           className="timed-quit"

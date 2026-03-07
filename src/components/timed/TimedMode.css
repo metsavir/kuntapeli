@@ -118,6 +118,7 @@
 
 /* Playing phase */
 .timed-playing {
+  position: relative;
   padding-top: 0;
   gap: 0.75rem;
   min-height: auto;
@@ -525,6 +526,55 @@
 .timed-results-actions {
   display: flex;
   gap: 0.75rem;
+}
+
+/* Countdown */
+.timed-countdown-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg);
+}
+
+.timed-countdown {
+  font-size: 6rem;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 0 20px rgba(245, 180, 50, 0.4);
+  animation:
+    countdown-pop 0.5s ease,
+    countdown-glow 1s ease;
+}
+
+@keyframes countdown-pop {
+  0% {
+    opacity: 0;
+    transform: scale(2);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(0.9);
+  }
+  70% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes countdown-glow {
+  0% {
+    text-shadow:
+      0 0 40px rgba(245, 180, 50, 0.8),
+      0 0 80px rgba(245, 180, 50, 0.4);
+  }
+  100% {
+    text-shadow: 0 0 20px rgba(245, 180, 50, 0.4);
+  }
 }
 
 @keyframes timer-pulse {
