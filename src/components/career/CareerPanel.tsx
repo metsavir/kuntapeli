@@ -40,10 +40,9 @@ export function CareerPanel({
   onViewChange,
   careerView,
 }: CareerPanelProps) {
-  const [showConfetti, setShowConfetti] = useState(false);
+  const [confettiKeys, setConfettiKeys] = useState<number[]>([]);
   const handleCelebrate = useCallback(() => {
-    setShowConfetti(false);
-    requestAnimationFrame(() => setShowConfetti(true));
+    setConfettiKeys((prev) => [...prev, Date.now()]);
   }, []);
 
   const failCount = useMemo(() => {
@@ -77,7 +76,9 @@ export function CareerPanel({
 
   return (
     <main className="app-body">
-      {showConfetti && <Confetti />}
+      {confettiKeys.map((k) => (
+        <Confetti key={k} />
+      ))}
       <CareerStats
         completed={career.completedCount}
         total={career.totalCount}
