@@ -280,6 +280,7 @@ export function TimedMode({
         <TimedResults
           results={results}
           durationSec={durationSec}
+          gameType={gameType}
           highScores={getScores(gameType, durationSec)}
           onPlayAgain={() => setPhase('pick')}
         />

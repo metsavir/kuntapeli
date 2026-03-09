@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { TimedScore } from '../../hooks/useTimedScores';
 import { Confetti } from '../Confetti';
 import './TimedMode.css';
@@ -12,12 +13,15 @@ interface TimedResult {
 interface TimedResultsProps {
   results: TimedResult[];
   durationSec: number;
+  gameType: 'speed' | 'quiz';
   highScores: TimedScore[];
   onPlayAgain: () => void;
 }
 
 export function TimedResults({
   results,
+  durationSec,
+  gameType,
   highScores,
   onPlayAgain,
 }: TimedResultsProps) {
@@ -28,9 +32,38 @@ export function TimedResults({
   const maxTime =
     results.length > 0 ? Math.max(...results.map((r) => r.timeMs)) : 1;
 
+  const avgTime =
+    correctTimes.length > 0
+      ? (
+          correctTimes.reduce((a, b) => a + b, 0) /
+          correctTimes.length /
+          1000
+        ).toFixed(1)
+      : null;
+
   const isBest =
     highScores.length <= 1 || correct > (highScores[1]?.correct ?? 0);
   const tier = accuracy >= 80 ? 'great' : accuracy >= 50 ? 'good' : 'poor';
+
+  const [copied, setCopied] = useState(false);
+  const handleShare = async () => {
+    const mins = Math.floor(durationSec / 60);
+    const mode = gameType === 'speed' ? 'Nopeus' : 'Tietovisa';
+    const date = new Date().toLocaleDateString('fi-FI', {
+      day: 'numeric',
+      month: 'numeric',
+      year: 'numeric',
+    });
+    const lines = [
+      'Kuntapeli Aikakisa',
+      `${correct} oikein · ${accuracy}%${avgTime ? ` · ${avgTime}s ka.` : ''}`,
+      `${mins} min · ${mode}`,
+      date,
+    ];
+    await navigator.clipboard.writeText(lines.join('\n'));
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <div className="timed-results">
@@ -44,8 +77,8 @@ export function TimedResults({
         </span>
         <span className="timed-hero-sub">
           {accuracy}%
-          {correctTimes.length > 0 &&
-            ` · ${(correctTimes.reduce((a, b) => a + b, 0) / correctTimes.length / 1000).toFixed(1)}s ka. · ${(Math.min(...correctTimes) / 1000).toFixed(1)}s nopein`}
+          {avgTime &&
+            ` · ${avgTime}s ka. · ${(Math.min(...correctTimes) / 1000).toFixed(1)}s nopein`}
         </span>
         {isBest && correct > 0 && (
           <span className="timed-best-badge">Uusi ennätys!</span>
@@ -54,6 +87,12 @@ export function TimedResults({
 
       {/* CTA */}
       <div className="timed-results-actions">
+        <button
+          className="timed-btn timed-btn--secondary"
+          onClick={handleShare}
+        >
+          {copied ? 'Kopioitu!' : 'Jaa tulos'}
+        </button>
         <button className="timed-btn timed-btn--primary" onClick={onPlayAgain}>
           Uusi peli
         </button>
