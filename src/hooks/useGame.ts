@@ -16,7 +16,7 @@ import {
   findMunicipality,
   MAX_GUESSES,
 } from '../utils/game';
-import { getItem, setItem } from '../utils/storage';
+import { getItemSync, setItem } from '../utils/storage';
 
 function dailyStorageKey(clueType: string): string {
   return `kuntapeli-state-${clueType}`;
@@ -63,18 +63,22 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
   const dateStr = getTodayString();
   const clueType = options?.clueType ?? 'shape';
   const prevAnswer = useRef(options?.initialAnswer);
-  const [ready, setReady] = useState(mode !== 'daily');
-
   function getAnswer(): Municipality {
     return options?.initialAnswer ?? getRandomAnswer();
   }
 
+  function initDailyState(date: string, ct: string): GameState {
+    const saved = parseDailyState(getItemSync(dailyStorageKey(ct)), date);
+    return saved ?? createDailyState(date, ct);
+  }
+
   const [state, setState] = useState<GameState>(() => {
     if (mode === 'daily') {
-      return createDailyState(dateStr, clueType);
+      return initDailyState(dateStr, clueType);
     }
     return createFreshState(dateStr, getAnswer());
   });
+  const ready = true;
   const [hints, setHints] = useState<string[]>([]);
 
   // Synchronous state reset when clueType changes (avoids stale answers for one render)
@@ -82,8 +86,7 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
   if (clueType !== prevClueType) {
     setPrevClueType(clueType);
     if (mode === 'daily') {
-      setState(createDailyState(dateStr, clueType));
-      setReady(false);
+      setState(initDailyState(dateStr, clueType));
     } else if (mode === 'career') {
       setState(createFreshState(dateStr, getAnswer()));
     } else {
@@ -91,17 +94,6 @@ export function useGame(mode: GameMode, options?: UseGameOptions) {
     }
     setHints([]);
   }
-
-  // Async load daily state from storage on mount and when clueType changes
-  useEffect(() => {
-    if (mode !== 'daily') return;
-    setReady(false);
-    getItem(dailyStorageKey(clueType)).then((raw) => {
-      const loaded = parseDailyState(raw, dateStr);
-      if (loaded) setState(loaded);
-      setReady(true);
-    });
-  }, [mode, clueType, dateStr]);
 
   // Handle career answer changes (when moving to next municipality)
   useEffect(() => {

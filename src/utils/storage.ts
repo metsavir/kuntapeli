@@ -5,6 +5,18 @@ import { get, set, keys, entries } from 'idb-keyval';
  * On read, migrates from localStorage to IndexedDB if IndexedDB is empty.
  */
 
+/**
+ * Synchronous read from localStorage (write-through keeps it up to date).
+ * Use for initial state in useState to avoid async flash.
+ */
+export function getItemSync(key: string): string | null {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
 export async function getItem(key: string): Promise<string | null> {
   try {
     const val = await get<string>(key);

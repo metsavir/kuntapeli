@@ -1,8 +1,8 @@
-import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import type { CareerProgress, ClueType, Municipality } from '../data/types';
 import { municipalities } from '../data/municipalities';
 import { getTodayString } from '../utils/game';
-import { getItem, setItem } from '../utils/storage';
+import { getItemSync, setItem } from '../utils/storage';
 
 function careerKey(clueType: ClueType): string {
   return `kuntapeli-career-${clueType}`;
@@ -21,26 +21,20 @@ function parseCareer(raw: string | null): CareerProgress {
 }
 
 export function useCareer(clueType: ClueType) {
-  const [progress, setProgress] = useState<CareerProgress>(EMPTY);
-  const loaded = useRef(false);
-  const saving = useRef(false);
+  const [progress, setProgress] = useState<CareerProgress>(() =>
+    parseCareer(getItemSync(careerKey(clueType))),
+  );
 
-  // Async load from storage
-  useEffect(() => {
-    loaded.current = false;
-    getItem(careerKey(clueType)).then((raw) => {
-      setProgress(parseCareer(raw));
-      loaded.current = true;
-    });
-  }, [clueType]);
+  // Sync reset when clueType changes
+  const [prevCt, setPrevCt] = useState(clueType);
+  if (clueType !== prevCt) {
+    setPrevCt(clueType);
+    setProgress(parseCareer(getItemSync(careerKey(clueType))));
+  }
 
-  // Persist on change (skip initial empty state before load)
+  // Persist on change
   useEffect(() => {
-    if (!loaded.current) return;
-    saving.current = true;
-    setItem(careerKey(clueType), JSON.stringify(progress)).then(() => {
-      saving.current = false;
-    });
+    setItem(careerKey(clueType), JSON.stringify(progress));
   }, [clueType, progress]);
 
   const completedSet = useMemo(
@@ -83,8 +77,7 @@ export function useCareer(clueType: ClueType) {
 
   const getRandomUnguessed =
     useCallback(async (): Promise<Municipality | null> => {
-      const raw = await getItem(careerKey(clueType));
-      const current = parseCareer(raw);
+      const current = parseCareer(getItemSync(careerKey(clueType)));
       const completed = new Set(current.completed);
       const remaining = municipalities.filter((m) => !completed.has(m.name));
       if (remaining.length === 0) return null;
