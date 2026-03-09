@@ -344,7 +344,7 @@ export function TimedMode({
           onHint={() => {}}
           hints={[]}
           maxHints={0}
-          disabled={!!feedback}
+          disabled={isCountdown || !!feedback}
           attemptsLeft={1}
         />
       ) : (
