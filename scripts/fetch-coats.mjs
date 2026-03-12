@@ -120,7 +120,7 @@ async function downloadImage(url, filepath) {
 const MANUAL_FILENAMES = {
   'Järvenpää': 'Jarvenpaa.vaakuna.svg',
   'Nurmijärvi': 'Nurmijarvi.vaakuna.svg',
-  'Kemiönsaari': 'Kemiö.vaakuna.svg',
+  'Kemiönsaari': 'Dragsfjärd.vaakuna.svg',
   'Koski Tl': 'Koski.Tl.vaakuna.svg',
   'Mänttä-Vilppula': 'Vilppula.vaakuna.svg',
   'Miehikkälä': 'Miehikkala.vaakuna.svg',
