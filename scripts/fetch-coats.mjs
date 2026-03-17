@@ -137,6 +137,7 @@ const MANUAL_FILENAMES = {
   'Kinnula': 'Kinnula_coat_of_arms.svg',
   'Jomala': 'Jomala.vapen.svg',
   'Vöyri': 'Vöyri-Maksamaa.vaakuna.svg',
+  'Kaarina': 'Piikkiö.vaakuna.svg',
 };
 
 async function main() {
