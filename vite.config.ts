@@ -38,11 +38,12 @@ export default defineConfig({
         ],
       },
       workbox: {
+        cleanupOutdatedCaches: true,
         globPatterns: ['**/*.{js,css,html,json,woff2}'],
         runtimeCaching: [
           {
             urlPattern: /\/coats\/.*\.png$/,
-            handler: 'CacheFirst',
+            handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'coat-images',
               expiration: {
