@@ -17,50 +17,49 @@ function getAppNames() {
   return names;
 }
 
-function toAscii(name) {
-  return name
-    .replace(/[äÄ]/g, (c) => (c === 'ä' ? 'a' : 'A'))
-    .replace(/[öÖ]/g, (c) => (c === 'ö' ? 'o' : 'O'))
-    .replace(/[åÅ]/g, (c) => (c === 'å' ? 'a' : 'A'));
-}
-
 function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
 }
 
-// Fetch SVG filenames from "Suomen kunnanvaakunat" Wikipedia article
-async function fetchVaakunaList() {
-  const url = 'https://fi.wikipedia.org/w/api.php?action=parse&page=Suomen_kunnanvaakunat&prop=wikitext&format=json';
+// Parse "Wikiprojekti:Vaakunat" — a simple table mapping municipality → SVG file.
+// Each row: [[Municipality]] | [[Image:file.svg|30px]]
+async function fetchVaakunaMap() {
+  const url =
+    'https://fi.wikipedia.org/w/api.php?action=parse&page=Wikiprojekti:Vaakunat&prop=wikitext&format=json';
   const res = await fetch(url, { headers: { 'User-Agent': UA } });
-  if (!res.ok) return new Set();
+  if (!res.ok) throw new Error(`Wikipedia API returned ${res.status}`);
   const data = await res.json();
   const text = data.parse?.wikitext?.['*'] || '';
-  const files = new Set();
-  for (const m of text.matchAll(/\[\[(?:Kuva|Image|File|Tiedosto):([^\]|]+\.svg)/gi)) {
-    files.add(m[1]);
-  }
-  return files;
-}
 
-// Match municipality name to a filename from the list
-function findFilename(name, svgFiles) {
-  const nameLower = name.toLowerCase();
-  // Exact patterns
-  for (const pattern of [
-    `${name}.vaakuna.svg`,
-    `${name} vaakuna.svg`,
-    `${name}n vaakuna.svg`,
-    `${name.replace(' ', '.')}.vaakuna.svg`,
-  ]) {
-    for (const f of svgFiles) {
-      if (f.toLowerCase() === pattern.toLowerCase()) return f;
+  const mapping = new Map();
+
+  for (const row of text.split('|-')) {
+    // Find SVG filename
+    const imgMatch = row.match(
+      /\[\[(?:Kuva|Image|File|Tiedosto):([^\]|]+\.svg)/i,
+    );
+    if (!imgMatch) continue;
+
+    // Find municipality name: first wiki link that isn't an image/file/user link
+    let name = null;
+    for (const m of row.matchAll(/\[\[([^\]|]+?)(?:\|([^\]]*?))?\]\]/g)) {
+      const target = m[1];
+      if (/^(Kuva|Image|File|Tiedosto):/i.test(target)) continue;
+      if (/^Käyttäjä:/i.test(target)) continue;
+      name = (m[2] || m[1])
+        .replace(/ \(kunta\)$/, '')
+        .replace(/ \(kaupunki\)$/, '');
+      break;
+    }
+    if (!name) continue;
+    if (name.includes('maakunta') || name.includes('Wikiprojekti')) continue;
+
+    if (!mapping.has(name)) {
+      mapping.set(name, imgMatch[1]);
     }
   }
-  // startsWith
-  for (const f of svgFiles) {
-    if (f.toLowerCase().startsWith(nameLower) && /vaakuna/i.test(f)) return f;
-  }
-  return null;
+
+  return mapping;
 }
 
 // Batch query Commons for thumbnail URLs (up to 50 files at once)
@@ -74,10 +73,12 @@ async function batchGetThumbUrls(filenames, width = 200) {
     for (let attempt = 0; attempt < 3; attempt++) {
       try {
         const res = await fetch(url, { headers: { 'User-Agent': UA } });
-        if (!res.ok) { await sleep(1000); continue; }
+        if (!res.ok) {
+          await sleep(1000);
+          continue;
+        }
         const data = await res.json();
         const pages = data.query?.pages || {};
-        // Build normalized title map to match back
         const normalized = new Map();
         for (const n of data.query?.normalized || []) {
           normalized.set(n.to, n.from);
@@ -86,8 +87,10 @@ async function batchGetThumbUrls(filenames, width = 200) {
           if (page.missing !== undefined) continue;
           const thumbUrl = page.imageinfo?.[0]?.thumburl;
           if (thumbUrl) {
-            // Strip "File:" prefix from title
-            const title = (normalized.get(page.title) || page.title).replace(/^File:/, '');
+            const title = (normalized.get(page.title) || page.title).replace(
+              /^File:/,
+              '',
+            );
             results.set(title, thumbUrl);
           }
         }
@@ -105,7 +108,10 @@ async function downloadImage(url, filepath) {
   for (let attempt = 0; attempt < 3; attempt++) {
     try {
       const res = await fetch(url, { headers: { 'User-Agent': UA } });
-      if (!res.ok) { await sleep(500); continue; }
+      if (!res.ok) {
+        await sleep(500);
+        continue;
+      }
       const buffer = Buffer.from(await res.arrayBuffer());
       writeFileSync(filepath, buffer);
       return true;
@@ -116,118 +122,75 @@ async function downloadImage(url, filepath) {
   return false;
 }
 
-// Manual overrides for municipalities with non-standard filenames
-const MANUAL_FILENAMES = {
-  'Järvenpää': 'Jarvenpaa.vaakuna.svg',
-  'Nurmijärvi': 'Nurmijarvi.vaakuna.svg',
-  'Kemiönsaari': 'Dragsfjärd.vaakuna.svg',
-  'Koski Tl': 'Koski.Tl.vaakuna.svg',
-  'Mänttä-Vilppula': 'Vilppula.vaakuna.svg',
-  'Miehikkälä': 'Miehikkala.vaakuna.svg',
-  'Evijärvi': 'Evijärvi.svg',
-  'Pedersören kunta': 'Pedersöre.vaakuna.svg',
-  'Merijärvi': 'Merijarvi.vaakuna.svg',
-  'Pudasjärvi': 'Pudasjarvi.vaakuna.svg',
-  'Ristijärvi': 'Ristijarvi.vaakuna.svg',
-  'Sodankylä': 'Sodankyla.vaakuna.svg',
-  'Tuusula': 'Tuusula.vaakuna.svg',
-  'Huittinen': 'Huittisten.vaakuna.svg',
-  'Sastamala': 'Karkku.vaakuna.svg',
-  'Suonenjoki': 'Suonenjoki coat of arms.svg',
-  'Kinnula': 'Kinnula_coat_of_arms.svg',
-  'Jomala': 'Jomala.vapen.svg',
-  'Vöyri': 'Vöyri-Maksamaa.vaakuna.svg',
-  'Kaarina': 'Piikkiö.vaakuna.svg',
-};
-
 async function main() {
   const appNames = getAppNames();
   console.log(`Found ${appNames.length} municipalities`);
 
-  console.log('Fetching vaakuna list from fi.wikipedia.org/wiki/Suomen_kunnanvaakunat...');
-  const svgFiles = await fetchVaakunaList();
-  console.log(`Found ${svgFiles.size} SVG files on page`);
+  console.log('Fetching coat mapping from Wikiprojekti:Vaakunat...');
+  const wikiMap = await fetchVaakunaMap();
+  console.log(`Parsed ${wikiMap.size} coat mappings`);
 
   if (!existsSync(COATS_DIR)) mkdirSync(COATS_DIR, { recursive: true });
 
-  // Phase 1: Match names to filenames
+  // Match names to SVG filenames
   const nameToFile = new Map();
   const unmatched = [];
 
   for (const name of appNames) {
-    if (existsSync(join(COATS_DIR, `${name}.png`))) continue;
-    // Check manual overrides first
-    if (MANUAL_FILENAMES[name]) {
-      nameToFile.set(name, MANUAL_FILENAMES[name]);
-      continue;
-    }
-    const file = findFilename(name, svgFiles);
-    if (file) {
-      nameToFile.set(name, file);
+    if (wikiMap.has(name)) {
+      nameToFile.set(name, wikiMap.get(name));
     } else {
       unmatched.push(name);
     }
   }
 
-  console.log(`Matched ${nameToFile.size} from page, ${unmatched.length} need fallback`);
+  console.log(
+    `Matched ${nameToFile.size}/${appNames.length}, ${unmatched.length} unmatched`,
+  );
+  if (unmatched.length > 0) {
+    console.warn('Unmatched:');
+    unmatched.forEach((n) => console.warn(`  - ${n}`));
+  }
 
-  // Phase 2: Batch resolve thumbnail URLs from Commons
-  const allFiles = [...nameToFile.values()];
-  console.log('Resolving thumbnail URLs from Commons (batch)...');
+  // Batch resolve thumbnail URLs from Commons
+  const allFiles = [...new Set(nameToFile.values())];
+  console.log(`Resolving ${allFiles.length} thumbnail URLs from Commons...`);
   const thumbUrls = await batchGetThumbUrls(allFiles);
   console.log(`Got ${thumbUrls.size} thumbnail URLs`);
 
-  // Phase 3: Download matched files
+  // Download
   let downloaded = 0;
   let skipped = 0;
   const missing = [];
+  const forceRefresh = process.argv.includes('--force');
 
   for (const name of appNames) {
     const outPath = join(COATS_DIR, `${name}.png`);
-    if (existsSync(outPath)) { skipped++; downloaded++; continue; }
-
-    const file = nameToFile.get(name);
-    if (file) {
-      const thumbUrl = thumbUrls.get(file);
-      if (thumbUrl) {
-        const ok = await downloadImage(thumbUrl, outPath);
-        if (ok) {
-          downloaded++;
-          process.stdout.write(`\r  ${downloaded}/${appNames.length} (${name})`);
-          await sleep(50);
-          continue;
-        }
-      }
+    if (!forceRefresh && existsSync(outPath)) {
+      skipped++;
+      downloaded++;
+      continue;
     }
 
-    // Not matched or thumb not found — try fallback patterns on Commons
-    const ascii = toAscii(name);
-    const variants = [name];
-    if (ascii !== name) variants.push(ascii);
-    const patterns = variants.flatMap((v) => [
-      `${v}.vaakuna.svg`,
-      `${v} vaakuna.svg`,
-      `${v}n vaakuna.svg`,
-    ]);
+    const file = nameToFile.get(name);
+    const thumbUrl = file ? thumbUrls.get(file) : null;
 
-    // Batch check these patterns
-    const fallbackUrls = await batchGetThumbUrls(patterns);
-    let found = false;
-    for (const [, thumbUrl] of fallbackUrls) {
+    if (thumbUrl) {
       const ok = await downloadImage(thumbUrl, outPath);
       if (ok) {
         downloaded++;
-        found = true;
-        process.stdout.write(`\r  ${downloaded}/${appNames.length} (${name} via fallback)`);
+        process.stdout.write(`\r  ${downloaded}/${appNames.length} (${name})`);
         await sleep(50);
-        break;
+        continue;
       }
     }
 
-    if (!found) missing.push(name);
+    missing.push(name);
   }
 
-  console.log(`\n\n✓ Downloaded ${downloaded}/${appNames.length} coat of arms (${skipped} cached)`);
+  console.log(
+    `\n\n✓ ${downloaded}/${appNames.length} coats (${skipped} cached)`,
+  );
   if (missing.length) {
     console.warn(`\n⚠ ${missing.length} missing:`);
     missing.forEach((n) => console.warn(`  - ${n}`));
